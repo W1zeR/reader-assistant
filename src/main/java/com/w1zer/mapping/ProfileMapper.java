@@ -11,28 +11,40 @@ import java.util.stream.Collectors;
 @Component
 public class ProfileMapper {
     public ProfileResponse mapToProfileResponse(Profile profile) {
-        return ProfileResponse
-                .builder()
-                .id(profile.getId())
-                .login(profile.getLogin())
-                .build();
+        return new ProfileResponse(
+                profile.getId(),
+                profile.getEmail(),
+                profile.getLogin(),
+                profile.getIsActive(),
+                profile.getIsEmailVerified()
+        );
+
+//        return ProfileResponse
+//                .builder()
+//                .id(profile.getId())
+//                .login(profile.getLogin())
+//                .build();
     }
 
     public Profile mapToProfile(ProfileRequest profileRequest) {
-        return Profile
-                .builder()
-                .login(profileRequest.getLogin())
-                .password(profileRequest.getPassword())
-                .build();
+        return new Profile();
+
+//        return Profile
+//                .builder()
+//                .login(profileRequest.getLogin())
+//                .password(profileRequest.getPassword())
+//                .build();
     }
 
     public Profile mapToProfile(Long id, ProfileRequest profileRequest) {
-        return Profile
-                .builder()
-                .id(id)
-                .login(profileRequest.getLogin())
-                .password(profileRequest.getPassword())
-                .build();
+        return new Profile();
+
+//        return Profile
+//                .builder()
+//                .id(id)
+//                .login(profileRequest.getLogin())
+//                .password(profileRequest.getPassword())
+//                .build();
     }
 
     public List<ProfileResponse> mapToProfileResponseList(List<Profile> profiles) {

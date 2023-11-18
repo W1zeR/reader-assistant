@@ -1,0 +1,44 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1-create-table-profile
+      author: w1zer
+      changes:
+        - createTable:
+            tableName: profile
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: bigint
+              - column:
+                  constraints:
+                    nullable: false
+                    unique: true
+                  name: email
+                  type: varchar(320)
+              - column:
+                  constraints:
+                    nullable: false
+                    unique: true
+                  name: login
+                  type: varchar(50)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: password
+                  type: clob
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValueBoolean: true
+                  name: is_active
+                  type: boolean
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValueBoolean: false
+                  name: is_email_verified
+                  type: boolean

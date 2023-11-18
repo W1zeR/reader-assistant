@@ -1,14 +1,13 @@
 package com.w1zer.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+public record AuthResponse(
+        String type,
 
-@Data
-@AllArgsConstructor
-public class AuthResponse {
-    private final String type = "Bearer";
+        String accessToken,
 
-    private final String accessToken;
-
-    private final String refreshToken;
+        String refreshToken
+) {
+    public AuthResponse(String accessToken, String refreshToken) {
+        this("Bearer", accessToken, refreshToken);
+    }
 }

@@ -1,20 +1,16 @@
 package com.w1zer.model;
 
-import lombok.Builder;
-import lombok.Data;
+public record QuoteResponse(
+        Long id,
 
-@Data
-@Builder
-public class QuoteResponse {
-    private final Long id;
+        String content,
 
-    private final String content;
+        String author,
 
-    private final String author;
+        String source,
 
-    private final String source;
+        String description,
 
-    private final String description;
-
-    private final Long idProfile;
+        Long idProfile
+) {
 }

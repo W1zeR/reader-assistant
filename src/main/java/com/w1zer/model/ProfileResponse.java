@@ -1,18 +1,14 @@
 package com.w1zer.model;
 
-import lombok.Builder;
-import lombok.Data;
+public record ProfileResponse(
+        Long id,
 
-@Data
-@Builder
-public class ProfileResponse {
-    private final Long id;
+        String email,
 
-    private final String email;
+        String login,
 
-    private final String login;
+        Boolean isActive,
 
-    private final Boolean isActive;
-
-    private final Boolean isEmailVerified;
+        Boolean isEmailVerified
+) {
 }

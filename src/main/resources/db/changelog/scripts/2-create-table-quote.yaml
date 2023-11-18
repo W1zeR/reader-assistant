@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2-create-table-quote
+      author: w1zer
+      changes:
+        - createTable:
+            tableName: quote
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: bigint
+              - column:
+                  constraints:
+                    nullable: false
+                  name: content
+                  type: varchar(300)
+              - column:
+                  name: author
+                  type: varchar(50)
+              - column:
+                  name: source
+                  type: varchar(50)
+              - column:
+                  name: description
+                  type: varchar(300)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: id_profile
+                  type: bigint
+        - addForeignKeyConstraint:
+            baseColumnNames: id_profile
+            baseTableName: quote
+            constraintName: fk_quote_to_profile
+            onDelete: CASCADE
+            referencedColumnNames: id
+            referencedTableName: profile

@@ -1,7 +1,7 @@
 package com.w1zer.repository;
 
 import com.w1zer.entity.Quote;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
@@ -9,12 +9,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface QuoteRepository extends CrudRepository<Quote, Long> {
+public interface QuoteRepository extends JpaRepository<Quote, Long> {
     @Override
     @NonNull
     List<Quote> findAll();
 
-    Optional<Quote> findToadById(Long id);
+    Optional<Quote> findQuoteById(Long id);
 
-    List<Quote> findToadsByIdProfile(Long idProfile);
+    List<Quote> findQuotesByProfile_Id(Long idProfile);
 }

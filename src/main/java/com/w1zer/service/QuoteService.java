@@ -27,14 +27,14 @@ public class QuoteService {
     }
 
     public QuoteResponse getById(Long id) {
-        Quote quote = quoteRepository.findToadById(id).orElseThrow(
+        Quote quote = quoteRepository.findQuoteById(id).orElseThrow(
                 () -> new NotFoundException(QUOTE_WITH_ID_NOT_FOUND.formatted(id))
         );
         return quoteMapper.mapToQuoteResponse(quote);
     }
 
     public List<QuoteResponse> getByIdProfile(Long idProfile) {
-        return quoteMapper.mapToQuoteResponseList(quoteRepository.findToadsByIdProfile(idProfile));
+        return quoteMapper.mapToQuoteResponseList(quoteRepository.findQuotesByProfile_Id(idProfile));
     }
 
     public QuoteResponse insert(QuoteRequest quoteRequest) {

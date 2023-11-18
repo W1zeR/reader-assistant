@@ -27,10 +27,10 @@ public class AuthService {
     }
 
     public AuthResponse login(AuthRequest authRequest) {
-        Profile profile = profileRepository.findProfileByLogin(authRequest.getLogin()).orElseThrow(
+        Profile profile = profileRepository.findProfileByLogin(authRequest.login()).orElseThrow(
                 () -> new AuthException(INCORRECT_LOGIN_OR_PASSWORD)
         );
-        if (!passwordEncoder.matches(authRequest.getPassword(), profile.getPassword())) {
+        if (!passwordEncoder.matches(authRequest.password(), profile.getPassword())) {
             throw new AuthException(INCORRECT_LOGIN_OR_PASSWORD);
         }
         String accessToken = jwtProvider.generateAccessToken(profile);

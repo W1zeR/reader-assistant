@@ -15,10 +15,10 @@ public class QuoteMapper {
                 .builder()
                 .id(quote.getId())
                 .content(quote.getContent())
-                .author(quote.getAuthor())
-                .source(quote.getSource())
-                .description(quote.getDescription())
-                .idProfile(quote.getIdProfile())
+//                .author(quote.getAuthor())
+//                .source(quote.getSource())
+//                .description(quote.getDescription())
+//                .idProfile(quote.getIdProfile())
                 .build();
     }
 
@@ -26,10 +26,10 @@ public class QuoteMapper {
         return Quote
                 .builder()
                 .content(quoteRequest.getContent())
-                .author(quoteRequest.getAuthor())
-                .source(quoteRequest.getSource())
-                .description(quoteRequest.getDescription())
-                .idProfile(quoteRequest.getIdProfile())
+//                .author(quoteRequest.getAuthor())
+//                .source(quoteRequest.getSource())
+//                .description(quoteRequest.getDescription())
+//                .idProfile(quoteRequest.getIdProfile())
                 .build();
     }
 
@@ -38,10 +38,10 @@ public class QuoteMapper {
                 .builder()
                 .id(id)
                 .content(quoteRequest.getContent())
-                .author(quoteRequest.getAuthor())
-                .source(quoteRequest.getSource())
-                .description(quoteRequest.getDescription())
-                .idProfile(quoteRequest.getIdProfile())
+//                .author(quoteRequest.getAuthor())
+//                .source(quoteRequest.getSource())
+//                .description(quoteRequest.getDescription())
+//                .idProfile(quoteRequest.getIdProfile())
                 .build();
     }
 
