@@ -13,23 +13,26 @@ import java.util.*;
 @NoArgsConstructor
 @Entity
 public class Profile {
+    private static final int EMAIL_LENGTH = 320;
+    private static final int LOGIN_LENGTH = 50;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(length = EMAIL_LENGTH, nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false, unique = true)
+    @Column(length = LOGIN_LENGTH, nullable = false, unique = true)
     private String login;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String password;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition="BOOLEAN DEFAULT true")
     private Boolean isActive;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition="BOOLEAN DEFAULT false")
     private Boolean isEmailVerified;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})

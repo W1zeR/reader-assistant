@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-data-1
+      author: w1zer
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - loadData:
+            tableName: role
+            relativeToChangelogFile: true
+            file: ../data/roles.csv
+  - changeSet:
+      id: insert-data-2
+      author: w1zer
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - loadData:
+            tableName: quote_status
+            relativeToChangelogFile: true
+            file: ../data/quoteStatuses.csv

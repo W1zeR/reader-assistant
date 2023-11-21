@@ -35,21 +35,21 @@ public class ProfileService {
         if (login == null) {
             return profileMapper.mapToProfileResponseList(profileRepository.findAll());
         }
-        Profile profile = profileRepository.findProfileByLogin(login).orElseThrow(
+        Profile profile = profileRepository.findByLogin(login).orElseThrow(
                 () -> new NotFoundException(PROFILE_WITH_LOGIN_NOT_FOUND.formatted(login))
         );
         return profileMapper.mapToProfileResponseList(profile);
     }
 
     public ProfileResponse getById(Long id) {
-        Profile profile = profileRepository.findProfileById(id).orElseThrow(
+        Profile profile = profileRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(PROFILE_WITH_ID_NOT_FOUND.formatted(id))
         );
         return profileMapper.mapToProfileResponse(profile);
     }
 
     public ProfileResponse insert(ProfileRequest profileRequest) {
-        String login = profileRequest.getLogin();
+        String login = profileRequest.login();
         if (profileRepository.existsByLogin(login)) {
             throw new ProfileAlreadyExistsException(PROFILE_WITH_LOGIN_ALREADY_EXISTS.formatted(login));
         }
@@ -69,8 +69,8 @@ public class ProfileService {
         if (!profileRepository.existsById(id)) {
             throw new NotFoundException(PROFILE_WITH_ID_NOT_FOUND.formatted(id));
         }
-        String login = profileRequest.getLogin();
-        Optional<Profile> profileWithSameLogin = profileRepository.findProfileByLogin(login);
+        String login = profileRequest.login();
+        Optional<Profile> profileWithSameLogin = profileRepository.findByLogin(login);
         if (profileWithSameLogin.isPresent() && !Objects.equals(profileWithSameLogin.get().getId(), id)) {
             throw new ProfileAlreadyExistsException(PROFILE_WITH_LOGIN_ALREADY_EXISTS.formatted(login));
         }

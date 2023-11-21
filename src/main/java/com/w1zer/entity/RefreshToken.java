@@ -13,7 +13,6 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "refresh_token")
 public class RefreshToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,10 +22,10 @@ public class RefreshToken {
     @JoinColumn(unique = true, name = "id_profile", referencedColumnName = "id")
     private Profile profile;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, columnDefinition = "TEXT")
     private String token;
 
-    @Column(nullable = false, name = "expiry_date")
+    @Column(nullable = false)
     private Instant expiryDate;
 
     @Override

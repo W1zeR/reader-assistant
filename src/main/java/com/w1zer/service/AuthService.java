@@ -27,7 +27,7 @@ public class AuthService {
     }
 
     public AuthResponse login(AuthRequest authRequest) {
-        Profile profile = profileRepository.findProfileByLogin(authRequest.login()).orElseThrow(
+        Profile profile = profileRepository.findByLogin(authRequest.login()).orElseThrow(
                 () -> new AuthException(INCORRECT_LOGIN_OR_PASSWORD)
         );
         if (!passwordEncoder.matches(authRequest.password(), profile.getPassword())) {
@@ -44,7 +44,7 @@ public class AuthService {
         }
         Claims claims = jwtProvider.getRefreshClaims(refreshToken);
         String login = claims.getIssuer();
-        return profileRepository.findProfileByLogin(login).orElseThrow(
+        return profileRepository.findByLogin(login).orElseThrow(
                 () -> new AuthException(PROFILE_WITH_LOGIN_NOT_FOUND.formatted(login))
         );
     }

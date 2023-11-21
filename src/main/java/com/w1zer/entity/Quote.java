@@ -13,10 +13,13 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 public class Quote {
+    private static final int CONTENT_LENGTH = 1000;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = CONTENT_LENGTH, nullable = false)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -26,6 +29,10 @@ public class Quote {
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     private Profile profile;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private QuoteStatus quoteStatus;
 
     @Override
     public final boolean equals(Object o) {

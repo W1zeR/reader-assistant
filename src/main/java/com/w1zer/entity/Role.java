@@ -20,7 +20,7 @@ public class Role {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(length = ROLE_NAME_LENGTH)
+    @Column(length = ROLE_NAME_LENGTH, nullable = false, unique = true)
     private RoleName name;
 
     @Override

@@ -4,10 +4,9 @@ import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -15,42 +14,28 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Author {
-    private static final int DESCRIPTION_LENGTH = 1000;
+public class QuoteStatus {
+    private static final int QUOTE_STATUS_NAME_LENGTH = 7;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String surname;
+    @Enumerated(EnumType.STRING)
+    @Column(length = QUOTE_STATUS_NAME_LENGTH, nullable = false)
+    private QuoteStatusName name;
 
-    @Column(nullable = false)
-    private String name;
-
-    private String patronymic;
-
-    @Column(nullable = false)
-    private LocalDate birthday;
-
-    private LocalDate death;
-
-    @Column(length = DESCRIPTION_LENGTH)
-    private String description;
-
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "authors_books", joinColumns = @JoinColumn(name = "id_author"),
-            inverseJoinColumns = @JoinColumn(name = "id_book"))
+    @OneToMany(mappedBy = "quoteStatus", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
-    private Set<Book> books = new HashSet<>();
+    private List<Quote> quotes = new ArrayList<>();
 
-    public void addBook(Book book){
-        this.books.add(book);
-        book.getAuthors().add(this);
+    public void addQuote(Quote quote){
+        this.quotes.add(quote);
+        quote.setQuoteStatus(this);
     }
-    public void removeBook(Book book){
-        this.books.remove(book);
-        book.getAuthors().remove(this);
+    public void removeQuote(Quote quote){
+        this.quotes.remove(quote);
+        quote.setQuoteStatus(null);
     }
 
     @Override
@@ -62,8 +47,8 @@ public class Author {
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ?
                 ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Author author = (Author) o;
-        return getId() != null && Objects.equals(getId(), author.getId());
+        Role role = (Role) o;
+        return getId() != null && Objects.equals(getId(), role.getId());
     }
 
     @Override

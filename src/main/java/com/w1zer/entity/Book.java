@@ -13,6 +13,8 @@ import java.util.*;
 @NoArgsConstructor
 @Entity
 public class Book {
+    private static final int DESCRIPTION_LENGTH = 1000;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,6 +24,7 @@ public class Book {
 
     private Integer publishingYear;
 
+    @Column(length = DESCRIPTION_LENGTH)
     private String description;
 
     @ManyToMany(mappedBy = "books")

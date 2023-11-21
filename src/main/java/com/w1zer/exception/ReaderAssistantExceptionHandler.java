@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
-public class QuotesExceptionHandler {
+public class ReaderAssistantExceptionHandler {
     private static final String INVALID_FORMAT = "Invalid format";
 
     @ExceptionHandler(NotFoundException.class)
