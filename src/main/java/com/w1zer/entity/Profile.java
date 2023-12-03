@@ -6,6 +6,9 @@ import org.hibernate.proxy.HibernateProxy;
 import javax.persistence.*;
 import java.util.*;
 
+import static com.w1zer.constants.EntityConstants.EMAIL_LENGTH;
+import static com.w1zer.constants.EntityConstants.LOGIN_LENGTH;
+
 @Getter
 @Setter
 @ToString
@@ -13,9 +16,6 @@ import java.util.*;
 @NoArgsConstructor
 @Entity
 public class Profile {
-    private static final int EMAIL_LENGTH = 320;
-    private static final int LOGIN_LENGTH = 50;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

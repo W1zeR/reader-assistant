@@ -5,10 +5,10 @@ import com.w1zer.repository.ProfileRepository;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class ProfileExistsValidator implements ConstraintValidator<ProfileExists, Long> {
+public class ProfileExistsByIdValidator implements ConstraintValidator<ProfileExistsById, Long> {
     private final ProfileRepository profileRepository;
 
-    public ProfileExistsValidator(ProfileRepository profileRepository) {
+    public ProfileExistsByIdValidator(ProfileRepository profileRepository) {
         this.profileRepository = profileRepository;
     }
 

@@ -11,9 +11,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({FIELD})
 @Retention(RUNTIME)
-@Constraint(validatedBy = ProfileExistsValidator.class)
+@Constraint(validatedBy = ProfileExistsByIdValidator.class)
 @Documented
-public @interface ProfileExists {
+public @interface ProfileExistsById {
 
     String message() default "{ProfileExists.invalid}";
 

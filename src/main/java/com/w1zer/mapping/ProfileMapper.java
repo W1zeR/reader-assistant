@@ -1,8 +1,8 @@
 package com.w1zer.mapping;
 
 import com.w1zer.entity.Profile;
-import com.w1zer.model.ProfileRequest;
-import com.w1zer.model.ProfileResponse;
+import com.w1zer.payload.ProfileRequest;
+import com.w1zer.payload.ProfileResponse;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

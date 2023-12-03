@@ -6,6 +6,8 @@ import org.hibernate.proxy.HibernateProxy;
 import javax.persistence.*;
 import java.util.Objects;
 
+import static com.w1zer.constants.EntityConstants.ROLE_NAME_LENGTH;
+
 @Getter
 @Setter
 @ToString
@@ -13,8 +15,6 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 public class Role {
-    private static final int ROLE_NAME_LENGTH = 20;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

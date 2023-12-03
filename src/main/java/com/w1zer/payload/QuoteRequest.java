@@ -1,6 +1,6 @@
-package com.w1zer.model;
+package com.w1zer.payload;
 
-import com.w1zer.validation.ProfileExists;
+import com.w1zer.validation.ProfileExistsById;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -23,7 +23,7 @@ public record QuoteRequest(
 
         @NotNull(message = "idProfile can't be null")
         @Positive(message = "idProfile must be positive number")
-        @ProfileExists(message = "Profile with idProfile not exists")
+        @ProfileExistsById(message = "Profile with idProfile not exists")
         Long idProfile
 ) {
 }

@@ -1,4 +1,4 @@
-package com.w1zer.model;
+package com.w1zer.payload;
 
 public record AuthResponse(
         String type,
@@ -7,7 +7,9 @@ public record AuthResponse(
 
         String refreshToken
 ) {
+    private static final String BEARER = "Bearer";
+
     public AuthResponse(String accessToken, String refreshToken) {
-        this("Bearer", accessToken, refreshToken);
+        this(BEARER, accessToken, refreshToken);
     }
 }

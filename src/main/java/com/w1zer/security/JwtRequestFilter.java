@@ -1,10 +1,11 @@
 package com.w1zer.security;
 
-import io.jsonwebtoken.Claims;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -15,33 +16,40 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Set;
-
-import static com.w1zer.constants.SecurityConstants.QUOTES_ROLES;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
+    private static final Logger logger = LoggerFactory.getLogger(JwtRequestFilter.class);
     private static final String AUTHORIZATION = "Authorization";
     private static final String BEARER = "Bearer ";
     private static final int BEGIN_INDEX = 7;
 
     private final JwtProvider jwtProvider;
+    private final JwtValidator jwtValidator;
+    private final CustomUserDetailsService customUserDetailsService;
 
-    public JwtRequestFilter(JwtProvider jwtProvider) {
+    public JwtRequestFilter(JwtProvider jwtProvider, JwtValidator jwtValidator, CustomUserDetailsService customUserDetailsService) {
         this.jwtProvider = jwtProvider;
+        this.jwtValidator = jwtValidator;
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
                                     @NonNull FilterChain chain) throws ServletException, IOException {
-        String jwtToken = getJwtTokenFromRequest(request);
-        if (jwtToken != null && jwtProvider.validateAccessToken(jwtToken)) {
-            setSecurityContextHolderAuthentication(request, jwtToken);
+        try {
+            String jwtToken = getJwtFromRequest(request);
+            if (jwtToken != null && jwtValidator.validateAccessToken(jwtToken)) {
+                setSecurityContextHolderAuthentication(request, jwtToken);
+            }
+        }
+        catch (Exception e){
+            logger.error("Unexpected error while setting user auth", e);
         }
         chain.doFilter(request, response);
     }
 
-    private String getJwtTokenFromRequest(HttpServletRequest request) {
+    private String getJwtFromRequest(HttpServletRequest request) {
         String jwtToken = request.getHeader(AUTHORIZATION);
         if (StringUtils.hasText(jwtToken) && jwtToken.startsWith(BEARER)) {
             return jwtToken.substring(BEGIN_INDEX);
@@ -49,15 +57,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         return null;
     }
 
-    private void setSecurityContextHolderAuthentication(HttpServletRequest request, String jwtToken) {
-        Claims claims = jwtProvider.getAccessClaims(jwtToken);
-        String username = claims.getIssuer();
-        String role = claims.get(QUOTES_ROLES).toString();
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                    username, null, Set.of(new SimpleGrantedAuthority(role)));
-            token.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(token);
-        }
+    private void setSecurityContextHolderAuthentication(HttpServletRequest request, String jwt) {
+        String username = jwtProvider.getUsernameFromJwt(jwt);
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+                userDetails, jwt, userDetails.getAuthorities()
+        );
+        token.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        SecurityContextHolder.getContext().setAuthentication(token);
     }
 }

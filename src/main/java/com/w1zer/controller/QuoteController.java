@@ -1,7 +1,7 @@
 package com.w1zer.controller;
 
-import com.w1zer.model.QuoteRequest;
-import com.w1zer.model.QuoteResponse;
+import com.w1zer.payload.QuoteRequest;
+import com.w1zer.payload.QuoteResponse;
 import com.w1zer.service.QuoteService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +32,7 @@ public class QuoteController {
         return quoteService.getById(id);
     }
 
-    @GetMapping("/profiles/{id}/toads")
+    @GetMapping("/profiles/{id}/quotes")
     public List<QuoteResponse> getByIdProfile(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
         return quoteService.getByIdProfile(id);
     }

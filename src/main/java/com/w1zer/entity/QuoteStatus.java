@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.w1zer.constants.EntityConstants.QUOTE_STATUS_NAME_LENGTH;
+
 @Getter
 @Setter
 @ToString
@@ -15,8 +17,6 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 public class QuoteStatus {
-    private static final int QUOTE_STATUS_NAME_LENGTH = 7;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

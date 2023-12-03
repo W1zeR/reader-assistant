@@ -9,6 +9,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import static com.w1zer.constants.EntityConstants.DESCRIPTION_LENGTH;
+
 @Getter
 @Setter
 @ToString
@@ -16,8 +18,6 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 public class Author {
-    private static final int DESCRIPTION_LENGTH = 1000;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

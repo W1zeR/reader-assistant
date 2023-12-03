@@ -6,6 +6,8 @@ import org.hibernate.proxy.HibernateProxy;
 import javax.persistence.*;
 import java.util.*;
 
+import static com.w1zer.constants.EntityConstants.DESCRIPTION_LENGTH;
+
 @Getter
 @Setter
 @ToString
@@ -13,8 +15,6 @@ import java.util.*;
 @NoArgsConstructor
 @Entity
 public class Book {
-    private static final int DESCRIPTION_LENGTH = 1000;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,7 +31,7 @@ public class Book {
     @ToString.Exclude
     private Set<Author> authors = new HashSet<>();
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "book", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @ToString.Exclude
     private List<Quote> quotes = new ArrayList<>();
 

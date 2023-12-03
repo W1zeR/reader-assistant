@@ -1,8 +1,8 @@
 package com.w1zer.mapping;
 
 import com.w1zer.entity.Quote;
-import com.w1zer.model.QuoteRequest;
-import com.w1zer.model.QuoteResponse;
+import com.w1zer.payload.QuoteRequest;
+import com.w1zer.payload.QuoteResponse;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

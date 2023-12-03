@@ -3,8 +3,8 @@ package com.w1zer.service;
 import com.w1zer.entity.Quote;
 import com.w1zer.exception.NotFoundException;
 import com.w1zer.mapping.QuoteMapper;
-import com.w1zer.model.QuoteRequest;
-import com.w1zer.model.QuoteResponse;
+import com.w1zer.payload.QuoteRequest;
+import com.w1zer.payload.QuoteResponse;
 import com.w1zer.repository.QuoteRepository;
 import org.springframework.stereotype.Service;
 

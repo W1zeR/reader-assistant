@@ -1,4 +1,4 @@
-package com.w1zer.model;
+package com.w1zer.payload;
 
 public record ProfileResponse(
         Long id,

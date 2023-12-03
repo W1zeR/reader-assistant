@@ -1,12 +1,13 @@
 package com.w1zer.constants;
 
+import static com.w1zer.constants.EntityConstants.LOGIN_LENGTH;
+
 public final class ValidationConstants {
     public static final String ID_POSITIVE_MESSAGE = "Id must be positive number";
 
     public static final int LOGIN_MIN_SIZE = 3;
-    public static final int LOGIN_MAX_SIZE = 50;
     public static final String LOGIN_SIZE_MESSAGE =
-            "Login must contain from " + LOGIN_MIN_SIZE + " to " + LOGIN_MAX_SIZE + " characters";
+            "Login must contain from " + LOGIN_MIN_SIZE + " to " + LOGIN_LENGTH + " characters";
     public static final String LOGIN_NOT_BLANK_MESSAGE = "Login can't be blank";
 
     public static final int PASSWORD_MIN_SIZE = 5;

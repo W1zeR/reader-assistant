@@ -1,7 +1,7 @@
 package com.w1zer.controller;
 
-import com.w1zer.model.AuthRequest;
-import com.w1zer.model.AuthResponse;
+import com.w1zer.payload.LoginRequest;
+import com.w1zer.payload.AuthResponse;
 import com.w1zer.service.AuthService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,8 +25,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public AuthResponse login(@Valid @RequestBody AuthRequest authRequest) {
-        return authService.login(authRequest);
+    public AuthResponse login(@Valid @RequestBody LoginRequest loginRequest) {
+        return authService.login(loginRequest);
     }
 
     @PostMapping("/access")
