@@ -32,7 +32,8 @@ public class WebSecurityConfig {
     private final CustomUserDetailsService customUserDetailsService;
     private final AuthenticationProvider authenticationProvider;
 
-    public WebSecurityConfig(JwtRequestFilter jwtRequestFilter, CustomUserDetailsService customUserDetailsService, AuthenticationProvider authenticationProvider) {
+    public WebSecurityConfig(JwtRequestFilter jwtRequestFilter, CustomUserDetailsService customUserDetailsService,
+                             AuthenticationProvider authenticationProvider) {
         this.jwtRequestFilter = jwtRequestFilter;
         this.customUserDetailsService = customUserDetailsService;
         this.authenticationProvider = authenticationProvider;

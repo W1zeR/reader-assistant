@@ -79,6 +79,12 @@ public class ProfileService {
         return profileMapper.mapToProfileResponse(result);
     }
 
+    public Profile getProfileById(Long idProfile){
+        return profileRepository.findById(idProfile).orElseThrow(
+                () -> new NotFoundException(PROFILE_WITH_ID_NOT_FOUND.formatted(idProfile))
+        );
+    }
+
     private Profile getProfileWithEncodedPassword(ProfileRequest profileRequest) {
         Profile profile = profileMapper.mapToProfile(profileRequest);
         profile.setPassword(passwordEncoder.encode(profile.getPassword()));

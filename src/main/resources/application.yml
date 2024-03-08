@@ -16,6 +16,5 @@ w1zer:
   jwt:
     access-secret: w1zerAccessSecret
     access-expiration-minutes: 5
-    refresh-secret: w1zerRefreshSecret
     refresh-expiration-minutes: 43200
 

@@ -11,8 +11,6 @@ import static java.time.temporal.ChronoUnit.MINUTES;
 
 @Component
 public class JwtProvider {
-    private static final String AUTHORITIES_CLAIM = "authorities";
-
     @Value("${w1zer.jwt.access-secret}")
     private String accessSecret;
     @Value("${w1zer.jwt.access-expiration-minutes}")

@@ -16,4 +16,22 @@ databaseChangeLog:
         - loadData:
             tableName: quote_status
             relativeToChangelogFile: true
-            file: ../data/quoteStatuses.csv
+            file: ../data/quote-status.csv
+  - changeSet:
+      id: insert-data-3
+      author: w1zer
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - loadData:
+            tableName: profile
+            relativeToChangelogFile: true
+            file: ../data/admin-profile.csv
+  - changeSet:
+      id: insert-data-4
+      author: w1zer
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - loadData:
+            tableName: profiles_roles
+            relativeToChangelogFile: true
+            file: ../data/admin-role.csv

@@ -23,6 +23,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private static final String AUTHORIZATION = "Authorization";
     private static final String BEARER = "Bearer ";
     private static final int BEGIN_INDEX = 7;
+    public static final String SETTING_USER_AUTH_ERROR = "Unexpected error while setting user auth";
 
     private final JwtProvider jwtProvider;
     private final JwtValidator jwtValidator;
@@ -44,7 +45,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             }
         }
         catch (Exception e){
-            logger.error("Unexpected error while setting user auth", e);
+            logger.error(SETTING_USER_AUTH_ERROR, e);
         }
         chain.doFilter(request, response);
     }

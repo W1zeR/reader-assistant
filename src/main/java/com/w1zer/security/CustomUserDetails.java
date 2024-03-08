@@ -15,6 +15,10 @@ public class CustomUserDetails implements UserDetails {
         this.profile = profile;
     }
 
+    public Long getId() {
+        return profile.getId();
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return profile.getRoles().stream()

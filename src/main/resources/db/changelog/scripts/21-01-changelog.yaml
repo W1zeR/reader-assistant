@@ -389,4 +389,3 @@ databaseChangeLog:
             constraintName: fk_prorol_on_role
             referencedColumnNames: id
             referencedTableName: role
-
