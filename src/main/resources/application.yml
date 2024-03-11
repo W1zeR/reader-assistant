@@ -14,7 +14,6 @@ spring:
       matching-strategy: ant_path_matcher
 w1zer:
   jwt:
-    access-secret: w1zerAccessSecret
-    access-expiration-minutes: 5
-    refresh-expiration-minutes: 43200
-
+    secret-key: dzF6ZXJTZWNyZXRLZXk=
+    access-expiration-minutes: 1440 # 1 day
+    refresh-expiration-minutes: 10080 # 7 days

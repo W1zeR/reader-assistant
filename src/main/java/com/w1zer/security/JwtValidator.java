@@ -1,6 +1,9 @@
 package com.w1zer.security;
 
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,23 +17,12 @@ import javax.crypto.SecretKey;
 public class JwtValidator {
     private static final Logger logger = LoggerFactory.getLogger(JwtValidator.class);
 
-    @Value("${w1zer.jwt.access-secret}")
-    private String accessSecret;
-    @Value("${w1zer.jwt.refresh-secret}")
-    private String refreshSecret;
+    @Value("${w1zer.jwt.secret-key}")
+    private String secretKey;
 
-    public boolean validateAccessToken(String accessToken) {
-        return validateToken(accessToken, accessSecret);
-    }
-
-    public boolean validateRefreshToken(String refreshToken) {
-        return validateToken(refreshToken, refreshSecret);
-    }
-
-    private boolean validateToken(String token, String secret) {
+    public boolean validateToken(String token) {
         try {
-            Jwts.parser().verifyWith()
-            Jwts.parser().setSigningKey(signature).parseClaimsJws(token);
+            Jwts.parser().verifyWith(getSignInKey()).build().parseSignedClaims(token);
             return true;
         } catch (SignatureException e) {
             logger.error("Invalid JWT signature");
@@ -46,5 +38,10 @@ public class JwtValidator {
             logger.error("Unexpected error while validating JWT", e);
         }
         return false;
+    }
+
+    private SecretKey getSignInKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 }
