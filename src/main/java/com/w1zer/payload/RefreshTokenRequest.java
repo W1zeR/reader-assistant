@@ -1,6 +1,6 @@
 package com.w1zer.payload;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 public record RefreshTokenRequest(
         @NotBlank(message = REFRESH_TOKEN_NOT_BLANK_MESSAGE)

@@ -5,10 +5,6 @@ public record ProfileResponse(
 
         String email,
 
-        String login,
-
-        Boolean isActive,
-
-        Boolean isEmailVerified
+        String login
 ) {
 }

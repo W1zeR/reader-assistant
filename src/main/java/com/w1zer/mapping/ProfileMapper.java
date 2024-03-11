@@ -14,9 +14,7 @@ public class ProfileMapper {
         return new ProfileResponse(
                 profile.getId(),
                 profile.getEmail(),
-                profile.getLogin(),
-                profile.getIsActive(),
-                profile.getIsEmailVerified()
+                profile.getLogin()
         );
 
 //        return ProfileResponse

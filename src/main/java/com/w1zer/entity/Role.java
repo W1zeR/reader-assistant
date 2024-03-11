@@ -3,7 +3,7 @@ package com.w1zer.entity;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Objects;
 
 import static com.w1zer.constants.EntityConstants.ROLE_NAME_LENGTH;

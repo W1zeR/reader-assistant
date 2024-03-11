@@ -1,7 +1,7 @@
 package com.w1zer.payload;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import static com.w1zer.constants.EntityConstants.LOGIN_LENGTH;
 import static com.w1zer.constants.ValidationConstants.*;

@@ -6,8 +6,8 @@ import com.w1zer.service.QuoteService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Positive;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import java.util.List;
 
 import static com.w1zer.constants.ValidationConstants.ID_POSITIVE_MESSAGE;

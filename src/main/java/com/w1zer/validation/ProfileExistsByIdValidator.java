@@ -2,8 +2,8 @@ package com.w1zer.validation;
 
 import com.w1zer.repository.ProfileRepository;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 public class ProfileExistsByIdValidator implements ConstraintValidator<ProfileExistsById, Long> {
     private final ProfileRepository profileRepository;

@@ -1,2 +1,2 @@
-id,email,login,password,is_active,is_email_verified
-0,admin@admin.admin,admin,admin,true,true
+id,email,login,password
+0,admin@admin.admin,admin,admin

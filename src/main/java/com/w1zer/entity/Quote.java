@@ -1,9 +1,9 @@
 package com.w1zer.entity;
 
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
-import javax.persistence.*;
 import java.util.Objects;
 
 import static com.w1zer.constants.EntityConstants.CONTENT_LENGTH;

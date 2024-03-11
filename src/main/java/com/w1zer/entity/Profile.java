@@ -3,7 +3,8 @@ package com.w1zer.entity;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+import java.time.Instant;
 import java.util.*;
 
 import static com.w1zer.constants.EntityConstants.EMAIL_LENGTH;
@@ -28,12 +29,6 @@ public class Profile {
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String password;
-
-    @Column(nullable = false, columnDefinition="BOOLEAN DEFAULT true")
-    private Boolean isActive;
-
-    @Column(nullable = false, columnDefinition="BOOLEAN DEFAULT false")
-    private Boolean isEmailVerified;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "profiles_roles", joinColumns = @JoinColumn(name = "id_profile"),

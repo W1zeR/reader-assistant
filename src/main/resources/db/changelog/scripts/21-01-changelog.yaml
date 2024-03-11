@@ -118,18 +118,6 @@ databaseChangeLog:
                     nullable: false
                   name: password
                   type: TEXT
-              - column:
-                  constraints:
-                    nullable: false
-                  defaultValueBoolean: true
-                  name: is_active
-                  type: BOOLEAN
-              - column:
-                  constraints:
-                    nullable: false
-                  defaultValueBoolean: false
-                  name: is_email_verified
-                  type: BOOLEAN
             tableName: profile
   - changeSet:
       id: 1700597792764-5

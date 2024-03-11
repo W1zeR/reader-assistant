@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.Instant;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -17,6 +18,10 @@ public class CustomUserDetails implements UserDetails {
 
     public Long getId() {
         return profile.getId();
+    }
+
+    public String getEmail() {
+        return profile.getEmail();
     }
 
     @Override
@@ -43,7 +48,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return profile.getIsActive();
+        return true;
     }
 
     @Override
@@ -53,6 +58,6 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return profile.getIsEmailVerified();
+        return true;
     }
 }
