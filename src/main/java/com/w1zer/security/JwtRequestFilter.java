@@ -6,6 +6,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -26,12 +27,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     public static final String SETTING_USER_AUTH_ERROR = "Unexpected error while setting user auth";
 
     private final JwtProvider jwtProvider;
-    private final JwtValidator jwtValidator;
-    private final CustomUserDetailsService customUserDetailsService;
+    private final UserDetailsService customUserDetailsService;
 
-    public JwtRequestFilter(JwtProvider jwtProvider, JwtValidator jwtValidator, CustomUserDetailsService customUserDetailsService) {
+    public JwtRequestFilter(JwtProvider jwtProvider, UserDetailsService customUserDetailsService) {
         this.jwtProvider = jwtProvider;
-        this.jwtValidator = jwtValidator;
         this.customUserDetailsService = customUserDetailsService;
     }
 
@@ -40,7 +39,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                                     @NonNull FilterChain chain) throws ServletException, IOException {
         try {
             String jwtToken = getJwtFromRequest(request);
-            if (jwtToken != null && jwtValidator.validateAccessToken(jwtToken)) {
+            if (jwtToken != null && jwtProvider.validateToken(jwtToken)) {
                 setSecurityContextHolderAuthentication(request, jwtToken);
             }
         }

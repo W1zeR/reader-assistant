@@ -4,8 +4,13 @@ import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.w1zer.constants.EntityConstants.EMAIL_LENGTH;
 import static com.w1zer.constants.EntityConstants.LOGIN_LENGTH;
@@ -16,7 +21,7 @@ import static com.w1zer.constants.EntityConstants.LOGIN_LENGTH;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Profile {
+public class Profile implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -67,5 +72,37 @@ public class Profile {
         return this instanceof HibernateProxy ?
                 ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() :
                 getClass().hashCode();
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public String getUsername() {
+        return login;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

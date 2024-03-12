@@ -2,6 +2,7 @@ package com.w1zer.controller;
 
 import com.w1zer.payload.LoginRequest;
 import com.w1zer.payload.AuthResponse;
+import com.w1zer.payload.RegisterRequest;
 import com.w1zer.service.AuthService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,15 +30,20 @@ public class AuthController {
         return authService.login(loginRequest);
     }
 
-    @PostMapping("/access")
-    public AuthResponse getNewAccessToken(
-            @RequestBody @NotBlank(message = REFRESH_TOKEN_NOT_BLANK_MESSAGE) String refreshToken) {
-        return authService.getAccessToken(refreshToken);
-    }
+//    @PostMapping("/register")
+//    public AuthResponse register(@Valid @RequestBody RegisterRequest registerRequest) {
+//        return authService.register(registerRequest);
+//    }
 
-    @PostMapping("/refresh")
-    public AuthResponse getNewRefreshToken(
-            @RequestBody @NotBlank(message = REFRESH_TOKEN_NOT_BLANK_MESSAGE) String refreshToken) {
-        return authService.refresh(refreshToken);
-    }
+//    @PostMapping("/access")
+//    public AuthResponse getNewAccessToken(
+//            @RequestBody @NotBlank(message = REFRESH_TOKEN_NOT_BLANK_MESSAGE) String refreshToken) {
+//        return authService.getAccessToken(refreshToken);
+//    }
+
+//    @PostMapping("/refresh")
+//    public AuthResponse getNewRefreshToken(
+//            @RequestBody @NotBlank(message = REFRESH_TOKEN_NOT_BLANK_MESSAGE) String refreshToken) {
+//        return authService.refresh(refreshToken);
+//    }
 }
