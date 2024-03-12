@@ -1,4 +1,4 @@
-package com.w1zer.security;
+package com.w1zer.service;
 
 import com.w1zer.entity.RefreshToken;
 import com.w1zer.exception.AuthException;
@@ -25,7 +25,8 @@ public class RefreshTokenService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final ProfileService profileService;
 
-    public RefreshTokenService(RefreshTokenRepository refreshTokenRepository, ProfileRepository profileRepository, ProfileService profileService) {
+    public RefreshTokenService(RefreshTokenRepository refreshTokenRepository, ProfileRepository profileRepository,
+                               ProfileService profileService) {
         this.refreshTokenRepository = refreshTokenRepository;
         this.profileService = profileService;
     }
@@ -51,6 +52,6 @@ public class RefreshTokenService {
     }
 
     public void deleteByIdProfile(Long idProfile) {
-        refreshTokenRepository.deleteByProfile_Id(idProfile);
+        refreshTokenRepository.deleteByProfileId(idProfile);
     }
 }

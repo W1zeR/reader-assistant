@@ -7,7 +7,6 @@ import com.w1zer.payload.AuthResponse;
 import com.w1zer.repository.ProfileRepository;
 import com.w1zer.repository.RoleRepository;
 import com.w1zer.security.JwtProvider;
-import com.w1zer.security.RefreshTokenService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

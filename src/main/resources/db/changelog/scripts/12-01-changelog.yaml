@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 1700597792764-1
+      id: 1710264383984-1
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -40,7 +40,7 @@ databaseChangeLog:
                   type: VARCHAR(1000)
             tableName: author
   - changeSet:
-      id: 1700597792764-2
+      id: 1710264383984-2
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -62,7 +62,7 @@ databaseChangeLog:
                   type: BIGINT
             tableName: authors_books
   - changeSet:
-      id: 1700597792764-3
+      id: 1710264383984-3
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -89,7 +89,7 @@ databaseChangeLog:
                   type: VARCHAR(1000)
             tableName: book
   - changeSet:
-      id: 1700597792764-4
+      id: 1710264383984-4
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -120,7 +120,7 @@ databaseChangeLog:
                   type: TEXT
             tableName: profile
   - changeSet:
-      id: 1700597792764-5
+      id: 1710264383984-5
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -142,7 +142,7 @@ databaseChangeLog:
                   type: BIGINT
             tableName: profiles_roles
   - changeSet:
-      id: 1700597792764-6
+      id: 1710264383984-6
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -172,7 +172,7 @@ databaseChangeLog:
                   type: BIGINT
             tableName: quote
   - changeSet:
-      id: 1700597792764-7
+      id: 1710264383984-7
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -193,7 +193,7 @@ databaseChangeLog:
                   type: VARCHAR(7)
             tableName: quote_status
   - changeSet:
-      id: 1700597792764-8
+      id: 1710264383984-8
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -210,13 +210,16 @@ databaseChangeLog:
               - column:
                   constraints:
                     nullable: false
-                  name: id_profile
-                  type: BIGINT
+                  name: token
+                  type: TEXT
               - column:
                   constraints:
                     nullable: false
-                  name: token
-                  type: TEXT
+                  name: id_user_device
+                  type: BIGINT
+              - column:
+                  name: refresh_count
+                  type: BIGINT
               - column:
                   constraints:
                     nullable: false
@@ -224,7 +227,7 @@ databaseChangeLog:
                   type: DATETIME
             tableName: refresh_token
   - changeSet:
-      id: 1700597792764-9
+      id: 1710264383984-9
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -245,7 +248,39 @@ databaseChangeLog:
                   type: VARCHAR(20)
             tableName: role
   - changeSet:
-      id: 1700597792764-10
+      id: 1710264383984-10
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_userdevice
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: id_profile
+                  type: BIGINT
+              - column:
+                  name: device_type
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: device_id
+                  type: VARCHAR(255)
+              - column:
+                  name: is_refresh_active
+                  type: BOOLEAN
+            tableName: user_device
+  - changeSet:
+      id: 1710264383984-11
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -254,7 +289,7 @@ databaseChangeLog:
             constraintName: uc_profile_email
             tableName: profile
   - changeSet:
-      id: 1700597792764-11
+      id: 1710264383984-12
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -263,16 +298,16 @@ databaseChangeLog:
             constraintName: uc_profile_login
             tableName: profile
   - changeSet:
-      id: 1700597792764-12
+      id: 1710264383984-13
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addUniqueConstraint:
-            columnNames: id_profile
-            constraintName: uc_refreshtoken_id_profile
+            columnNames: id_user_device
+            constraintName: uc_refreshtoken_id_user_device
             tableName: refresh_token
   - changeSet:
-      id: 1700597792764-13
+      id: 1710264383984-14
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -281,7 +316,7 @@ databaseChangeLog:
             constraintName: uc_refreshtoken_token
             tableName: refresh_token
   - changeSet:
-      id: 1700597792764-14
+      id: 1710264383984-15
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -290,7 +325,16 @@ databaseChangeLog:
             constraintName: uc_role_name
             tableName: role
   - changeSet:
-      id: 1700597792764-15
+      id: 1710264383984-16
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: id_profile
+            constraintName: uc_userdevice_id_profile
+            tableName: user_device
+  - changeSet:
+      id: 1710264383984-17
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -301,7 +345,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: book
   - changeSet:
-      id: 1700597792764-16
+      id: 1710264383984-18
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -312,29 +356,40 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: profile
   - changeSet:
-      id: 1700597792764-17
+      id: 1710264383984-19
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: quote_status_id
             baseTableName: quote
-            constraintName: FK_QUOTE_ON_QUOTESTATUS
+            constraintName: FK_QUOTE_ON_QUOTE_STATUS
             referencedColumnNames: id
             referencedTableName: quote_status
   - changeSet:
-      id: 1700597792764-18
+      id: 1710264383984-20
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: id_user_device
+            baseTableName: refresh_token
+            constraintName: FK_REFRESHTOKEN_ON_ID_USER_DEVICE
+            referencedColumnNames: id
+            referencedTableName: user_device
+  - changeSet:
+      id: 1710264383984-21
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: id_profile
-            baseTableName: refresh_token
-            constraintName: FK_REFRESHTOKEN_ON_ID_PROFILE
+            baseTableName: user_device
+            constraintName: FK_USERDEVICE_ON_ID_PROFILE
             referencedColumnNames: id
             referencedTableName: profile
   - changeSet:
-      id: 1700597792764-19
+      id: 1710264383984-22
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -345,7 +400,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: author
   - changeSet:
-      id: 1700597792764-20
+      id: 1710264383984-23
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -356,7 +411,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: book
   - changeSet:
-      id: 1700597792764-21
+      id: 1710264383984-24
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -367,7 +422,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: profile
   - changeSet:
-      id: 1700597792764-22
+      id: 1710264383984-25
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -377,3 +432,4 @@ databaseChangeLog:
             constraintName: fk_prorol_on_role
             referencedColumnNames: id
             referencedTableName: role
+

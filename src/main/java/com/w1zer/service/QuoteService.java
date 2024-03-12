@@ -34,7 +34,7 @@ public class QuoteService {
     }
 
     public List<QuoteResponse> getByIdProfile(Long idProfile) {
-        return quoteMapper.mapToQuoteResponseList(quoteRepository.findQuotesByProfile_Id(idProfile));
+        return quoteMapper.mapToQuoteResponseList(quoteRepository.findQuotesByProfileId(idProfile));
     }
 
     public QuoteResponse insert(QuoteRequest quoteRequest) {

@@ -50,6 +50,7 @@ public class WebSecurityConfig {
     private final AuthenticationProvider authenticationProvider;
     private final LogoutHandler logoutHandler;
 
+
     public WebSecurityConfig(UserDetailsService customUserDetailsService,
                              AuthenticationProvider authenticationProvider, LogoutHandler logoutHandler) {
         this.customUserDetailsService = customUserDetailsService;

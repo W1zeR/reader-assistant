@@ -1,38 +1,34 @@
 package com.w1zer.entity;
 
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
-import jakarta.persistence.*;
-import java.time.Instant;
 import java.util.Objects;
 
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class RefreshToken {
+public class UserDevice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, columnDefinition = "TEXT")
-    private String token;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_profile", nullable = false)
+    private Profile profile;
 
-    @OneToOne(optional = false, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_user_device", unique = true)
-    private UserDevice userDevice;
-
-    private Long refreshCount;
+    private String deviceType;
 
     @Column(nullable = false)
-    private Instant expiryDate;
+    private String deviceId;
 
-    public void incRefreshCount() {
-        refreshCount = refreshCount + 1;
-    }
+    @OneToOne(optional = false, mappedBy = "userDevice")
+    private RefreshToken refreshToken;
+
+    private Boolean isRefreshActive;
 
     @Override
     public final boolean equals(Object o) {
@@ -43,7 +39,7 @@ public class RefreshToken {
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ?
                 ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        RefreshToken that = (RefreshToken) o;
+        UserDevice that = (UserDevice) o;
         return getId() != null && Objects.equals(getId(), that.getId());
     }
 
