@@ -1,5 +1,6 @@
 package com.w1zer.security;
 
+import com.w1zer.service.CustomUserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
@@ -27,9 +28,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     public static final String SETTING_USER_AUTH_ERROR = "Unexpected error while setting user auth";
 
     private final JwtProvider jwtProvider;
-    private final UserDetailsService customUserDetailsService;
+    private final CustomUserDetailsService customUserDetailsService;
 
-    public JwtRequestFilter(JwtProvider jwtProvider, UserDetailsService customUserDetailsService) {
+    public JwtRequestFilter(JwtProvider jwtProvider, CustomUserDetailsService customUserDetailsService) {
         this.jwtProvider = jwtProvider;
         this.customUserDetailsService = customUserDetailsService;
     }
@@ -38,9 +39,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
                                     @NonNull FilterChain chain) throws ServletException, IOException {
         try {
-            String jwtToken = getJwtFromRequest(request);
-            if (jwtToken != null && jwtProvider.validateToken(jwtToken)) {
-                setSecurityContextHolderAuthentication(request, jwtToken);
+            String jwt = getJwtFromRequest(request);
+            if (jwt != null && jwtProvider.validateJwt(jwt)) {
+                setSecurityContextHolderAuthentication(request, jwt);
             }
         }
         catch (Exception e){
@@ -61,7 +62,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String username = jwtProvider.getUsernameFromJwt(jwt);
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                userDetails, jwt, userDetails.getAuthorities()
+                userDetails, null, userDetails.getAuthorities()
         );
         token.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(token);

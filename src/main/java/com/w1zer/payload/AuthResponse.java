@@ -5,11 +5,13 @@ public record AuthResponse(
 
         String accessToken,
 
-        String refreshToken
+        String refreshToken,
+
+        Long expiryDuration
 ) {
     private static final String BEARER = "Bearer";
 
-    public AuthResponse(String accessToken, String refreshToken) {
-        this(BEARER, accessToken, refreshToken);
+    public AuthResponse(String accessToken, String refreshToken, Long expiryDuration) {
+        this(BEARER, accessToken, refreshToken, expiryDuration);
     }
 }
