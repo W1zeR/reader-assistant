@@ -3,6 +3,7 @@ package com.w1zer.service;
 import com.w1zer.entity.RefreshToken;
 import com.w1zer.exception.AuthException;
 import com.w1zer.exception.NotFoundException;
+import com.w1zer.exception.TokenRefreshException;
 import com.w1zer.repository.ProfileRepository;
 import com.w1zer.repository.RefreshTokenRepository;
 import com.w1zer.service.ProfileService;
@@ -23,12 +24,9 @@ public class RefreshTokenService {
     private long refreshExpirationMinutes;
 
     private final RefreshTokenRepository refreshTokenRepository;
-    private final ProfileService profileService;
 
-    public RefreshTokenService(RefreshTokenRepository refreshTokenRepository, ProfileRepository profileRepository,
-                               ProfileService profileService) {
+    public RefreshTokenService(RefreshTokenRepository refreshTokenRepository) {
         this.refreshTokenRepository = refreshTokenRepository;
-        this.profileService = profileService;
     }
 
     public RefreshToken findByToken(String token) {
@@ -37,21 +35,30 @@ public class RefreshTokenService {
         );
     }
 
-    public RefreshToken createByIdProfile(Long idProfile) {
+    public RefreshToken save(RefreshToken refreshToken) {
+        return refreshTokenRepository.save(refreshToken);
+    }
+
+    public RefreshToken createRefreshToken() {
         RefreshToken refreshToken = new RefreshToken();
-        refreshToken.setProfile(profileService.getProfileById(idProfile));
         refreshToken.setToken(UUID.randomUUID().toString());
         refreshToken.setExpiryDate(Instant.now().plus(refreshExpirationMinutes, MINUTES));
-        return refreshTokenRepository.save(refreshToken);
+        refreshToken.setRefreshCount(0L);
+        return refreshToken;
     }
 
     public void verifyExpiration(RefreshToken token) {
         if (token.getExpiryDate().compareTo(Instant.now()) < 0) {
-            throw new AuthException(String.format(REFRESH_TOKEN_EXPIRED, token.getToken()));
+            throw new TokenRefreshException(token.getToken(), REFRESH_TOKEN_EXPIRED);
         }
     }
 
-    public void deleteByIdProfile(Long idProfile) {
-        refreshTokenRepository.deleteByProfileId(idProfile);
+    public void deleteById(Long id) {
+        refreshTokenRepository.deleteById(id);
+    }
+
+    public void incRefreshCount(RefreshToken refreshToken) {
+        refreshToken.incRefreshCount();
+        save(refreshToken);
     }
 }
