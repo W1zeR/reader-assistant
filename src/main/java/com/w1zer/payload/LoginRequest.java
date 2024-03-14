@@ -5,13 +5,14 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import static com.w1zer.constants.EntityConstants.EMAIL_LENGTH;
 import static com.w1zer.constants.EntityConstants.LOGIN_LENGTH;
 import static com.w1zer.constants.ValidationConstants.*;
 
 public record LoginRequest(
-        @NotBlank(message = LOGIN_NOT_BLANK_MESSAGE)
-        @Size(min = LOGIN_MIN_SIZE, max = LOGIN_LENGTH, message = LOGIN_SIZE_MESSAGE)
-        String login,
+        @NotBlank(message = EMAIL_NOT_BLANK_MESSAGE)
+        @Size(min = EMAIL_MIN_SIZE, max = EMAIL_LENGTH, message = EMAIL_SIZE_MESSAGE)
+        String email,
 
         @NotBlank(message = PASSWORD_NOT_BLANK_MESSAGE)
         @Size(min = PASSWORD_MIN_SIZE, max = PASSWORD_MAX_SIZE, message = PASSWORD_SIZE_MESSAGE)

@@ -1,5 +1,6 @@
 package com.w1zer.constants;
 
+import static com.w1zer.constants.EntityConstants.EMAIL_LENGTH;
 import static com.w1zer.constants.EntityConstants.LOGIN_LENGTH;
 
 public final class ValidationConstants {
@@ -9,6 +10,11 @@ public final class ValidationConstants {
     public static final String LOGIN_SIZE_MESSAGE =
             "Login must contain from " + LOGIN_MIN_SIZE + " to " + LOGIN_LENGTH + " characters";
     public static final String LOGIN_NOT_BLANK_MESSAGE = "Login can't be blank";
+
+    public static final int EMAIL_MIN_SIZE = 5;
+    public static final String EMAIL_SIZE_MESSAGE =
+            "Email must contain from " + EMAIL_MIN_SIZE + " to " + EMAIL_LENGTH + " characters";
+    public static final String EMAIL_NOT_BLANK_MESSAGE = "Email can't be blank";
 
     public static final int PASSWORD_MIN_SIZE = 5;
     public static final int PASSWORD_MAX_SIZE = 50;

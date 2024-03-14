@@ -1,8 +1,11 @@
 package com.w1zer.payload;
 
+import com.w1zer.entity.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+
+import java.util.Set;
 
 import static com.w1zer.constants.EntityConstants.EMAIL_LENGTH;
 import static com.w1zer.constants.EntityConstants.LOGIN_LENGTH;
@@ -20,7 +23,9 @@ public record RegisterRequest(
 
         @NotBlank(message = PASSWORD_NOT_BLANK_MESSAGE)
         @Size(min = PASSWORD_MIN_SIZE, max = PASSWORD_MAX_SIZE, message = PASSWORD_SIZE_MESSAGE)
-        String password
+        String password,
+
+        Set<Role> roles
 ) {
     private static final String EMAIL_SIZE_MESSAGE =
             "Email must contain up to " + EMAIL_LENGTH + " characters";
