@@ -2,7 +2,9 @@ package com.w1zer.configuration;
 
 import com.w1zer.exception.NotFoundException;
 import com.w1zer.repository.ProfileRepository;
+import com.w1zer.security.JwtAuthEntryPoint;
 import com.w1zer.security.JwtRequestFilter;
+import com.w1zer.service.CustomUserDetailsService;
 import jakarta.servlet.Filter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -46,16 +48,14 @@ public class WebSecurityConfig {
     private static final String USER = "USER";
     private static final String PROFILE_WITH_LOGIN_NOT_FOUND = "Profile with login '%s' not found";
 
-    private final UserDetailsService customUserDetailsService;
-    private final AuthenticationProvider authenticationProvider;
-    private final LogoutHandler logoutHandler;
+    private final CustomUserDetailsService customUserDetailsService;
+    private final JwtAuthEntryPoint jwtAuthEntryPoint;
+    private final JwtRequestFilter jwtRequestFilter;
 
-
-    public WebSecurityConfig(UserDetailsService customUserDetailsService,
-                             AuthenticationProvider authenticationProvider, LogoutHandler logoutHandler) {
+    public WebSecurityConfig(CustomUserDetailsService customUserDetailsService, JwtAuthEntryPoint jwtAuthEntryPoint, JwtRequestFilter jwtRequestFilter) {
         this.customUserDetailsService = customUserDetailsService;
-        this.authenticationProvider = authenticationProvider;
-        this.logoutHandler = logoutHandler;
+        this.jwtAuthEntryPoint = jwtAuthEntryPoint;
+        this.jwtRequestFilter = jwtRequestFilter;
     }
 
     @Bean
@@ -72,8 +72,8 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();
     }
 
     @Bean
@@ -86,21 +86,10 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.POST, PROFILES).permitAll()
                         .anyRequest().authenticated()
                 )
+                .exceptionHandling(conf -> conf.authenticationEntryPoint(jwtAuthEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
-                .authenticationProvider(authenticationProvider)
+                .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
-                .logout(logout -> logout
-                        .logoutUrl(LOGOUT)
-                        .addLogoutHandler(logoutHandler)
-                        .logoutSuccessHandler((request, response, authentication) ->
-                                SecurityContextHolder.clearContext())
-                )
                 .build();
-    }
-
-    @Bean
-    UserDetailsService customUserDetailsService(ProfileRepository profileRepository) {
-        return username -> profileRepository.findByLogin(username)
-                .orElseThrow(() -> new NotFoundException(PROFILE_WITH_LOGIN_NOT_FOUND.formatted(username)));
     }
 }

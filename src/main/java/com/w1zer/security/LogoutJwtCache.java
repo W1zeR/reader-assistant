@@ -13,8 +13,8 @@ import java.util.concurrent.TimeUnit;
 public class LogoutJwtCache {
     private static final Logger logger = LoggerFactory.getLogger(LogoutJwtCache.class);
 
-    private ExpiringMap<String, OnUserLogoutSuccessEvent> tokenEventMap;
-    private JwtProvider jwtProvider;
+    private final ExpiringMap<String, OnUserLogoutSuccessEvent> tokenEventMap;
+    private final JwtProvider jwtProvider;
 
     public LogoutJwtCache(JwtProvider jwtProvider) {
         this.jwtProvider = jwtProvider;
@@ -29,8 +29,8 @@ public class LogoutJwtCache {
         if (tokenEventMap.containsKey(token)) {
             logger.info(String.format("Logout token for user %s is already in cache", event.getUserEmail()));
         } else {
-            Date tokenExpiryDate = tokenProvider.getTokenExpiryFromJWT(token);
-            Long ttlForToken = getTTLForToken(tokenExpiryDate);
+            Date tokenExpiryDate = jwtProvider.getExpirationFromJwt(token);
+            long ttlForToken = getTTLForToken(tokenExpiryDate);
             logger.info(String.format("Logout token cache set for %s with a TTL of %s seconds. Token will expiry in %s",
                     event.getUserEmail(), ttlForToken, tokenExpiryDate));
             tokenEventMap.put(token, event, ttlForToken, TimeUnit.SECONDS);

@@ -30,10 +30,10 @@ public class AuthController {
         return authService.login(loginRequest);
     }
 
-//    @PostMapping("/register")
-//    public AuthResponse register(@Valid @RequestBody RegisterRequest registerRequest) {
-//        return authService.register(registerRequest);
-//    }
+    @PostMapping("/register")
+    public void register(@Valid @RequestBody RegisterRequest registerRequest) {
+        authService.register(registerRequest);
+    }
 
 //    @PostMapping("/access")
 //    public AuthResponse getNewAccessToken(

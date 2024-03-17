@@ -1,5 +1,6 @@
 package com.w1zer.configuration;
 
+import com.w1zer.security.JwtRequestFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.PathSelectors;
@@ -21,7 +22,6 @@ public class SpringFoxConfig {
     private static final String HEADER = "header";
     private static final String SCOPE = "global";
     private static final String DESCRIPTION = "accessEverything";
-
 
     @Bean
     public Docket api() {
