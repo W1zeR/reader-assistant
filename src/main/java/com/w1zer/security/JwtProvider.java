@@ -5,6 +5,7 @@ import com.w1zer.exception.InvalidTokenRequestException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import net.jodah.expiringmap.ExpiringMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,30 +14,35 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
-import static java.time.temporal.ChronoUnit.MINUTES;
+import static java.time.temporal.ChronoUnit.*;
 
 @Component
 public class JwtProvider {
     @Value("${w1zer.jwt.secret-key}")
     private String secretKey;
 
-    @Value("${w1zer.jwt.access-expiration-minutes}")
-    private long accessExpirationMinutes;
+    @Value("${w1zer.jwt.access-expiration-hours}")
+    private long accessExpirationHours;
 
     private static final Logger logger = LoggerFactory.getLogger(JwtProvider.class);
 
-    private final LogoutJwtCache logoutJwtCache;
+    private final ExpiringMap<String, OnUserLogoutSuccessEvent> tokenEventMap;
 
-    public JwtProvider(LogoutJwtCache logoutJwtCache) {
-        this.logoutJwtCache = logoutJwtCache;
+    public JwtProvider() {
+        this.tokenEventMap = ExpiringMap.builder()
+                .variableExpiration()
+                .maxSize(1000)
+                .build();
     }
 
     public String generateJwtFromAuth(Authentication authentication) {
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
         Date issue = Date.from(Instant.now());
-        Date expiration = Date.from(Instant.now().plus(accessExpirationMinutes, MINUTES));
+        Date expiration = Date.from(Instant.now().plus(accessExpirationHours, HOURS));
         return Jwts.builder()
                 .subject((userPrincipal.getUsername()))
                 .issuer("auth")
@@ -49,7 +55,7 @@ public class JwtProvider {
 
     public String generateJwtFromProfile(Profile profile) {
         Date issue = Date.from(Instant.now());
-        Date expiration = Date.from(Instant.now().plus(accessExpirationMinutes, MINUTES));
+        Date expiration = Date.from(Instant.now().plus(accessExpirationHours, HOURS));
         return Jwts.builder()
                 .subject(profile.getEmail())
                 .issuer("profile")
@@ -99,8 +105,32 @@ public class JwtProvider {
         return false;
     }
 
+    public void markLogoutEventForToken(OnUserLogoutSuccessEvent event) {
+        String token = event.getToken();
+        if (tokenEventMap.containsKey(token)) {
+            logger.info("Logout token for user %s is already in cache".formatted(event.getUserEmail()));
+        } else {
+            Date tokenExpiryDate = getExpirationFromJwt(token);
+            long ttlForToken = getTTLForToken(tokenExpiryDate);
+            logger.info("Logout token cache set for %s with a TTL of %s seconds. Token will expiry in %s".formatted(
+                    event.getUserEmail(), ttlForToken, tokenExpiryDate)
+            );
+            tokenEventMap.put(token, event, ttlForToken, TimeUnit.SECONDS);
+        }
+    }
+
+    private OnUserLogoutSuccessEvent getLogoutEventForToken(String token) {
+        return tokenEventMap.get(token);
+    }
+
+    private long getTTLForToken(Date date) {
+        Long secondAtExpiry = date.toInstant().getEpochSecond();
+        Long secondAtLogout = Instant.now().getEpochSecond();
+        return Math.max(0, secondAtExpiry - secondAtLogout);
+    }
+
     private void validateJwtIsNotForALoggedOutDevice(String jwt) {
-        OnUserLogoutSuccessEvent previouslyLoggedOutEvent = logoutJwtCache.getLogoutEventForToken(jwt);
+        OnUserLogoutSuccessEvent previouslyLoggedOutEvent = getLogoutEventForToken(jwt);
         if (previouslyLoggedOutEvent != null) {
             String userEmail = previouslyLoggedOutEvent.getUserEmail();
             Date logoutEventDate = previouslyLoggedOutEvent.getEventTime();

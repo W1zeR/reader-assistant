@@ -9,17 +9,17 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class OnUserLogoutSuccessEventListener implements ApplicationListener<OnUserLogoutSuccessEvent> {
-    private final LogoutJwtCache logoutJwtCache;
+    private final JwtProvider jwtProvider;
     private static final Logger logger = LoggerFactory.getLogger(OnUserLogoutSuccessEventListener.class);
 
-    public OnUserLogoutSuccessEventListener(LogoutJwtCache logoutJwtCache) {
-        this.logoutJwtCache = logoutJwtCache;
+    public OnUserLogoutSuccessEventListener(JwtProvider jwtProvider) {
+        this.jwtProvider = jwtProvider;
     }
 
     public void onApplicationEvent(@NonNull OnUserLogoutSuccessEvent event) {
         DeviceInfo deviceInfo = event.getLogoutRequest().deviceInfo();
         logger.info(String.format("Logout success event received for user %s for device %s",
                 event.getUserEmail(), deviceInfo));
-        logoutJwtCache.markLogoutEventForToken(event);
+        jwtProvider.markLogoutEventForToken(event);
     }
 }

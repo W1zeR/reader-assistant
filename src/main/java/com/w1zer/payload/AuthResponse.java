@@ -7,11 +7,11 @@ public record AuthResponse(
 
         String refreshToken,
 
-        Long expiryDuration
+        Long expiryHours
 ) {
     private static final String BEARER = "Bearer";
 
-    public AuthResponse(String accessToken, String refreshToken, Long expiryDuration) {
-        this(BEARER, accessToken, refreshToken, expiryDuration);
+    public AuthResponse(String accessToken, String refreshToken, Long expiryHours) {
+        this(BEARER, accessToken, refreshToken, expiryHours);
     }
 }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.util.UUID;
 
+import static java.time.temporal.ChronoUnit.HOURS;
 import static java.time.temporal.ChronoUnit.MINUTES;
 
 @Service
@@ -20,8 +21,8 @@ public class RefreshTokenService {
     private static final String REFRESH_TOKEN_NOT_FOUND = "Refresh token '%s' not found";
     public static final String REFRESH_TOKEN_EXPIRED = "Refresh token %s was expired";
 
-    @Value("${w1zer.jwt.refresh-expiration-minutes}")
-    private long refreshExpirationMinutes;
+    @Value("${w1zer.jwt.refresh-expiration-hours}")
+    private long refreshExpirationHours;
 
     private final RefreshTokenRepository refreshTokenRepository;
 
@@ -42,7 +43,7 @@ public class RefreshTokenService {
     public RefreshToken createRefreshToken() {
         RefreshToken refreshToken = new RefreshToken();
         refreshToken.setToken(UUID.randomUUID().toString());
-        refreshToken.setExpiryDate(Instant.now().plus(refreshExpirationMinutes, MINUTES));
+        refreshToken.setExpiryDate(Instant.now().plus(refreshExpirationHours, HOURS));
         refreshToken.setRefreshCount(0L);
         return refreshToken;
     }

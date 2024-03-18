@@ -24,8 +24,8 @@ import java.util.Set;
 
 @Service
 public class AuthService {
-    @Value("${w1zer.jwt.access-expiration-milliseconds}")
-    private long accessExpirationMilliseconds;
+    @Value("${w1zer.jwt.access-expiration-hours}")
+    private long accessExpirationHours;
 
     private static final String INCORRECT_LOGIN_OR_PASSWORD = "Incorrect login or password";
     private static final String REFRESH_TOKEN_IS_INVALID = "Refresh token is invalid";
@@ -69,7 +69,7 @@ public class AuthService {
         userDevice.setRefreshToken(refreshToken);
         refreshToken.setUserDevice(userDevice);
         refreshToken = refreshTokenService.save(refreshToken);
-        return new AuthResponse(jwt, refreshToken.getToken(), accessExpirationMilliseconds);
+        return new AuthResponse(jwt, refreshToken.getToken(), accessExpirationHours);
     }
 
     public void register(RegisterRequest registerRequest) {
@@ -88,7 +88,7 @@ public class AuthService {
         refreshTokenService.incRefreshCount(refreshToken);
         Profile profile = refreshToken.getUserDevice().getProfile();
         String accessToken = jwtProvider.generateJwtFromProfile(profile);
-        return new AuthResponse(accessToken, refreshTokenRequest.refreshToken(), accessExpirationMilliseconds);
+        return new AuthResponse(accessToken, refreshTokenRequest.refreshToken(), accessExpirationHours);
     }
 
     public UserIdentityAvailability checkEmailAvailability(String email) {
