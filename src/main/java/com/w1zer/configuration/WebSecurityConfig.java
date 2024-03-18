@@ -17,7 +17,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -64,12 +63,12 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> req
                         .requestMatchers(WHITE_LIST_URL).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher(AUTH_ALL)).permitAll()
+                        .requestMatchers(AUTH_ALL).permitAll()
                         .requestMatchers(HttpMethod.POST, PROFILES).permitAll()
                         .requestMatchers(HttpMethod.GET, PROFILES).permitAll()
                         .anyRequest().authenticated()
                 )
-                //.exceptionHandling(conf -> conf.authenticationEntryPoint(jwtAuthEntryPoint))
+                .exceptionHandling(conf -> conf.authenticationEntryPoint(jwtAuthEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)

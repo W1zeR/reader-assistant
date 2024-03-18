@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 public class QuoteMapper {
     public QuoteResponse mapToQuoteResponse(Quote quote) {
         return null;
-//                .builder()
 //                .id(quote.getId())
 //                .content(quote.getContent())
 //                .author(quote.getAuthor())
