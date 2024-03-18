@@ -1,9 +1,9 @@
 package com.w1zer.entity;
 
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
-import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.Objects;
 

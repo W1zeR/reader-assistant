@@ -1,16 +1,10 @@
 package com.w1zer.entity;
 
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
-import jakarta.persistence.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import java.time.Instant;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.w1zer.constants.EntityConstants.EMAIL_LENGTH;
 import static com.w1zer.constants.EntityConstants.LOGIN_LENGTH;
@@ -35,7 +29,7 @@ public class Profile {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinTable(name = "profiles_roles", joinColumns = @JoinColumn(name = "id_profile"),
             inverseJoinColumns = @JoinColumn(name = "id_role"))
     @ToString.Exclude
@@ -45,11 +39,12 @@ public class Profile {
     @ToString.Exclude
     private List<Quote> quotes = new ArrayList<>();
 
-    public void addQuote(Quote quote){
+    public void addQuote(Quote quote) {
         this.quotes.add(quote);
         quote.setProfile(this);
     }
-    public void removeQuote(Quote quote){
+
+    public void removeQuote(Quote quote) {
         this.quotes.remove(quote);
         quote.setProfile(null);
     }

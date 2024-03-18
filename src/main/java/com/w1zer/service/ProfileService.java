@@ -79,7 +79,7 @@ public class ProfileService {
         return profileMapper.mapToProfileResponse(result);
     }
 
-    public Profile getProfileById(Long idProfile){
+    public Profile getProfileById(Long idProfile) {
         return profileRepository.findById(idProfile).orElseThrow(
                 () -> new NotFoundException(PROFILE_WITH_ID_NOT_FOUND.formatted(idProfile))
         );

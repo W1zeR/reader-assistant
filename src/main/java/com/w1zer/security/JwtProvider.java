@@ -2,7 +2,10 @@ package com.w1zer.security;
 
 import com.w1zer.entity.Profile;
 import com.w1zer.exception.InvalidTokenRequestException;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import net.jodah.expiringmap.ExpiringMap;
@@ -14,23 +17,19 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-import static java.time.temporal.ChronoUnit.*;
+import static java.time.temporal.ChronoUnit.HOURS;
 
 @Component
 public class JwtProvider {
+    private static final Logger logger = LoggerFactory.getLogger(JwtProvider.class);
+    private final ExpiringMap<String, OnUserLogoutSuccessEvent> tokenEventMap;
     @Value("${w1zer.jwt.secret-key}")
     private String secretKey;
-
     @Value("${w1zer.jwt.access-expiration-hours}")
     private long accessExpirationHours;
-
-    private static final Logger logger = LoggerFactory.getLogger(JwtProvider.class);
-
-    private final ExpiringMap<String, OnUserLogoutSuccessEvent> tokenEventMap;
 
     public JwtProvider() {
         this.tokenEventMap = ExpiringMap.builder()
@@ -66,7 +65,7 @@ public class JwtProvider {
                 .compact();
     }
 
-    public String getUsernameFromJwt(String jwt){
+    public String getUsernameFromJwt(String jwt) {
         return Jwts.parser()
                 .verifyWith(getSignInKey())
                 .build()

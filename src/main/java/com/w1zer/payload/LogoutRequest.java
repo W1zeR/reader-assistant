@@ -11,6 +11,6 @@ public record LogoutRequest(
         @NotNull(message = TOKEN_NOT_NULL_MESSAGE)
         String token
 ) {
-        private static final String DEVICE_INFO_NOT_NULL_MESSAGE = "Device info can't be null";
-        private static final String TOKEN_NOT_NULL_MESSAGE = "Token can't be null";
+    private static final String DEVICE_INFO_NOT_NULL_MESSAGE = "Device info can't be null";
+    private static final String TOKEN_NOT_NULL_MESSAGE = "Token can't be null";
 }

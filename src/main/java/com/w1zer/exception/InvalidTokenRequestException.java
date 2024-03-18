@@ -10,7 +10,7 @@ import java.io.Serial;
 @Getter
 @Setter
 @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
-public class InvalidTokenRequestException extends RuntimeException{
+public class InvalidTokenRequestException extends RuntimeException {
     @Serial
     private static final long serialVersionUID = 1L;
 

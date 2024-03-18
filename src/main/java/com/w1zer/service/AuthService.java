@@ -7,7 +7,6 @@ import com.w1zer.exception.NotFoundException;
 import com.w1zer.exception.ProfileAlreadyExistsException;
 import com.w1zer.payload.*;
 import com.w1zer.repository.ProfileRepository;
-import com.w1zer.repository.RoleRepository;
 import com.w1zer.security.JwtProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,28 +15,21 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.net.URI;
-import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class AuthService {
-    @Value("${w1zer.jwt.access-expiration-hours}")
-    private long accessExpirationHours;
-
     private static final String INCORRECT_LOGIN_OR_PASSWORD = "Incorrect login or password";
     private static final String REFRESH_TOKEN_IS_INVALID = "Refresh token is invalid";
     private static final String PROFILE_WITH_LOGIN_NOT_FOUND = "Profile with login '%s' not found";
     private static final String PROFILE_WITH_LOGIN_ALREADY_EXISTS = "Profile with login '%s' already exists";
-
     private final AuthenticationManager authenticationManager;
     private final ProfileRepository profileRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
     private final RefreshTokenService refreshTokenService;
     private final UserDeviceService userDeviceService;
+    @Value("${w1zer.jwt.access-expiration-hours}")
+    private long accessExpirationHours;
 
     public AuthService(AuthenticationManager authenticationManager, ProfileRepository profileRepository,
                        PasswordEncoder passwordEncoder, JwtProvider jwtProvider,
@@ -75,9 +67,7 @@ public class AuthService {
     public void register(RegisterRequest registerRequest) {
         validateEmail(registerRequest.email());
         Profile profile = mapToProfile(registerRequest);
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentContextPath().path("/user/me")
-                .buildAndExpand(profile.getId()).toUri();
+        profileRepository.save(profile);
     }
 
     public AuthResponse refreshJwt(RefreshTokenRequest refreshTokenRequest) {
@@ -96,13 +86,13 @@ public class AuthService {
         return new UserIdentityAvailability(isAvailable);
     }
 
-    private void validateEmail(String email){
+    private void validateEmail(String email) {
         if (profileRepository.existsByEmail(email)) {
             throw new ProfileAlreadyExistsException("Profile with email %s already exists".formatted(email));
         }
     }
 
-    private Profile mapToProfile(RegisterRequest registerRequest){
+    private Profile mapToProfile(RegisterRequest registerRequest) {
         Profile profile = new Profile();
         profile.setLogin(registerRequest.login());
         profile.setEmail(registerRequest.email());

@@ -10,7 +10,7 @@ import java.io.Serial;
 @Getter
 @Setter
 @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
-public class TokenRefreshException extends RuntimeException{
+public class TokenRefreshException extends RuntimeException {
     @Serial
     private static final long serialVersionUID = 1L;
 

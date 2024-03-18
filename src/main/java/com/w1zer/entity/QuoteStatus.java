@@ -1,9 +1,9 @@
 package com.w1zer.entity;
 
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
-import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -29,11 +29,12 @@ public class QuoteStatus {
     @ToString.Exclude
     private List<Quote> quotes = new ArrayList<>();
 
-    public void addQuote(Quote quote){
+    public void addQuote(Quote quote) {
         this.quotes.add(quote);
         quote.setQuoteStatus(this);
     }
-    public void removeQuote(Quote quote){
+
+    public void removeQuote(Quote quote) {
         this.quotes.remove(quote);
         quote.setQuoteStatus(null);
     }

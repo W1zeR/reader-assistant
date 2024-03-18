@@ -1,17 +1,15 @@
 package com.w1zer.controller;
 
-import com.w1zer.payload.LoginRequest;
 import com.w1zer.payload.AuthResponse;
+import com.w1zer.payload.LoginRequest;
 import com.w1zer.payload.RegisterRequest;
 import com.w1zer.service.AuthService;
+import jakarta.validation.Valid;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 
 @RestController
 @Validated

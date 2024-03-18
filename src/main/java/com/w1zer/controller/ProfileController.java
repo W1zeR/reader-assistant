@@ -3,12 +3,12 @@ package com.w1zer.controller;
 import com.w1zer.payload.ProfileRequest;
 import com.w1zer.payload.ProfileResponse;
 import com.w1zer.service.ProfileService;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 import static com.w1zer.constants.EntityConstants.LOGIN_LENGTH;

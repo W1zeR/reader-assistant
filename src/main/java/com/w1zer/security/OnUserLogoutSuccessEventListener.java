@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class OnUserLogoutSuccessEventListener implements ApplicationListener<OnUserLogoutSuccessEvent> {
-    private final JwtProvider jwtProvider;
     private static final Logger logger = LoggerFactory.getLogger(OnUserLogoutSuccessEventListener.class);
+    private final JwtProvider jwtProvider;
 
     public OnUserLogoutSuccessEventListener(JwtProvider jwtProvider) {
         this.jwtProvider = jwtProvider;

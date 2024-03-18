@@ -3,11 +3,11 @@ package com.w1zer.controller;
 import com.w1zer.payload.QuoteRequest;
 import com.w1zer.payload.QuoteResponse;
 import com.w1zer.service.QuoteService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Positive;
 import java.util.List;
 
 import static com.w1zer.constants.ValidationConstants.ID_POSITIVE_MESSAGE;

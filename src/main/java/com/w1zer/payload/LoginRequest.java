@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import static com.w1zer.constants.EntityConstants.EMAIL_LENGTH;
-import static com.w1zer.constants.EntityConstants.LOGIN_LENGTH;
 import static com.w1zer.constants.ValidationConstants.*;
 
 public record LoginRequest(
@@ -22,5 +21,5 @@ public record LoginRequest(
         @NotNull(message = DEVICE_INFO_NOT_NULL_MESSAGE)
         DeviceInfo deviceInfo
 ) {
-        private static final String DEVICE_INFO_NOT_NULL_MESSAGE = "Device info can't be null";
+    private static final String DEVICE_INFO_NOT_NULL_MESSAGE = "Device info can't be null";
 }

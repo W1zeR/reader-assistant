@@ -1,9 +1,9 @@
 package com.w1zer.entity;
 
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
-import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
@@ -44,11 +44,12 @@ public class Author {
     @ToString.Exclude
     private Set<Book> books = new HashSet<>();
 
-    public void addBook(Book book){
+    public void addBook(Book book) {
         this.books.add(book);
         book.getAuthors().add(this);
     }
-    public void removeBook(Book book){
+
+    public void removeBook(Book book) {
         this.books.remove(book);
         book.getAuthors().remove(this);
     }

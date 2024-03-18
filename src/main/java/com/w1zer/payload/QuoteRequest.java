@@ -1,7 +1,6 @@
 package com.w1zer.payload;
 
 import com.w1zer.validation.ProfileExistsById;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

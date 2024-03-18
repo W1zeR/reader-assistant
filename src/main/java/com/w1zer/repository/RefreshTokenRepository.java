@@ -1,7 +1,6 @@
 package com.w1zer.repository;
 
 import com.w1zer.entity.RefreshToken;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;

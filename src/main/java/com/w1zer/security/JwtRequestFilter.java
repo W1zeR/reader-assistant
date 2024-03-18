@@ -1,32 +1,30 @@
 package com.w1zer.security;
 
 import com.w1zer.service.CustomUserDetailsService;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
+    public static final String SETTING_USER_AUTH_ERROR = "Unexpected error while setting user auth";
     private static final Logger logger = LoggerFactory.getLogger(JwtRequestFilter.class);
     private static final String AUTHORIZATION = "Authorization";
     private static final String BEARER = "Bearer ";
     private static final int BEGIN_INDEX = 7;
-    public static final String SETTING_USER_AUTH_ERROR = "Unexpected error while setting user auth";
-
     private final JwtProvider jwtProvider;
     private final CustomUserDetailsService customUserDetailsService;
 
@@ -43,8 +41,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             if (jwt != null && jwtProvider.validateJwt(jwt)) {
                 setSecurityContextHolderAuthentication(request, jwt);
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             logger.error(SETTING_USER_AUTH_ERROR, e);
         }
         chain.doFilter(request, response);

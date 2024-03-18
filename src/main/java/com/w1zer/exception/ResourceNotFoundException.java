@@ -10,7 +10,7 @@ import java.io.Serial;
 @Getter
 @Setter
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class ResourceNotFoundException extends RuntimeException{
+public class ResourceNotFoundException extends RuntimeException {
     @Serial
     private static final long serialVersionUID = 1L;
 
