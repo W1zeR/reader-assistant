@@ -107,15 +107,26 @@ public class ProfileService {
 //    }
     public void promote(ProfileRequest profileRequest) {
         Profile profile = findByLogin(profileRequest.login());
-        Role moderator = roleService.findByName(RoleName.ROLE_MODERATOR);
+        Set<Role> roles = profile.getRoles();
         Role user = roleService.findByName(RoleName.ROLE_USER);
+        if (!(roles.size() == 1 && roles.contains(user))){
+            throw new RuntimeException("Profile must have 1 role: USER");
+        }
+        Role moderator = roleService.findByName(RoleName.ROLE_MODERATOR);
         profile.setRoles(Set.of(user, moderator));
+        profileRepository.save(profile);
     }
 
     public void demote(ProfileRequest profileRequest) {
         Profile profile = findByLogin(profileRequest.login());
+        Set<Role> roles = profile.getRoles();
         Role user = roleService.findByName(RoleName.ROLE_USER);
+        Role moderator = roleService.findByName(RoleName.ROLE_MODERATOR);
+        if (!(roles.size() == 2 && roles.contains(moderator) && roles.contains(user))){
+            throw new RuntimeException("Profile must have 2 roles: USER, MODERATOR");
+        }
         profile.setRoles(Set.of(user));
+        profileRepository.save(profile);
     }
 
     private Profile findByLogin(String login) {

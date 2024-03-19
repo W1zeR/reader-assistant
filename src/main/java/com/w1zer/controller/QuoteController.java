@@ -61,9 +61,9 @@ public class QuoteController {
         quoteService.markAsPending(quoteRequest);
     }
 
-    @PutMapping("/dmarkAsPublic")
+    @PutMapping("/markAsPublic")
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
-    public void demote(@Valid @RequestBody QuoteRequest quoteRequest) {
+    public void markAsPublic(@Valid @RequestBody QuoteRequest quoteRequest) {
         quoteService.markAsPublic(quoteRequest);
     }
 }

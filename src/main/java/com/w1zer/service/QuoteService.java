@@ -66,15 +66,25 @@ public class QuoteService {
 //    }
 
     public void markAsPending(QuoteRequest quoteRequest){
-        QuoteStatus pending = quoteStatusService.findByName(QuoteStatusName.PENDING);
         Quote quote = findById(quoteRequest.id());
+        QuoteStatus quoteStatus = quote.getQuoteStatus();
+        if (quoteStatus.getName() != QuoteStatusName.PRIVATE){
+            throw new RuntimeException("Quote status must be private");
+        }
+        QuoteStatus pending = quoteStatusService.findByName(QuoteStatusName.PENDING);
         quote.setQuoteStatus(pending);
+        quoteRepository.save(quote);
     }
 
     public void markAsPublic(QuoteRequest quoteRequest){
-        QuoteStatus pub = quoteStatusService.findByName(QuoteStatusName.PUBLIC);
         Quote quote = findById(quoteRequest.id());
+        QuoteStatus quoteStatus = quote.getQuoteStatus();
+        if (quoteStatus.getName() != QuoteStatusName.PENDING){
+            throw new RuntimeException("Quote status must be pending");
+        }
+        QuoteStatus pub = quoteStatusService.findByName(QuoteStatusName.PUBLIC);
         quote.setQuoteStatus(pub);
+        quoteRepository.save(quote);
     }
 
     private Quote findById(Long id){
