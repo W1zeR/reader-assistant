@@ -20,36 +20,4 @@ public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
-
-    @Bean
-    public CommandLineRunner commandLineRunner(
-            AuthService authService,
-            RoleService roleService,
-            QuoteRepository quoteRepository,
-            ProfileRepository profileRepository,
-            QuoteStatusService quoteStatusService
-    ) {
-        return args -> {
-//            Role user = roleService.findByName(RoleName.ROLE_USER);
-//            Role moderator = roleService.findByName(RoleName.ROLE_MODERATOR);
-//            Role admin = roleService.findByName(RoleName.ROLE_ADMIN);
-//
-//            var adm = new RegisterRequest("admin@admin.ru", "admin", "admin",
-//                    Set.of(user, moderator, admin));
-//            authService.register(adm);
-//
-//            var mod = new RegisterRequest("moder@moder.ru", "moder", "moder",
-//                    Set.of(user, moderator));
-//            authService.register(mod);
-//
-//            var usr = new RegisterRequest("user@user.ru", "user", "user1",
-//                    Set.of(user));
-//            authService.register(usr);
-//
-//            Profile profile = profileRepository.findByLogin("admin").orElseThrow();
-//            var quote = new Quote(1L, "abc", null, profile,
-//                    quoteStatusService.findByName(QuoteStatusName.PRIVATE));
-//            quoteRepository.save(quote);
-        };
-    }
 }
