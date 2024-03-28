@@ -23,6 +23,7 @@ public class UserDevice {
     @JoinColumn(name = "id_profile", nullable = false)
     private Profile profile;
 
+    @Column(nullable = false)
     private String deviceType;
 
     @Column(nullable = false)
@@ -31,6 +32,7 @@ public class UserDevice {
     @OneToOne(optional = false, mappedBy = "userDevice")
     private RefreshToken refreshToken;
 
+    @Column(nullable = false)
     private Boolean isRefreshActive;
 
     @Override
