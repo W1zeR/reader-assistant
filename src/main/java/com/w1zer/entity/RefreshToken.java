@@ -25,6 +25,7 @@ public class RefreshToken {
     @JoinColumn(name = "id_user_device", unique = true)
     private UserDevice userDevice;
 
+    @Column(nullable = false)
     private Long refreshCount;
 
     @Column(nullable = false)

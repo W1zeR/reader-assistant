@@ -25,14 +25,17 @@ public class Quote {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(nullable = false)
     @ToString.Exclude
     private Book book;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(nullable = false)
     @ToString.Exclude
     private Profile profile;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(nullable = false)
     @ToString.Exclude
     private QuoteStatus quoteStatus;
 
