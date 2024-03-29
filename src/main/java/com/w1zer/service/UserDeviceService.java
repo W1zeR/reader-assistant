@@ -11,6 +11,9 @@ import java.util.Optional;
 
 @Service
 public class UserDeviceService {
+    public static final String NO_DEVICE_FOUND = "No device found for the matching token. Please login again";
+    public static final String REFRESH_BLOCKED =
+            "Refresh blocked for this device. Please login through different device";
     private final UserDeviceRepository userDeviceRepository;
 
     public UserDeviceService(UserDeviceRepository userDeviceRepository) {
@@ -35,12 +38,10 @@ public class UserDeviceService {
 
     public void verifyRefreshAvailability(RefreshToken refreshToken) {
         UserDevice userDevice = findByRefreshToken(refreshToken).orElseThrow(
-                () -> new TokenRefreshException(refreshToken.getToken(),
-                        "No device found for the matching token. Please login again")
+                () -> new TokenRefreshException(refreshToken.getToken(), NO_DEVICE_FOUND)
         );
         if (!userDevice.getIsRefreshActive()) {
-            throw new TokenRefreshException(refreshToken.getToken(),
-                    "Refresh blocked for this device. Please login through different device");
+            throw new TokenRefreshException(refreshToken.getToken(), REFRESH_BLOCKED);
         }
     }
 }

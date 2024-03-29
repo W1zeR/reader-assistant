@@ -1,22 +1,15 @@
 package com.w1zer.controller;
 
-import com.w1zer.payload.AuthResponse;
-import com.w1zer.payload.LoginRequest;
-import com.w1zer.payload.RegisterRequest;
+import com.w1zer.payload.*;
 import com.w1zer.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Validated
 @RequestMapping("/api/auth")
 public class AuthController {
-    private static final String REFRESH_TOKEN_NOT_BLANK_MESSAGE = "Refresh token can't be blank";
-
     private final AuthService authService;
 
     public AuthController(AuthService authService) {
@@ -33,15 +26,13 @@ public class AuthController {
         authService.register(registerRequest);
     }
 
-//    @PostMapping("/access")
-//    public AuthResponse getNewAccessToken(
-//            @RequestBody @NotBlank(message = REFRESH_TOKEN_NOT_BLANK_MESSAGE) String refreshToken) {
-//        return authService.getAccessToken(refreshToken);
-//    }
+    @PostMapping("/refresh")
+    public AuthResponse refresh(@Valid @RequestBody RefreshTokenRequest refreshTokenRequest) {
+        return authService.refresh(refreshTokenRequest);
+    }
 
-//    @PostMapping("/refresh")
-//    public AuthResponse getNewRefreshToken(
-//            @RequestBody @NotBlank(message = REFRESH_TOKEN_NOT_BLANK_MESSAGE) String refreshToken) {
-//        return authService.refresh(refreshToken);
-//    }
+    @GetMapping("/checkEmailAvailability")
+    public UserIdentityAvailability checkEmailAvailability(@RequestParam(value = "email") String email) {
+        return authService.checkEmailAvailability(email);
+    }
 }

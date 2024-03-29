@@ -18,10 +18,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
-    private static final String INCORRECT_LOGIN_OR_PASSWORD = "Incorrect login or password";
-    private static final String REFRESH_TOKEN_IS_INVALID = "Refresh token is invalid";
-    private static final String PROFILE_WITH_LOGIN_NOT_FOUND = "Profile with login '%s' not found";
-    private static final String PROFILE_WITH_LOGIN_ALREADY_EXISTS = "Profile with login '%s' already exists";
+    private static final String PROFILE_WITH_EMAIL_NOT_FOUND = "Profile with email '%s' not found";
+    private static final String PROFILE_WITH_EMAIL_ALREADY_EXISTS = "Profile with email '%s' already exists";
     private final AuthenticationManager authenticationManager;
     private final ProfileRepository profileRepository;
     private final PasswordEncoder passwordEncoder;
@@ -43,11 +41,12 @@ public class AuthService {
     }
 
     public AuthResponse login(LoginRequest loginRequest) {
-        Profile profile = profileRepository.findByEmail(loginRequest.email()).orElseThrow(
-                () -> new NotFoundException("User not found")
+        String email = loginRequest.email();
+        Profile profile = profileRepository.findByEmail(email).orElseThrow(
+                () -> new NotFoundException(PROFILE_WITH_EMAIL_NOT_FOUND.formatted(email))
         );
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.email(), loginRequest.password())
+                new UsernamePasswordAuthenticationToken(email, loginRequest.password())
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtProvider.generateJwtFromAuth(authentication);
@@ -70,17 +69,6 @@ public class AuthService {
         profileRepository.save(profile);
     }
 
-    public AuthResponse refreshJwt(RefreshTokenRequest refreshTokenRequest) {
-        String refreshTokenFromRequest = refreshTokenRequest.refreshToken();
-        RefreshToken refreshToken = refreshTokenService.findByToken(refreshTokenFromRequest);
-        refreshTokenService.verifyExpiration(refreshToken);
-        userDeviceService.verifyRefreshAvailability(refreshToken);
-        refreshTokenService.incRefreshCount(refreshToken);
-        Profile profile = refreshToken.getUserDevice().getProfile();
-        String accessToken = jwtProvider.generateJwtFromProfile(profile);
-        return new AuthResponse(accessToken, refreshTokenRequest.refreshToken(), accessExpirationHours);
-    }
-
     public UserIdentityAvailability checkEmailAvailability(String email) {
         Boolean isAvailable = !profileRepository.existsByEmail(email);
         return new UserIdentityAvailability(isAvailable);
@@ -88,7 +76,7 @@ public class AuthService {
 
     private void validateEmail(String email) {
         if (profileRepository.existsByEmail(email)) {
-            throw new ProfileAlreadyExistsException("Profile with email %s already exists".formatted(email));
+            throw new ProfileAlreadyExistsException(PROFILE_WITH_EMAIL_ALREADY_EXISTS.formatted(email));
         }
     }
 
@@ -99,5 +87,15 @@ public class AuthService {
         profile.setPassword(passwordEncoder.encode(registerRequest.password()));
         profile.setRoles(registerRequest.roles());
         return profileRepository.save(profile);
+    }
+
+    public AuthResponse refresh(RefreshTokenRequest refreshTokenRequest) {
+        String token = refreshTokenRequest.refreshToken();
+        RefreshToken refreshToken = refreshTokenService.findByToken(token);
+        refreshTokenService.verifyExpiration(refreshToken);
+        userDeviceService.verifyRefreshAvailability(refreshToken);
+        refreshTokenService.incRefreshCount(refreshToken);
+        String newAccessToken = jwtProvider.generateJwtFromProfile(refreshToken.getUserDevice().getProfile());
+        return new AuthResponse(newAccessToken, token, accessExpirationHours);
     }
 }
