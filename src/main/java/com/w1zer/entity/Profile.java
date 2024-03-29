@@ -9,6 +9,7 @@ import java.util.*;
 import static com.w1zer.constants.EntityConstants.EMAIL_LENGTH;
 import static com.w1zer.constants.EntityConstants.LOGIN_LENGTH;
 
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Getter
 @Setter
 @ToString

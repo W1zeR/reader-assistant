@@ -1,20 +1,14 @@
 package com.w1zer.controller;
 
-import com.w1zer.payload.LoginRequest;
 import com.w1zer.payload.ProfileRequest;
-import com.w1zer.payload.ProfileResponse;
 import com.w1zer.service.ProfileService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
-import static com.w1zer.constants.EntityConstants.LOGIN_LENGTH;
-import static com.w1zer.constants.ValidationConstants.*;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Validated
@@ -27,7 +21,7 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
-//    @GetMapping
+    //    @GetMapping
 //    public List<ProfileResponse> getAll(
 //            @RequestParam(required = false)
 //            @Size(min = LOGIN_MIN_SIZE, max = LOGIN_LENGTH, message = LOGIN_SIZE_MESSAGE)

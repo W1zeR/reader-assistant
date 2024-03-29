@@ -11,6 +11,7 @@ import java.util.Set;
 
 import static com.w1zer.constants.EntityConstants.DESCRIPTION_LENGTH;
 
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Getter
 @Setter
 @ToString

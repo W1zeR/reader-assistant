@@ -1,11 +1,5 @@
 package com.w1zer.payload;
 
-import com.w1zer.validation.ProfileExistsById;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
-
 public record QuoteRequest(
 //        @NotBlank(message = "Content can't be blank")
 //        @Size(max = 300, message = "Content must be shorter than 300 characters")

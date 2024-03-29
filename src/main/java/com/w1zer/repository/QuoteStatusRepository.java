@@ -1,6 +1,5 @@
 package com.w1zer.repository;
 
-import com.w1zer.entity.Quote;
 import com.w1zer.entity.QuoteStatus;
 import com.w1zer.entity.QuoteStatusName;
 import org.springframework.data.jpa.repository.JpaRepository;

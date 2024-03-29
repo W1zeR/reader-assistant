@@ -4,23 +4,16 @@ import com.w1zer.entity.Profile;
 import com.w1zer.entity.Role;
 import com.w1zer.entity.RoleName;
 import com.w1zer.exception.NotFoundException;
-import com.w1zer.exception.ProfileAlreadyExistsException;
 import com.w1zer.payload.ProfileRequest;
-import com.w1zer.payload.ProfileResponse;
 import com.w1zer.repository.ProfileRepository;
-import com.w1zer.repository.RoleRepository;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
 public class ProfileService {
 
-//    private static final String PROFILE_WITH_LOGIN_ALREADY_EXISTS = "Profile with login '%s' already exists";
+    //    private static final String PROFILE_WITH_LOGIN_ALREADY_EXISTS = "Profile with login '%s' already exists";
 //    private static final String PROFILE_WITH_ID_NOT_FOUND = "Profile with id '%d' not found";
     private static final String PROFILE_WITH_LOGIN_NOT_FOUND = "Profile with login '%s' not found";
 
@@ -33,14 +26,14 @@ public class ProfileService {
                           RoleService roleService)
 //            , ProfileMapper profileMapper,
 //                          PasswordEncoder passwordEncoder)
-                          {
+    {
         this.profileRepository = profileRepository;
 //        this.profileMapper = profileMapper;
 //        this.passwordEncoder = passwordEncoder;
-                              this.roleService = roleService;
-                          }
+        this.roleService = roleService;
+    }
 
-//    public List<ProfileResponse> getAll(String login) {
+    //    public List<ProfileResponse> getAll(String login) {
 //        if (login == null) {
 //            return profileMapper.mapToProfileResponseList(profileRepository.findAll());
 //        }
@@ -109,7 +102,7 @@ public class ProfileService {
         Profile profile = findByLogin(profileRequest.login());
         Set<Role> roles = profile.getRoles();
         Role user = roleService.findByName(RoleName.ROLE_USER);
-        if (!(roles.size() == 1 && roles.contains(user))){
+        if (!(roles.size() == 1 && roles.contains(user))) {
             throw new RuntimeException("Profile must have 1 role: USER");
         }
         Role moderator = roleService.findByName(RoleName.ROLE_MODERATOR);
@@ -122,7 +115,7 @@ public class ProfileService {
         Set<Role> roles = profile.getRoles();
         Role user = roleService.findByName(RoleName.ROLE_USER);
         Role moderator = roleService.findByName(RoleName.ROLE_MODERATOR);
-        if (!(roles.size() == 2 && roles.contains(moderator) && roles.contains(user))){
+        if (!(roles.size() == 2 && roles.contains(moderator) && roles.contains(user))) {
             throw new RuntimeException("Profile must have 2 roles: USER, MODERATOR");
         }
         profile.setRoles(Set.of(user));

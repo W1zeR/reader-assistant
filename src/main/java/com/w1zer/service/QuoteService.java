@@ -4,15 +4,9 @@ import com.w1zer.entity.Quote;
 import com.w1zer.entity.QuoteStatus;
 import com.w1zer.entity.QuoteStatusName;
 import com.w1zer.exception.NotFoundException;
-import com.w1zer.mapping.QuoteMapper;
 import com.w1zer.payload.QuoteRequest;
-import com.w1zer.payload.QuoteResponse;
 import com.w1zer.repository.QuoteRepository;
-import com.w1zer.repository.QuoteStatusRepository;
 import org.springframework.stereotype.Service;
-
-import java.rmi.NotBoundException;
-import java.util.List;
 
 @Service
 public class QuoteService {
@@ -65,10 +59,10 @@ public class QuoteService {
 //        return quoteMapper.mapToQuoteResponse(quote);
 //    }
 
-    public void markAsPending(QuoteRequest quoteRequest){
+    public void markAsPending(QuoteRequest quoteRequest) {
         Quote quote = findById(quoteRequest.id());
         QuoteStatus quoteStatus = quote.getQuoteStatus();
-        if (quoteStatus.getName() != QuoteStatusName.PRIVATE){
+        if (quoteStatus.getName() != QuoteStatusName.PRIVATE) {
             throw new RuntimeException("Quote status must be private");
         }
         QuoteStatus pending = quoteStatusService.findByName(QuoteStatusName.PENDING);
@@ -76,10 +70,10 @@ public class QuoteService {
         quoteRepository.save(quote);
     }
 
-    public void markAsPublic(QuoteRequest quoteRequest){
+    public void markAsPublic(QuoteRequest quoteRequest) {
         Quote quote = findById(quoteRequest.id());
         QuoteStatus quoteStatus = quote.getQuoteStatus();
-        if (quoteStatus.getName() != QuoteStatusName.PENDING){
+        if (quoteStatus.getName() != QuoteStatusName.PENDING) {
             throw new RuntimeException("Quote status must be pending");
         }
         QuoteStatus pub = quoteStatusService.findByName(QuoteStatusName.PUBLIC);
@@ -87,7 +81,7 @@ public class QuoteService {
         quoteRepository.save(quote);
     }
 
-    private Quote findById(Long id){
+    private Quote findById(Long id) {
         return quoteRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(QUOTE_WITH_ID_NOT_FOUND.formatted(id))
         );

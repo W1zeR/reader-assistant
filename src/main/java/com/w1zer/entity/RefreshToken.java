@@ -7,6 +7,7 @@ import org.hibernate.proxy.HibernateProxy;
 import java.time.Instant;
 import java.util.Objects;
 
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Getter
 @Setter
 @ToString

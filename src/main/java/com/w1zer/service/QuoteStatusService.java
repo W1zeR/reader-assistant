@@ -2,11 +2,8 @@ package com.w1zer.service;
 
 import com.w1zer.entity.QuoteStatus;
 import com.w1zer.entity.QuoteStatusName;
-import com.w1zer.entity.Role;
-import com.w1zer.entity.RoleName;
 import com.w1zer.exception.NotFoundException;
 import com.w1zer.repository.QuoteStatusRepository;
-import com.w1zer.repository.RoleRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,7 +16,7 @@ public class QuoteStatusService {
         this.quoteStatusRepository = quoteStatusRepository;
     }
 
-    public QuoteStatus findByName(QuoteStatusName name){
+    public QuoteStatus findByName(QuoteStatusName name) {
         return quoteStatusRepository.findByName(name).orElseThrow(
                 () -> new NotFoundException(QUOTE_STATUS_WITH_NAME_NOT_FOUND.formatted(name))
         );

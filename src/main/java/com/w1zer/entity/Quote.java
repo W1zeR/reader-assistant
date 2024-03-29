@@ -10,6 +10,7 @@ import java.util.Set;
 
 import static com.w1zer.constants.EntityConstants.CONTENT_LENGTH;
 
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Getter
 @Setter
 @ToString
