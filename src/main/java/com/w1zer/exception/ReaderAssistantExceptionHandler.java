@@ -54,5 +54,29 @@ public class ReaderAssistantExceptionHandler {
     public ResponseEntity<String> handleAuthException(AuthException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
     }
-}
 
+    @ExceptionHandler(ChangePasswordException.class)
+    public ResponseEntity<String> handleChangePasswordException(ChangePasswordException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidTokenRequestException.class)
+    public ResponseEntity<String> handleInvalidTokenRequestException(InvalidTokenRequestException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ProfileRolesException.class)
+    public ResponseEntity<String> handleProfileRolesException(ProfileRolesException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(TokenRefreshException.class)
+    public ResponseEntity<String> handleTokenRefreshException(TokenRefreshException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+    }
+
+    @ExceptionHandler(UserLogoutException.class)
+    public ResponseEntity<String> handleUserLogoutException(UserLogoutException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+    }
+}

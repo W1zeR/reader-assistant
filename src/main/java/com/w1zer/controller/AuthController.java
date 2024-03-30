@@ -31,7 +31,7 @@ public class AuthController {
         return authService.refresh(refreshTokenRequest);
     }
 
-    @GetMapping("/checkEmailAvailability")
+    @GetMapping("/emailAvailability")
     public UserIdentityAvailability checkEmailAvailability(@RequestParam(value = "email") String email) {
         return authService.checkEmailAvailability(email);
     }

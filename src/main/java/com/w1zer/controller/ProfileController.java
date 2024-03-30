@@ -1,14 +1,19 @@
 package com.w1zer.controller;
 
-import com.w1zer.payload.ProfileRequest;
+import com.w1zer.entity.Profile;
+import com.w1zer.payload.ApiResponse;
+import com.w1zer.payload.ChangePasswordRequest;
+import com.w1zer.payload.LogoutRequest;
+import com.w1zer.security.CurrentUser;
+import com.w1zer.security.UserPrincipal;
 import com.w1zer.service.ProfileService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import static com.w1zer.constants.ValidationConstants.ID_POSITIVE_MESSAGE;
 
 @RestController
 @Validated
@@ -21,44 +26,42 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
-    //    @GetMapping
-//    public List<ProfileResponse> getAll(
-//            @RequestParam(required = false)
-//            @Size(min = LOGIN_MIN_SIZE, max = LOGIN_LENGTH, message = LOGIN_SIZE_MESSAGE)
-//            String login) {
-//        return profileService.getAll(login);
-//    }
-//
-//    @GetMapping("/{id}")
-//    public ProfileResponse getById(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
-//        return profileService.getById(id);
-//    }
-//
-//    @PostMapping
-//    public ProfileResponse insert(@Valid @RequestBody ProfileRequest profileRequest) {
-//        return profileService.insert(profileRequest);
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public void delete(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
-//        profileService.delete(id);
-//    }
-//
-//    @PutMapping("/{id}")
-//    public ProfileResponse update(
-//            @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id,
-//            @Valid @RequestBody ProfileRequest profileRequest) {
-//        return profileService.update(id, profileRequest);
-//    }
-    @PutMapping("/promoteUserToModerator")
+    @PutMapping("/promoteUserToMod/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public void promote(@Valid @RequestBody ProfileRequest profileRequest) {
-        profileService.promote(profileRequest);
+    public void promote(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
+        profileService.promote(id);
     }
 
-    @PutMapping("/demoteModeratorToUser")
+    @PutMapping("/demoteModToUser/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public void demote(@Valid @RequestBody ProfileRequest profileRequest) {
-        profileService.demote(profileRequest);
+    public void demote(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
+        profileService.demote(id);
+    }
+
+    @GetMapping("/me")
+    public Profile getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
+        return profileService.getCurrentUser(userPrincipal);
+    }
+
+    @PutMapping("/logout")
+    public ApiResponse logout(@CurrentUser UserPrincipal currentUser, @Valid @RequestBody LogoutRequest logoutRequest) {
+        return profileService.logout(currentUser, logoutRequest);
+    }
+
+    @PutMapping("/changePassword")
+    public ApiResponse changePassword(@CurrentUser UserPrincipal currentUser,
+                                      @Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
+        return profileService.changePassword(currentUser, changePasswordRequest);
+    }
+
+    @PutMapping("/{id}")
+    public Profile update(@Valid @RequestBody Profile profile,
+                          @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
+        return profileService.update(profile, id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        profileService.delete(id);
     }
 }

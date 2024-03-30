@@ -24,6 +24,18 @@ import static java.time.temporal.ChronoUnit.HOURS;
 
 @Component
 public class JwtProvider {
+    public static final String INVALID_JWT_SIGNATURE = "Invalid JWT signature";
+    public static final String MALFORMED_JWT = "Malformed JWT";
+    public static final String EXPIRED_JWT = "Expired JWT";
+    public static final String UNSUPPORTED_JWT = "Unsupported JWT";
+    public static final String JWT_CLAIMS_STRING_IS_EMPTY = "JWT claims string is empty";
+    public static final String UNEXPECTED_ERROR_WHILE_VALIDATING_JWT = "Unexpected error while validating JWT";
+    public static final String LOGOUT_TOKEN_IS_ALREADY_IN_CACHE = "Logout token for user %s is already in cache";
+    public static final String LOGOUT_TOKEN_CACHE_SET =
+            "Logout token cache set for %s with a TTL of %s seconds. Token will expiry in %s";
+    public static final String TOKEN_CORRESPONDS_TO_AN_ALREADY_LOGGED_OUT_USER =
+            "Token corresponds to an already logged out user [%s] at [%s]";
+    public static final String JWT = "JWT";
     private static final Logger logger = LoggerFactory.getLogger(JwtProvider.class);
     private final ExpiringMap<String, OnUserLogoutSuccessEvent> tokenEventMap;
     @Value("${w1zer.jwt.secret-key}")
@@ -89,17 +101,17 @@ public class JwtProvider {
             validateJwtIsNotForALoggedOutDevice(jwt);
             return true;
         } catch (io.jsonwebtoken.security.SignatureException e) {
-            logger.error("Invalid JWT signature");
+            logger.error(INVALID_JWT_SIGNATURE);
         } catch (MalformedJwtException e) {
-            logger.error("Malformed JWT");
+            logger.error(MALFORMED_JWT);
         } catch (ExpiredJwtException e) {
-            logger.error("Expired JWT");
+            logger.error(EXPIRED_JWT);
         } catch (UnsupportedJwtException e) {
-            logger.error("Unsupported JWT");
+            logger.error(UNSUPPORTED_JWT);
         } catch (IllegalArgumentException e) {
-            logger.error("JWT claims string is empty");
+            logger.error(JWT_CLAIMS_STRING_IS_EMPTY);
         } catch (Exception e) {
-            logger.error("Unexpected error while validating JWT", e);
+            logger.error(UNEXPECTED_ERROR_WHILE_VALIDATING_JWT, e);
         }
         return false;
     }
@@ -107,11 +119,11 @@ public class JwtProvider {
     public void markLogoutEventForToken(OnUserLogoutSuccessEvent event) {
         String token = event.getToken();
         if (tokenEventMap.containsKey(token)) {
-            logger.info("Logout token for user %s is already in cache".formatted(event.getUserEmail()));
+            logger.info(LOGOUT_TOKEN_IS_ALREADY_IN_CACHE.formatted(event.getUserEmail()));
         } else {
             Date tokenExpiryDate = getExpirationFromJwt(token);
             long ttlForToken = getTTLForToken(tokenExpiryDate);
-            logger.info("Logout token cache set for %s with a TTL of %s seconds. Token will expiry in %s".formatted(
+            logger.info(LOGOUT_TOKEN_CACHE_SET.formatted(
                     event.getUserEmail(), ttlForToken, tokenExpiryDate)
             );
             tokenEventMap.put(token, event, ttlForToken, TimeUnit.SECONDS);
@@ -133,9 +145,9 @@ public class JwtProvider {
         if (previouslyLoggedOutEvent != null) {
             String userEmail = previouslyLoggedOutEvent.getUserEmail();
             Date logoutEventDate = previouslyLoggedOutEvent.getEventTime();
-            String errorMessage = String.format("Token corresponds to an already logged out user [%s] at [%s]",
+            String errorMessage = String.format(TOKEN_CORRESPONDS_TO_AN_ALREADY_LOGGED_OUT_USER,
                     userEmail, logoutEventDate);
-            throw new InvalidTokenRequestException("JWT", jwt, errorMessage);
+            throw new InvalidTokenRequestException(JWT, jwt, errorMessage);
         }
     }
 

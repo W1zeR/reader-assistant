@@ -39,6 +39,16 @@ public class Profile {
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     private List<Quote> quotes = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "liked_quotes", joinColumns = @JoinColumn(name = "id_profile"),
+            inverseJoinColumns = @JoinColumn(name = "id_quote"))
+    @ToString.Exclude
+    private Set<Quote> likedQuotes = new HashSet<>();
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "profiles_tags", joinColumns = @JoinColumn(name = "id_profile"),
+            inverseJoinColumns = @JoinColumn(name = "id_tag"))
+    @ToString.Exclude
+    private Set<Tag> interestingTags = new HashSet<>();
 
     public void addQuote(Quote quote) {
         this.quotes.add(quote);
@@ -49,18 +59,6 @@ public class Profile {
         this.quotes.remove(quote);
         quote.setProfile(null);
     }
-
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "liked_quotes", joinColumns = @JoinColumn(name = "id_profile"),
-            inverseJoinColumns = @JoinColumn(name = "id_quote"))
-    @ToString.Exclude
-    private Set<Quote> likedQuotes = new HashSet<>();
-
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "profiles_tags", joinColumns = @JoinColumn(name = "id_profile"),
-            inverseJoinColumns = @JoinColumn(name = "id_tag"))
-    @ToString.Exclude
-    private Set<Tag> interestingTags = new HashSet<>();
 
     @Override
     public final boolean equals(Object o) {
