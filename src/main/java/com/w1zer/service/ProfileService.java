@@ -29,7 +29,7 @@ public class ProfileService {
     public static final String USER_HAS_SUCCESSFULLY_LOGGED_OUT = "User has successfully logged out";
     public static final String OLD_PASSWORD_IS_INCORRECT = "Old password is incorrect";
     public static final String PASSWORD_CHANGED_SUCCESSFULLY = "Password changed successfully";
-    private static final String PROFILE_WITH_LOGIN_NOT_FOUND = "Profile with login '%s' not found";
+
     private final ProfileRepository profileRepository;
     private final RoleService roleService;
     private final UserDeviceService userDeviceService;
@@ -78,12 +78,6 @@ public class ProfileService {
         );
     }
 
-    private Profile findByLogin(String login) {
-        return profileRepository.findByLogin(login).orElseThrow(
-                () -> new NotFoundException(PROFILE_WITH_LOGIN_NOT_FOUND.formatted(login))
-        );
-    }
-
     private Profile findById(Long id) {
         return profileRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(PROFILE_WITH_ID_NOT_FOUND.formatted(id))
@@ -111,7 +105,7 @@ public class ProfileService {
         return new ApiResponse(PASSWORD_CHANGED_SUCCESSFULLY);
     }
 
-    public Profile update(Profile profile, Long id) {
+    public Profile replace(Profile profile, Long id) {
         return profileRepository.findById(id)
                 .map(p -> {
                     p.setLogin(profile.getLogin());

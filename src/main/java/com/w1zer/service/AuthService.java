@@ -16,6 +16,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 @Service
 public class AuthService {
     private static final String PROFILE_WITH_EMAIL_NOT_FOUND = "Profile with email '%s' not found";
@@ -26,18 +28,22 @@ public class AuthService {
     private final JwtProvider jwtProvider;
     private final RefreshTokenService refreshTokenService;
     private final UserDeviceService userDeviceService;
+    private final RoleService roleService;
+
     @Value("${w1zer.jwt.access-expiration-hours}")
     private long accessExpirationHours;
 
     public AuthService(AuthenticationManager authenticationManager, ProfileRepository profileRepository,
                        PasswordEncoder passwordEncoder, JwtProvider jwtProvider,
-                       RefreshTokenService refreshTokenService, UserDeviceService userDeviceService) {
+                       RefreshTokenService refreshTokenService, UserDeviceService userDeviceService,
+                       RoleService roleService) {
         this.authenticationManager = authenticationManager;
         this.profileRepository = profileRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtProvider = jwtProvider;
         this.refreshTokenService = refreshTokenService;
         this.userDeviceService = userDeviceService;
+        this.roleService = roleService;
     }
 
     public AuthResponse login(LoginRequest loginRequest) {
@@ -85,7 +91,7 @@ public class AuthService {
         profile.setLogin(registerRequest.login());
         profile.setEmail(registerRequest.email());
         profile.setPassword(passwordEncoder.encode(registerRequest.password()));
-        profile.setRoles(registerRequest.roles());
+        profile.setRoles(Set.of(roleService.findById(registerRequest.roleId())));
         return profileRepository.save(profile);
     }
 

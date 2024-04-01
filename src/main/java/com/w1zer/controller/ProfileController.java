@@ -55,9 +55,9 @@ public class ProfileController {
     }
 
     @PutMapping("/{id}")
-    public Profile update(@Valid @RequestBody Profile profile,
+    public Profile replace(@Valid @RequestBody Profile profile,
                           @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
-        return profileService.update(profile, id);
+        return profileService.replace(profile, id);
     }
 
     @DeleteMapping("/{id}")

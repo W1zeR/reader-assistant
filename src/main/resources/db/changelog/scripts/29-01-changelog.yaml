@@ -1,3 +1,4 @@
+#file: noinspection SpellCheckingInspection
 databaseChangeLog:
   - changeSet:
       id: 1711694650540-1
