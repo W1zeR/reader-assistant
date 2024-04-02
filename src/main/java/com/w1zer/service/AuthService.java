@@ -22,6 +22,7 @@ import java.util.Set;
 public class AuthService {
     private static final String PROFILE_WITH_EMAIL_NOT_FOUND = "Profile with email '%s' not found";
     private static final String PROFILE_WITH_EMAIL_ALREADY_EXISTS = "Profile with email '%s' already exists";
+    private static final String PROFILE_WITH_LOGIN_ALREADY_EXISTS = "Profile with login '%s' already exists";
     private final AuthenticationManager authenticationManager;
     private final ProfileRepository profileRepository;
     private final PasswordEncoder passwordEncoder;
@@ -71,6 +72,7 @@ public class AuthService {
 
     public void register(RegisterRequest registerRequest) {
         validateEmail(registerRequest.email());
+        validateLogin(registerRequest.login());
         Profile profile = mapToProfile(registerRequest);
         profileRepository.save(profile);
     }
@@ -83,6 +85,12 @@ public class AuthService {
     private void validateEmail(String email) {
         if (profileRepository.existsByEmail(email)) {
             throw new ProfileAlreadyExistsException(PROFILE_WITH_EMAIL_ALREADY_EXISTS.formatted(email));
+        }
+    }
+
+    private void validateLogin(String login) {
+        if (profileRepository.existsByEmail(login)) {
+            throw new ProfileAlreadyExistsException(PROFILE_WITH_LOGIN_ALREADY_EXISTS.formatted(login));
         }
     }
 
