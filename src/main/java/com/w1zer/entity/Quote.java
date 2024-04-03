@@ -1,5 +1,6 @@
 package com.w1zer.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -28,26 +29,31 @@ public class Quote {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(nullable = false)
     @ToString.Exclude
+    @JsonIgnore
     private Book book;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(nullable = false)
     @ToString.Exclude
+    @JsonIgnore
     private Profile profile;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(nullable = false)
     @ToString.Exclude
+    @JsonIgnore
     private QuoteStatus quoteStatus;
 
     @ManyToMany(mappedBy = "likedQuotes")
     @ToString.Exclude
+    @JsonIgnore
     private Set<Profile> whoLiked = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "quotes_tags", joinColumns = @JoinColumn(name = "id_quote"),
             inverseJoinColumns = @JoinColumn(name = "id_tag"))
     @ToString.Exclude
+    @JsonIgnore
     private Set<Tag> tags = new HashSet<>();
 
     @Override

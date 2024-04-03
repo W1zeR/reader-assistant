@@ -1,5 +1,6 @@
 package com.w1zer.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -27,6 +28,7 @@ public class QuoteStatus {
 
     @OneToMany(mappedBy = "quoteStatus", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
+    @JsonIgnore
     private List<Quote> quotes = new ArrayList<>();
 
     public void addQuote(Quote quote) {

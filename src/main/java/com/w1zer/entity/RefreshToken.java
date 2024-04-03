@@ -1,5 +1,6 @@
 package com.w1zer.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -24,6 +25,8 @@ public class RefreshToken {
 
     @OneToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_user_device", unique = true)
+    @ToString.Exclude
+    @JsonIgnore
     private UserDevice userDevice;
 
     @Column(nullable = false)

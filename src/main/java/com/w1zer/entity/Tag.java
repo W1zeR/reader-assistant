@@ -1,5 +1,6 @@
 package com.w1zer.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -26,10 +27,12 @@ public class Tag {
 
     @ManyToMany(mappedBy = "tags")
     @ToString.Exclude
+    @JsonIgnore
     private Set<Quote> quotes = new HashSet<>();
 
     @ManyToMany(mappedBy = "interestingTags")
     @ToString.Exclude
+    @JsonIgnore
     private Set<Profile> whoInterested = new HashSet<>();
 
     @Override

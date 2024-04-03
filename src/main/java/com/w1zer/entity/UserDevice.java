@@ -1,10 +1,8 @@
 package com.w1zer.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
@@ -22,6 +20,8 @@ public class UserDevice {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_profile", nullable = false)
+    @ToString.Exclude
+    @JsonIgnore
     private Profile profile;
 
     @Column(nullable = false)
@@ -31,6 +31,8 @@ public class UserDevice {
     private String deviceId;
 
     @OneToOne(optional = false, mappedBy = "userDevice")
+    @ToString.Exclude
+    @JsonIgnore
     private RefreshToken refreshToken;
 
     @Column(nullable = false)

@@ -1,5 +1,6 @@
 package com.w1zer.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -29,10 +30,12 @@ public class Book {
 
     @ManyToMany(mappedBy = "books")
     @ToString.Exclude
+    @JsonIgnore
     private Set<Author> authors = new HashSet<>();
 
     @OneToMany(mappedBy = "book", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @ToString.Exclude
+    @JsonIgnore
     private List<Quote> quotes = new ArrayList<>();
 
     public void addQuote(Quote quote) {

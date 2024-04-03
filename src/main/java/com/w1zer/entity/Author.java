@@ -1,5 +1,6 @@
 package com.w1zer.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -43,6 +44,7 @@ public class Author {
     @JoinTable(name = "authors_books", joinColumns = @JoinColumn(name = "id_author"),
             inverseJoinColumns = @JoinColumn(name = "id_book"))
     @ToString.Exclude
+    @JsonIgnore
     private Set<Book> books = new HashSet<>();
 
     public void addBook(Book book) {

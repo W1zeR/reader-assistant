@@ -11,6 +11,7 @@ import com.w1zer.exception.UserLogoutException;
 import com.w1zer.payload.ApiResponse;
 import com.w1zer.payload.ChangePasswordRequest;
 import com.w1zer.payload.LogoutRequest;
+import com.w1zer.payload.UpdateProfileRequest;
 import com.w1zer.repository.ProfileRepository;
 import com.w1zer.security.OnUserLogoutSuccessEvent;
 import com.w1zer.security.UserPrincipal;
@@ -105,17 +106,17 @@ public class ProfileService {
         return new ApiResponse(PASSWORD_CHANGED_SUCCESSFULLY);
     }
 
-    public Profile replace(Profile profile, Long id) {
-        return profileRepository.findById(id)
-                .map(p -> {
-                    p.setLogin(profile.getLogin());
-                    p.setEmail(profile.getEmail());
-                    return profileRepository.save(p);
-                })
-                .orElseGet(() -> {
-                    profile.setId(id);
-                    return profileRepository.save(profile);
-                });
+    public Profile update(UpdateProfileRequest updateProfileRequest, Long id) {
+        Profile profile = profileRepository.findById(id).orElseThrow(
+                () -> new NotFoundException(PROFILE_WITH_ID_NOT_FOUND)
+        );
+        if (updateProfileRequest.email() != null) {
+            profile.setEmail(updateProfileRequest.email());
+        }
+        if (updateProfileRequest.login() != null) {
+            profile.setLogin(updateProfileRequest.login());
+        }
+        return profileRepository.save(profile);
     }
 
     public void delete(@PathVariable Long id) {

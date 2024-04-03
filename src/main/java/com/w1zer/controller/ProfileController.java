@@ -4,6 +4,7 @@ import com.w1zer.entity.Profile;
 import com.w1zer.payload.ApiResponse;
 import com.w1zer.payload.ChangePasswordRequest;
 import com.w1zer.payload.LogoutRequest;
+import com.w1zer.payload.UpdateProfileRequest;
 import com.w1zer.security.CurrentUser;
 import com.w1zer.security.UserPrincipal;
 import com.w1zer.service.ProfileService;
@@ -54,10 +55,10 @@ public class ProfileController {
         return profileService.changePassword(currentUser, changePasswordRequest);
     }
 
-    @PutMapping("/{id}")
-    public Profile replace(@Valid @RequestBody Profile profile,
+    @PatchMapping("/{id}")
+    public Profile update(@Valid @RequestBody UpdateProfileRequest updateProfileRequest,
                           @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
-        return profileService.replace(profile, id);
+        return profileService.update(updateProfileRequest, id);
     }
 
     @DeleteMapping("/{id}")

@@ -1,5 +1,6 @@
 package com.w1zer.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -28,26 +29,33 @@ public class Profile {
     private String login;
 
     @Column(nullable = false, columnDefinition = "TEXT")
+    @JsonIgnore
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinTable(name = "profiles_roles", joinColumns = @JoinColumn(name = "id_profile"),
             inverseJoinColumns = @JoinColumn(name = "id_role"))
     @ToString.Exclude
+    @JsonIgnore
     private Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
+    @JsonIgnore
     private List<Quote> quotes = new ArrayList<>();
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "liked_quotes", joinColumns = @JoinColumn(name = "id_profile"),
             inverseJoinColumns = @JoinColumn(name = "id_quote"))
     @ToString.Exclude
+    @JsonIgnore
     private Set<Quote> likedQuotes = new HashSet<>();
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "profiles_tags", joinColumns = @JoinColumn(name = "id_profile"),
             inverseJoinColumns = @JoinColumn(name = "id_tag"))
     @ToString.Exclude
+    @JsonIgnore
     private Set<Tag> interestingTags = new HashSet<>();
 
     public void addQuote(Quote quote) {
