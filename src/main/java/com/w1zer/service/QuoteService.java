@@ -81,9 +81,23 @@ public class QuoteService {
         quoteRepository.save(quote);
     }
 
-    private Quote findById(Long id) {
+    public Quote findById(Long id) {
         return quoteRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(QUOTE_WITH_ID_NOT_FOUND.formatted(id))
         );
+    }
+	
+	public void delete(Long id) {
+        quoteRepository.deleteById(id);
+    }
+	
+	public Quote update(UpdateQuoteRequest updateQuoteRequest, Long id) {
+        Quote quote = quoteRepository.findById(id).orElseThrow(
+                () -> new NotFoundException(QUOTE_WITH_ID_NOT_FOUND)
+        );
+        if (updateQuoteRequest.content() != null) {
+            quote.setContent(updateQuoteRequest.content());
+        }
+        return quoteRepository.save(quote);
     }
 }

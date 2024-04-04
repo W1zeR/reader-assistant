@@ -119,7 +119,7 @@ public class ProfileService {
         return profileRepository.save(profile);
     }
 
-    public void delete(@PathVariable Long id) {
+    public void delete(Long id) {
         profileRepository.deleteById(id);
     }
 }
