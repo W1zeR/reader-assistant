@@ -1,5 +1,11 @@
 package com.w1zer.service;
 
+import com.w1zer.entity.Book;
+import com.w1zer.exception.NotFoundException;
+import com.w1zer.payload.UpdateBookRequest;
+import com.w1zer.repository.BookRepository;
+import org.springframework.stereotype.Service;
+
 @Service
 public class BookService {
 	public static final String BOOK_WITH_ID_NOT_FOUND = "Book with id %s not found";

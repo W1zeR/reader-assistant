@@ -89,7 +89,7 @@ public class AuthService {
     }
 
     private void validateLogin(String login) {
-        if (profileRepository.existsByEmail(login)) {
+        if (profileRepository.existsByLogin(login)) {
             throw new ProfileAlreadyExistsException(PROFILE_WITH_LOGIN_ALREADY_EXISTS.formatted(login));
         }
     }

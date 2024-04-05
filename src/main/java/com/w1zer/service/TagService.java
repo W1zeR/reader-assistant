@@ -1,5 +1,11 @@
 package com.w1zer.service;
 
+import com.w1zer.entity.Tag;
+import com.w1zer.exception.NotFoundException;
+import com.w1zer.payload.UpdateTagRequest;
+import com.w1zer.repository.TagRepository;
+import org.springframework.stereotype.Service;
+
 @Service
 public class TagService {
 	public static final String TAG_WITH_ID_NOT_FOUND = "Tag with id %s not found";
@@ -25,7 +31,7 @@ public class TagService {
                 () -> new NotFoundException(TAG_WITH_ID_NOT_FOUND)
         );
         if (updateTagRequest.name() != null) {
-            tag.setTag(updateTagRequest.name());
+            tag.setName(updateTagRequest.name());
         }
         return tagRepository.save(tag);
     }

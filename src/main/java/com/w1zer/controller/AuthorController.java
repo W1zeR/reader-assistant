@@ -1,17 +1,17 @@
 package com.w1zer.controller;
 
-import com.w1zer.service.TagService;
+import com.w1zer.service.AuthorService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Validated
-@RequestMapping("/api/tags")
-public class TagController {
-    private final TagService tagService;
+@RequestMapping("/api/authors")
+public class AuthorController {
+    private final AuthorService authorService;
 
-    public TagController(TagService tagService) {
-        this.tagService = tagService;
+    public AuthorController(AuthorService authorService) {
+        this.authorService = authorService;
     }
 }

@@ -10,5 +10,7 @@ import java.util.Optional;
 public interface ProfileRepository extends JpaRepository<Profile, Long> {
     boolean existsByEmail(String email);
 
+    boolean existsByLogin(String login);
+
     Optional<Profile> findByEmail(String login);
 }

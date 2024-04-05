@@ -5,6 +5,7 @@ import com.w1zer.entity.QuoteStatus;
 import com.w1zer.entity.QuoteStatusName;
 import com.w1zer.exception.NotFoundException;
 import com.w1zer.payload.QuoteRequest;
+import com.w1zer.payload.UpdateQuoteRequest;
 import com.w1zer.repository.QuoteRepository;
 import org.springframework.stereotype.Service;
 
