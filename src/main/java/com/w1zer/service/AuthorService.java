@@ -2,7 +2,7 @@ package com.w1zer.service;
 
 import com.w1zer.entity.Author;
 import com.w1zer.exception.NotFoundException;
-import com.w1zer.payload.UpdateAuthorRequest;
+import com.w1zer.payload.AuthorRequest;
 import com.w1zer.repository.AuthorRepository;
 import org.springframework.stereotype.Service;
 
@@ -26,27 +26,25 @@ public class AuthorService {
         authorRepository.deleteById(id);
     }
 	
-	public Author update(UpdateAuthorRequest updateAuthorRequest, Long id) {
-        Author author = authorRepository.findById(id).orElseThrow(
-                () -> new NotFoundException(AUTHOR_WITH_ID_NOT_FOUND)
-        );
-        if (updateAuthorRequest.surname() != null) {
-            author.setSurname(updateAuthorRequest.surname());
+	public Author update(AuthorRequest authorRequest, Long id) {
+        Author author = findById(id);
+        if (authorRequest.surname() != null) {
+            author.setSurname(authorRequest.surname());
         }
-		if (updateAuthorRequest.name() != null) {
-            author.setName(updateAuthorRequest.name());
+		if (authorRequest.name() != null) {
+            author.setName(authorRequest.name());
         }
-		if (updateAuthorRequest.patronymic() != null) {
-            author.setPatronymic(updateAuthorRequest.patronymic());
+		if (authorRequest.patronymic() != null) {
+            author.setPatronymic(authorRequest.patronymic());
         }
-		if (updateAuthorRequest.birthday() != null) {
-            author.setBirthday(updateAuthorRequest.birthday());
+		if (authorRequest.birthday() != null) {
+            author.setBirthday(authorRequest.birthday());
         }
-		if (updateAuthorRequest.death() != null) {
-            author.setDeath(updateAuthorRequest.death());
+		if (authorRequest.death() != null) {
+            author.setDeath(authorRequest.death());
         }
-		if (updateAuthorRequest.description() != null) {
-            author.setDescription(updateAuthorRequest.description());
+		if (authorRequest.description() != null) {
+            author.setDescription(authorRequest.description());
         }
         return authorRepository.save(author);
     }

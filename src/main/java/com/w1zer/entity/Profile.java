@@ -36,7 +36,6 @@ public class Profile {
     @JoinTable(name = "profiles_roles", joinColumns = @JoinColumn(name = "id_profile"),
             inverseJoinColumns = @JoinColumn(name = "id_role"))
     @ToString.Exclude
-    @JsonIgnore
     private Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -66,6 +65,26 @@ public class Profile {
     public void removeQuote(Quote quote) {
         this.quotes.remove(quote);
         quote.setProfile(null);
+    }
+
+    public void addLikedQuote(Quote quote) {
+        this.likedQuotes.add(quote);
+        quote.getWhoLiked().add(this);
+    }
+
+    public void removeLikedQuote(Quote quote) {
+        this.likedQuotes.remove(quote);
+        quote.getWhoLiked().remove(this);
+    }
+
+    public void addInterestingTag(Tag tag) {
+        this.interestingTags.add(tag);
+        tag.getWhoInterested().add(this);
+    }
+
+    public void removeInterestingTag(Tag tag) {
+        this.interestingTags.remove(tag);
+        tag.getWhoInterested().remove(this);
     }
 
     @Override

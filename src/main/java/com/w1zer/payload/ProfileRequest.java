@@ -4,14 +4,13 @@ import com.w1zer.validation.NotBlankIfPresent;
 import com.w1zer.validation.UniqueProfileEmail;
 import com.w1zer.validation.UniqueProfileLogin;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 import static com.w1zer.constants.EntityConstants.EMAIL_LENGTH;
 import static com.w1zer.constants.EntityConstants.LOGIN_LENGTH;
 import static com.w1zer.constants.ValidationConstants.*;
 
-public record UpdateProfileRequest(
+public record ProfileRequest(
         @NotBlankIfPresent
         @Size(max = EMAIL_LENGTH, message = EMAIL_SIZE_MESSAGE)
         @Email

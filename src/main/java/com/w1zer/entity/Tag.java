@@ -35,6 +35,16 @@ public class Tag {
     @JsonIgnore
     private Set<Profile> whoInterested = new HashSet<>();
 
+    public void addInterestedProfile(Profile profile) {
+        this.whoInterested.add(profile);
+        profile.getInterestingTags().add(this);
+    }
+
+    public void removeInterestedProfile(Profile profile) {
+        this.whoInterested.remove(profile);
+        profile.getInterestingTags().remove(this);
+    }
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;

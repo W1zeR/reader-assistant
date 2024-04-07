@@ -56,6 +56,16 @@ public class Quote {
     @JsonIgnore
     private Set<Tag> tags = new HashSet<>();
 
+    public void addLikedProfile(Profile profile) {
+        this.whoLiked.add(profile);
+        profile.getLikedQuotes().add(this);
+    }
+
+    public void removeLikedQuote(Profile profile) {
+        this.whoLiked.remove(profile);
+        profile.getLikedQuotes().remove(this);
+    }
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;

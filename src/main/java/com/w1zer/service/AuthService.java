@@ -3,6 +3,7 @@ package com.w1zer.service;
 import com.w1zer.entity.Profile;
 import com.w1zer.entity.RefreshToken;
 import com.w1zer.entity.UserDevice;
+import com.w1zer.exception.AuthException;
 import com.w1zer.exception.NotFoundException;
 import com.w1zer.exception.ProfileAlreadyExistsException;
 import com.w1zer.payload.*;
@@ -23,6 +24,7 @@ public class AuthService {
     private static final String PROFILE_WITH_EMAIL_NOT_FOUND = "Profile with email '%s' not found";
     private static final String PROFILE_WITH_EMAIL_ALREADY_EXISTS = "Profile with email '%s' already exists";
     private static final String PROFILE_WITH_LOGIN_ALREADY_EXISTS = "Profile with login '%s' already exists";
+    public static final String PASSWORD_MISMATCH = "Password mismatch";
     private final AuthenticationManager authenticationManager;
     private final ProfileRepository profileRepository;
     private final PasswordEncoder passwordEncoder;
@@ -48,7 +50,7 @@ public class AuthService {
     }
 
     public AuthResponse login(LoginRequest loginRequest) {
-        String email = loginRequest.email();
+        String email = loginRequest.email().toLowerCase();
         Profile profile = profileRepository.findByEmail(email).orElseThrow(
                 () -> new NotFoundException(PROFILE_WITH_EMAIL_NOT_FOUND.formatted(email))
         );
@@ -71,13 +73,27 @@ public class AuthService {
     }
 
     public void register(RegisterRequest registerRequest) {
-        validateEmail(registerRequest.email());
-        validateLogin(registerRequest.login());
-        Profile profile = mapToProfile(registerRequest);
-        profileRepository.save(profile);
+        if (!registerRequest.password().equals(registerRequest.passwordConfirmation())){
+            throw new AuthException(PASSWORD_MISMATCH);
+        }
+        String email = registerRequest.email().toLowerCase();
+        String login = registerRequest.login().toLowerCase();
+        validateLogin(login);
+        validateEmail(email);
+        profileRepository.save(createProfile(login, email, registerRequest.password(), registerRequest.roleId()));
+    }
+
+    private Profile createProfile(String login, String email, String password, Long roleId){
+        Profile profile = new Profile();
+        profile.setLogin(login);
+        profile.setEmail(email);
+        profile.setPassword(passwordEncoder.encode(password));
+        profile.setRoles(Set.of(roleService.findById(roleId)));
+        return profile;
     }
 
     public UserIdentityAvailability checkEmailAvailability(String email) {
+        email = email.toLowerCase();
         Boolean isAvailable = !profileRepository.existsByEmail(email);
         return new UserIdentityAvailability(isAvailable);
     }
@@ -92,15 +108,6 @@ public class AuthService {
         if (profileRepository.existsByLogin(login)) {
             throw new ProfileAlreadyExistsException(PROFILE_WITH_LOGIN_ALREADY_EXISTS.formatted(login));
         }
-    }
-
-    private Profile mapToProfile(RegisterRequest registerRequest) {
-        Profile profile = new Profile();
-        profile.setLogin(registerRequest.login());
-        profile.setEmail(registerRequest.email());
-        profile.setPassword(passwordEncoder.encode(registerRequest.password()));
-        profile.setRoles(Set.of(roleService.findById(registerRequest.roleId())));
-        return profileRepository.save(profile);
     }
 
     public AuthResponse refresh(RefreshTokenRequest refreshTokenRequest) {

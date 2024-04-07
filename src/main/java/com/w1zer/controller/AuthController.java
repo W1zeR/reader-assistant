@@ -1,5 +1,6 @@
 package com.w1zer.controller;
 
+import com.w1zer.entity.Profile;
 import com.w1zer.payload.*;
 import com.w1zer.service.AuthService;
 import jakarta.validation.Valid;

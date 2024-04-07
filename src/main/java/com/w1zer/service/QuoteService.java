@@ -5,7 +5,6 @@ import com.w1zer.entity.QuoteStatus;
 import com.w1zer.entity.QuoteStatusName;
 import com.w1zer.exception.NotFoundException;
 import com.w1zer.payload.QuoteRequest;
-import com.w1zer.payload.UpdateQuoteRequest;
 import com.w1zer.repository.QuoteRepository;
 import org.springframework.stereotype.Service;
 
@@ -60,8 +59,8 @@ public class QuoteService {
 //        return quoteMapper.mapToQuoteResponse(quote);
 //    }
 
-    public void markAsPending(QuoteRequest quoteRequest) {
-        Quote quote = findById(quoteRequest.id());
+    public void markAsPending(Long id) {
+        Quote quote = findById(id);
         QuoteStatus quoteStatus = quote.getQuoteStatus();
         if (quoteStatus.getName() != QuoteStatusName.PRIVATE) {
             throw new RuntimeException("Quote status must be private");
@@ -71,8 +70,8 @@ public class QuoteService {
         quoteRepository.save(quote);
     }
 
-    public void markAsPublic(QuoteRequest quoteRequest) {
-        Quote quote = findById(quoteRequest.id());
+    public void markAsPublic(Long id) {
+        Quote quote = findById(id);
         QuoteStatus quoteStatus = quote.getQuoteStatus();
         if (quoteStatus.getName() != QuoteStatusName.PENDING) {
             throw new RuntimeException("Quote status must be pending");
@@ -92,12 +91,10 @@ public class QuoteService {
         quoteRepository.deleteById(id);
     }
 	
-	public Quote update(UpdateQuoteRequest updateQuoteRequest, Long id) {
-        Quote quote = quoteRepository.findById(id).orElseThrow(
-                () -> new NotFoundException(QUOTE_WITH_ID_NOT_FOUND)
-        );
-        if (updateQuoteRequest.content() != null) {
-            quote.setContent(updateQuoteRequest.content());
+	public Quote update(QuoteRequest QuoteRequest, Long id) {
+        Quote quote = findById(id);
+        if (QuoteRequest.content() != null) {
+            quote.setContent(QuoteRequest.content());
         }
         return quoteRepository.save(quote);
     }

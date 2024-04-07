@@ -3,22 +3,13 @@ package com.w1zer.payload;
 import com.w1zer.validation.NotBlankIfPresent;
 import jakarta.validation.constraints.Size;
 
-import java.time.LocalDate;
-
 import static com.w1zer.constants.EntityConstants.DESCRIPTION_LENGTH;
 
-public record UpdateAuthorRequest(
+public record BookRequest(
         @NotBlankIfPresent
-        String surname,
+        String title,
 
-        @NotBlankIfPresent
-        String name,
-
-        String patronymic,
-
-        LocalDate birthday,
-
-        LocalDate death,
+        Integer publishingYear,
 
         @Size(max = DESCRIPTION_LENGTH)
         String description

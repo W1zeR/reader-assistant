@@ -1,9 +1,6 @@
 package com.w1zer.service;
 
-import com.w1zer.entity.Profile;
-import com.w1zer.entity.Role;
-import com.w1zer.entity.RoleName;
-import com.w1zer.entity.UserDevice;
+import com.w1zer.entity.*;
 import com.w1zer.exception.ChangePasswordException;
 import com.w1zer.exception.NotFoundException;
 import com.w1zer.exception.ProfileRolesException;
@@ -11,41 +8,53 @@ import com.w1zer.exception.UserLogoutException;
 import com.w1zer.payload.ApiResponse;
 import com.w1zer.payload.ChangePasswordRequest;
 import com.w1zer.payload.LogoutRequest;
-import com.w1zer.payload.UpdateProfileRequest;
+import com.w1zer.payload.ProfileRequest;
 import com.w1zer.repository.ProfileRepository;
+import com.w1zer.repository.QuoteRepository;
+import com.w1zer.repository.TagRepository;
 import com.w1zer.security.OnUserLogoutSuccessEvent;
 import com.w1zer.security.UserPrincipal;
+import jakarta.validation.constraints.Positive;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.List;
 import java.util.Set;
+
+import static com.w1zer.constants.ValidationConstants.ID_POSITIVE_MESSAGE;
 
 @Service
 public class ProfileService {
-    public static final String PROFILE_WITH_ID_NOT_FOUND = "Profile with id %s not found";
-    public static final String PROFILE_MUST_HAVE_2_ROLES_USER_MODERATOR = "Profile must have 2 roles: USER, MODERATOR";
-    public static final String PROFILE_MUST_HAVE_1_ROLE_USER = "Profile must have 1 role: USER";
-    public static final String INVALID_DEVICE_ID = "Invalid device Id. No matching device found for the given user";
-    public static final String USER_HAS_SUCCESSFULLY_LOGGED_OUT = "User has successfully logged out";
-    public static final String OLD_PASSWORD_IS_INCORRECT = "Old password is incorrect";
-    public static final String PASSWORD_CHANGED_SUCCESSFULLY = "Password changed successfully";
+    private static final String PROFILE_WITH_ID_NOT_FOUND = "Profile with id %s not found";
+    private static final String PROFILE_MUST_HAVE_2_ROLES_USER_MODERATOR = "Profile must have 2 roles: USER, MODERATOR";
+    private static final String PROFILE_MUST_HAVE_1_ROLE_USER = "Profile must have 1 role: USER";
+    private static final String INVALID_DEVICE_ID = "Invalid device Id. No matching device found for the given user";
+    private static final String USER_HAS_SUCCESSFULLY_LOGGED_OUT = "User has successfully logged out";
+    private static final String OLD_PASSWORD_IS_INCORRECT = "Old password is incorrect";
+    private static final String PASSWORD_CHANGED_SUCCESSFULLY = "Password changed successfully";
+    private static final String QUOTE_WITH_ID_NOT_FOUND = "Quote with id '%d' not found";
+    private static final String TAG_WITH_ID_NOT_FOUND = "Tag with id %s not found";
 
     private final ProfileRepository profileRepository;
+    private final QuoteRepository quoteRepository;
     private final RoleService roleService;
     private final UserDeviceService userDeviceService;
     private final ApplicationEventPublisher applicationEventPublisher;
     private final RefreshTokenService refreshTokenService;
+    private final TagRepository tagRepository;
 
-    public ProfileService(ProfileRepository profileRepository,
+    public ProfileService(ProfileRepository profileRepository, QuoteRepository quoteRepository,
                           RoleService roleService, UserDeviceService userDeviceService,
                           ApplicationEventPublisher applicationEventPublisher,
-                          RefreshTokenService refreshTokenService) {
+                          RefreshTokenService refreshTokenService, TagRepository tagRepository) {
         this.profileRepository = profileRepository;
+        this.quoteRepository = quoteRepository;
         this.roleService = roleService;
         this.userDeviceService = userDeviceService;
         this.applicationEventPublisher = applicationEventPublisher;
         this.refreshTokenService = refreshTokenService;
+        this.tagRepository = tagRepository;
     }
 
     public void promote(Long id) {
@@ -79,7 +88,7 @@ public class ProfileService {
         );
     }
 
-    private Profile findById(Long id) {
+    public Profile findById(Long id) {
         return profileRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(PROFILE_WITH_ID_NOT_FOUND.formatted(id))
         );
@@ -106,20 +115,76 @@ public class ProfileService {
         return new ApiResponse(PASSWORD_CHANGED_SUCCESSFULLY);
     }
 
-    public Profile update(UpdateProfileRequest updateProfileRequest, Long id) {
-        Profile profile = profileRepository.findById(id).orElseThrow(
-                () -> new NotFoundException(PROFILE_WITH_ID_NOT_FOUND)
-        );
-        if (updateProfileRequest.email() != null) {
-            profile.setEmail(updateProfileRequest.email());
+    public Profile update(ProfileRequest profileRequest, Long id) {
+        Profile profile = findById(id);
+        if (profileRequest.email() != null) {
+            profile.setEmail(profileRequest.email().toLowerCase());
         }
-        if (updateProfileRequest.login() != null) {
-            profile.setLogin(updateProfileRequest.login());
+        if (profileRequest.login() != null) {
+            profile.setLogin(profileRequest.login().toLowerCase());
         }
         return profileRepository.save(profile);
     }
 
     public void delete(Long id) {
         profileRepository.deleteById(id);
+    }
+
+    public List<Profile> findAll(){
+        return profileRepository.findAll();
+    }
+
+    private Quote findQuoteById(Long id){
+        return quoteRepository.findById(id).orElseThrow(
+                () -> new NotFoundException(QUOTE_WITH_ID_NOT_FOUND.formatted(id))
+        );
+    }
+
+    public void addQuote(Long profileId, Long quoteId){
+        Profile profile = findById(profileId);
+        Quote quote = findQuoteById(quoteId);
+        profile.addQuote(quote);
+        profileRepository.save(profile);
+    }
+
+    public void removeQuote(Long profileId, Long quoteId){
+        Profile profile = findById(profileId);
+        Quote quote = findQuoteById(quoteId);
+        profile.removeQuote(quote);
+        profileRepository.save(profile);
+    }
+
+    public void addLikedQuote(Long profileId, Long quoteId){
+        Profile profile = findById(profileId);
+        Quote quote = findQuoteById(quoteId);
+        profile.addLikedQuote(quote);
+        profileRepository.save(profile);
+    }
+
+    public void removeLikedQuote(Long profileId, Long quoteId){
+        Profile profile = findById(profileId);
+        Quote quote = findQuoteById(quoteId);
+        profile.removeLikedQuote(quote);
+        profileRepository.save(profile);
+    }
+
+    private Tag findTagById(Long id) {
+        return tagRepository.findById(id).orElseThrow(
+                () -> new NotFoundException(TAG_WITH_ID_NOT_FOUND.formatted(id))
+        );
+    }
+
+    public void addInterestingTag(Long profileId, Long tagId){
+        Profile profile = findById(profileId);
+        Tag tag = findTagById(tagId);
+        profile.addInterestingTag(tag);
+        profileRepository.save(profile);
+    }
+
+    public void removeInterestingTag(Long profileId, Long tagId){
+        Profile profile = findById(profileId);
+        Tag tag = findTagById(tagId);
+        profile.removeInterestingTag(tag);
+        profileRepository.save(profile);
     }
 }
