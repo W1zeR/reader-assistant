@@ -3,7 +3,10 @@ package com.w1zer.controller;
 import com.w1zer.entity.Profile;
 import com.w1zer.entity.Quote;
 import com.w1zer.entity.Tag;
-import com.w1zer.payload.*;
+import com.w1zer.payload.ApiResponse;
+import com.w1zer.payload.ChangePasswordRequest;
+import com.w1zer.payload.LogoutRequest;
+import com.w1zer.payload.ProfileRequest;
 import com.w1zer.security.CurrentUser;
 import com.w1zer.security.UserPrincipal;
 import com.w1zer.service.ProfileService;
@@ -85,13 +88,13 @@ public class ProfileController {
 
     @PutMapping("/{profileId}/quotes/{quoteId}")
     public void addQuote(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long profileId,
-                         @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long quoteId){
+                         @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long quoteId) {
         profileService.addQuote(profileId, quoteId);
     }
 
     @DeleteMapping("/{profileId}/quotes/{quoteId}")
     public void removeQuote(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long profileId,
-                            @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long quoteId){
+                            @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long quoteId) {
         profileService.removeQuote(profileId, quoteId);
     }
 
@@ -102,13 +105,13 @@ public class ProfileController {
 
     @PutMapping("/{profileId}/likedQuotes/{quoteId}")
     public void addLikedQuote(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long profileId,
-                         @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long quoteId){
+                              @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long quoteId) {
         profileService.addLikedQuote(profileId, quoteId);
     }
 
     @DeleteMapping("/{profileId}/likedQuotes/{quoteId}")
     public void removeLikedQuote(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long profileId,
-                            @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long quoteId){
+                                 @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long quoteId) {
         profileService.removeLikedQuote(profileId, quoteId);
     }
 
@@ -119,13 +122,13 @@ public class ProfileController {
 
     @PutMapping("/{profileId}/interestingTags/{tagId}")
     public void addInterestingTag(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long profileId,
-                              @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long tagId){
+                                  @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long tagId) {
         profileService.addInterestingTag(profileId, tagId);
     }
 
     @DeleteMapping("/{profileId}/interestingTags/{tagId}")
     public void removeInterestingTag(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long profileId,
-                                 @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long tagId){
+                                     @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long tagId) {
         profileService.removeInterestingTag(profileId, tagId);
     }
 }

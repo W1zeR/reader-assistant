@@ -1,12 +1,9 @@
 package com.w1zer.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import static com.w1zer.constants.EntityConstants.QUOTE_STATUS_NAME_LENGTH;
@@ -25,21 +22,6 @@ public class QuoteStatus {
     @Enumerated(EnumType.STRING)
     @Column(length = QUOTE_STATUS_NAME_LENGTH, nullable = false)
     private QuoteStatusName name;
-
-    @OneToMany(mappedBy = "quoteStatus", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude
-    @JsonIgnore
-    private List<Quote> quotes = new ArrayList<>();
-
-    public void addQuote(Quote quote) {
-        this.quotes.add(quote);
-        quote.setQuoteStatus(this);
-    }
-
-    public void removeQuote(Quote quote) {
-        this.quotes.remove(quote);
-        quote.setQuoteStatus(null);
-    }
 
     @Override
     public final boolean equals(Object o) {

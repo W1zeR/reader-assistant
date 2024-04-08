@@ -1,12 +1,19 @@
 package com.w1zer.controller;
 
+import com.w1zer.entity.Profile;
+import com.w1zer.entity.Quote;
+import com.w1zer.entity.Tag;
 import com.w1zer.payload.QuoteRequest;
 import com.w1zer.service.QuoteService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Set;
 
 import static com.w1zer.constants.ValidationConstants.ID_POSITIVE_MESSAGE;
 
@@ -20,38 +27,6 @@ public class QuoteController {
         this.quoteService = quoteService;
     }
 
-//    @GetMapping("/quotes")
-//    public List<QuoteResponse> getAll() {
-//        return quoteService.getAll();
-//    }
-//
-//    @GetMapping("/quotes/{id}")
-//    public QuoteResponse getById(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
-//        return quoteService.getById(id);
-//    }
-//
-//    @GetMapping("/profiles/{id}/quotes")
-//    public List<QuoteResponse> getByIdProfile(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
-//        return quoteService.getByIdProfile(id);
-//    }
-//
-//    @PostMapping("/quotes")
-//    public QuoteResponse insert(@Valid @RequestBody QuoteRequest quoteRequest) {
-//        return quoteService.insert(quoteRequest);
-//    }
-//
-//    @DeleteMapping("/quotes/{id}")
-//    public void delete(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
-//        quoteService.delete(id);
-//    }
-//
-//    @PutMapping("/quotes/{id}")
-//    public QuoteResponse update(
-//            @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id,
-//            @Valid @RequestBody QuoteRequest quoteRequest) {
-//        return quoteService.update(id, quoteRequest);
-//    }
-
     @PutMapping("/{id}/markAsPending")
     public void markAsPending(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
         quoteService.markAsPending(id);
@@ -61,5 +36,66 @@ public class QuoteController {
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
     public void markAsPublic(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
         quoteService.markAsPublic(id);
+    }
+
+    @PatchMapping("/{id}")
+    public Quote update(@Valid @RequestBody QuoteRequest quoteRequest,
+                        @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
+        return quoteService.update(quoteRequest, id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
+        quoteService.delete(id);
+    }
+
+    @Operation(summary = "Get quotes with public status")
+    @GetMapping
+    public List<Quote> findAllPublic() {
+        return quoteService.findAllPublic();
+    }
+
+    @GetMapping("/{id}")
+    public Quote findById(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
+        return quoteService.findById(id);
+    }
+
+    @PostMapping
+    public void create(@Valid @RequestBody QuoteRequest quoteRequest) {
+        quoteService.create(quoteRequest);
+    }
+
+    @GetMapping("/{id}/whoLiked")
+    public Set<Profile> getWhoLiked(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
+        return quoteService.findById(id).getWhoLiked();
+    }
+
+    @PutMapping("/{quoteId}/whoLiked/{profileId}")
+    public void addLikedProfile(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long quoteId,
+                                @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long profileId) {
+        quoteService.addLikedProfile(quoteId, profileId);
+    }
+
+    @DeleteMapping("/{quoteId}/whoLiked/{profileId}")
+    public void removeLikedProfile(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long quoteId,
+                                   @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long profileId) {
+        quoteService.removeLikedProfile(quoteId, profileId);
+    }
+
+    @GetMapping("/{id}/tags")
+    public Set<Tag> getTags(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
+        return quoteService.findById(id).getTags();
+    }
+
+    @PutMapping("/{quoteId}/tags/{tagId}")
+    public void addTag(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long quoteId,
+                       @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long tagId) {
+        quoteService.addTag(quoteId, tagId);
+    }
+
+    @DeleteMapping("/{quoteId}/tags/{tagId}")
+    public void removeTag(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long quoteId,
+                          @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long tagId) {
+        quoteService.removeTag(quoteId, tagId);
     }
 }

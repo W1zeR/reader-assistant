@@ -1,5 +1,6 @@
 package com.w1zer.payload;
 
+@SuppressWarnings("unused")
 public record QuoteResponse(
         Long id,
 

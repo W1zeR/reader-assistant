@@ -3,6 +3,7 @@ package com.w1zer.payload;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
+@SuppressWarnings("unused")
 public record LogoutRequest(
         @Valid
         @NotNull(message = DEVICE_INFO_NOT_NULL_MESSAGE)

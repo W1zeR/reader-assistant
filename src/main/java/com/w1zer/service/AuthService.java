@@ -24,7 +24,7 @@ public class AuthService {
     private static final String PROFILE_WITH_EMAIL_NOT_FOUND = "Profile with email '%s' not found";
     private static final String PROFILE_WITH_EMAIL_ALREADY_EXISTS = "Profile with email '%s' already exists";
     private static final String PROFILE_WITH_LOGIN_ALREADY_EXISTS = "Profile with login '%s' already exists";
-    public static final String PASSWORD_MISMATCH = "Password mismatch";
+    private static final String PASSWORD_MISMATCH = "Password mismatch";
     private final AuthenticationManager authenticationManager;
     private final ProfileRepository profileRepository;
     private final PasswordEncoder passwordEncoder;
@@ -49,20 +49,28 @@ public class AuthService {
         this.roleService = roleService;
     }
 
-    public AuthResponse login(LoginRequest loginRequest) {
-        String email = loginRequest.email().toLowerCase();
-        Profile profile = profileRepository.findByEmail(email).orElseThrow(
+    private Profile findByEmail(String email) {
+        return profileRepository.findByEmail(email).orElseThrow(
                 () -> new NotFoundException(PROFILE_WITH_EMAIL_NOT_FOUND.formatted(email))
         );
+    }
+
+    private void deleteRefreshTokenIfPresent(Long idProfile) {
+        userDeviceService.findByProfileId(idProfile)
+                .map(UserDevice::getRefreshToken)
+                .map(RefreshToken::getId)
+                .ifPresent(refreshTokenService::deleteById);
+    }
+
+    public AuthResponse login(LoginRequest loginRequest) {
+        String email = loginRequest.email().toLowerCase();
+        Profile profile = findByEmail(email);
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(email, loginRequest.password())
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtProvider.generateJwtFromAuth(authentication);
-        userDeviceService.findByProfileId(profile.getId())
-                .map(UserDevice::getRefreshToken)
-                .map(RefreshToken::getId)
-                .ifPresent(refreshTokenService::deleteById);
+        deleteRefreshTokenIfPresent(profile.getId());
         UserDevice userDevice = userDeviceService.createUserDevice(loginRequest.deviceInfo());
         RefreshToken refreshToken = refreshTokenService.createRefreshToken();
         userDevice.setProfile(profile);
@@ -73,7 +81,7 @@ public class AuthService {
     }
 
     public void register(RegisterRequest registerRequest) {
-        if (!registerRequest.password().equals(registerRequest.passwordConfirmation())){
+        if (!registerRequest.password().equals(registerRequest.passwordConfirmation())) {
             throw new AuthException(PASSWORD_MISMATCH);
         }
         String email = registerRequest.email().toLowerCase();
@@ -83,7 +91,7 @@ public class AuthService {
         profileRepository.save(createProfile(login, email, registerRequest.password(), registerRequest.roleId()));
     }
 
-    private Profile createProfile(String login, String email, String password, Long roleId){
+    private Profile createProfile(String login, String email, String password, Long roleId) {
         Profile profile = new Profile();
         profile.setLogin(login);
         profile.setEmail(email);

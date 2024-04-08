@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Size;
 
 import static com.w1zer.constants.ValidationConstants.*;
 
+@SuppressWarnings("unused")
 public record ChangePasswordRequest(
         @NotBlank(message = PASSWORD_NOT_BLANK_MESSAGE)
         @Size(min = PASSWORD_MIN_SIZE, max = PASSWORD_MAX_SIZE, message = PASSWORD_SIZE_MESSAGE)

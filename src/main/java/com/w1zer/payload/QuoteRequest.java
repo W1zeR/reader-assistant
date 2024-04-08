@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Size;
 
 import static com.w1zer.constants.EntityConstants.CONTENT_LENGTH;
 
+@SuppressWarnings("unused")
 public record QuoteRequest(
         @NotBlankIfPresent
         @Size(max = CONTENT_LENGTH)

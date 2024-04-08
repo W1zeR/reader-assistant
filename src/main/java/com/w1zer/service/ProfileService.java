@@ -1,10 +1,7 @@
 package com.w1zer.service;
 
 import com.w1zer.entity.*;
-import com.w1zer.exception.ChangePasswordException;
-import com.w1zer.exception.NotFoundException;
-import com.w1zer.exception.ProfileRolesException;
-import com.w1zer.exception.UserLogoutException;
+import com.w1zer.exception.*;
 import com.w1zer.payload.ApiResponse;
 import com.w1zer.payload.ChangePasswordRequest;
 import com.w1zer.payload.LogoutRequest;
@@ -14,15 +11,11 @@ import com.w1zer.repository.QuoteRepository;
 import com.w1zer.repository.TagRepository;
 import com.w1zer.security.OnUserLogoutSuccessEvent;
 import com.w1zer.security.UserPrincipal;
-import jakarta.validation.constraints.Positive;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Set;
-
-import static com.w1zer.constants.ValidationConstants.ID_POSITIVE_MESSAGE;
 
 @Service
 public class ProfileService {
@@ -35,6 +28,8 @@ public class ProfileService {
     private static final String PASSWORD_CHANGED_SUCCESSFULLY = "Password changed successfully";
     private static final String QUOTE_WITH_ID_NOT_FOUND = "Quote with id '%d' not found";
     private static final String TAG_WITH_ID_NOT_FOUND = "Tag with id %s not found";
+    private static final String PROFILE_WITH_EMAIL_ALREADY_EXISTS = "Profile with email '%s' already exists";
+    private static final String PROFILE_WITH_LOGIN_ALREADY_EXISTS = "Profile with login '%s' already exists";
 
     private final ProfileRepository profileRepository;
     private final QuoteRepository quoteRepository;
@@ -118,50 +113,66 @@ public class ProfileService {
     public Profile update(ProfileRequest profileRequest, Long id) {
         Profile profile = findById(id);
         if (profileRequest.email() != null) {
-            profile.setEmail(profileRequest.email().toLowerCase());
+            String email = profileRequest.email().toLowerCase();
+            validateEmail(email);
+            profile.setEmail(email);
         }
         if (profileRequest.login() != null) {
-            profile.setLogin(profileRequest.login().toLowerCase());
+            String login = profileRequest.login().toLowerCase();
+            validateLogin(login);
+            profile.setLogin(login);
         }
         return profileRepository.save(profile);
+    }
+
+    private void validateEmail(String email) {
+        if (profileRepository.existsByEmail(email)) {
+            throw new ProfileAlreadyExistsException(PROFILE_WITH_EMAIL_ALREADY_EXISTS.formatted(email));
+        }
+    }
+
+    private void validateLogin(String login) {
+        if (profileRepository.existsByLogin(login)) {
+            throw new ProfileAlreadyExistsException(PROFILE_WITH_LOGIN_ALREADY_EXISTS.formatted(login));
+        }
     }
 
     public void delete(Long id) {
         profileRepository.deleteById(id);
     }
 
-    public List<Profile> findAll(){
+    public List<Profile> findAll() {
         return profileRepository.findAll();
     }
 
-    private Quote findQuoteById(Long id){
+    private Quote findQuoteById(Long id) {
         return quoteRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(QUOTE_WITH_ID_NOT_FOUND.formatted(id))
         );
     }
 
-    public void addQuote(Long profileId, Long quoteId){
+    public void addQuote(Long profileId, Long quoteId) {
         Profile profile = findById(profileId);
         Quote quote = findQuoteById(quoteId);
         profile.addQuote(quote);
         profileRepository.save(profile);
     }
 
-    public void removeQuote(Long profileId, Long quoteId){
+    public void removeQuote(Long profileId, Long quoteId) {
         Profile profile = findById(profileId);
         Quote quote = findQuoteById(quoteId);
         profile.removeQuote(quote);
         profileRepository.save(profile);
     }
 
-    public void addLikedQuote(Long profileId, Long quoteId){
+    public void addLikedQuote(Long profileId, Long quoteId) {
         Profile profile = findById(profileId);
         Quote quote = findQuoteById(quoteId);
         profile.addLikedQuote(quote);
         profileRepository.save(profile);
     }
 
-    public void removeLikedQuote(Long profileId, Long quoteId){
+    public void removeLikedQuote(Long profileId, Long quoteId) {
         Profile profile = findById(profileId);
         Quote quote = findQuoteById(quoteId);
         profile.removeLikedQuote(quote);
@@ -174,14 +185,14 @@ public class ProfileService {
         );
     }
 
-    public void addInterestingTag(Long profileId, Long tagId){
+    public void addInterestingTag(Long profileId, Long tagId) {
         Profile profile = findById(profileId);
         Tag tag = findTagById(tagId);
         profile.addInterestingTag(tag);
         profileRepository.save(profile);
     }
 
-    public void removeInterestingTag(Long profileId, Long tagId){
+    public void removeInterestingTag(Long profileId, Long tagId) {
         Profile profile = findById(profileId);
         Tag tag = findTagById(tagId);
         profile.removeInterestingTag(tag);

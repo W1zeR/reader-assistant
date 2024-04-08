@@ -41,7 +41,6 @@ public class Quote {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(nullable = false)
     @ToString.Exclude
-    @JsonIgnore
     private QuoteStatus quoteStatus;
 
     @ManyToMany(mappedBy = "likedQuotes")
@@ -61,9 +60,19 @@ public class Quote {
         profile.getLikedQuotes().add(this);
     }
 
-    public void removeLikedQuote(Profile profile) {
+    public void removeLikedProfile(Profile profile) {
         this.whoLiked.remove(profile);
         profile.getLikedQuotes().remove(this);
+    }
+
+    public void addTag(Tag tag) {
+        this.tags.add(tag);
+        tag.getQuotes().add(this);
+    }
+
+    public void removeTag(Tag tag) {
+        this.tags.remove(tag);
+        tag.getQuotes().remove(this);
     }
 
     @Override

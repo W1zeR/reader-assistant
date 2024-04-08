@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Size;
 import static com.w1zer.constants.EntityConstants.EMAIL_LENGTH;
 import static com.w1zer.constants.ValidationConstants.*;
 
+@SuppressWarnings("unused")
 public record LoginRequest(
         @NotBlank(message = EMAIL_NOT_BLANK_MESSAGE)
         @Size(min = EMAIL_MIN_SIZE, max = EMAIL_LENGTH, message = EMAIL_SIZE_MESSAGE)

@@ -38,6 +38,16 @@ public class Book {
     @JsonIgnore
     private List<Quote> quotes = new ArrayList<>();
 
+    public void addAuthor(Author author) {
+        this.authors.add(author);
+        author.getBooks().add(this);
+    }
+
+    public void removeAuthor(Author author) {
+        this.authors.remove(author);
+        author.getBooks().remove(this);
+    }
+
     public void addQuote(Quote quote) {
         this.quotes.add(quote);
         quote.setBook(this);

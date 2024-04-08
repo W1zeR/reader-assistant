@@ -7,6 +7,7 @@ import java.time.LocalDate;
 
 import static com.w1zer.constants.EntityConstants.DESCRIPTION_LENGTH;
 
+@SuppressWarnings("unused")
 public record AuthorRequest(
         @NotBlankIfPresent
         String surname,

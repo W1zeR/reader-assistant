@@ -35,6 +35,16 @@ public class Tag {
     @JsonIgnore
     private Set<Profile> whoInterested = new HashSet<>();
 
+    public void addQuote(Quote quote) {
+        this.quotes.add(quote);
+        quote.getTags().add(this);
+    }
+
+    public void removeQuote(Quote quote) {
+        this.quotes.remove(quote);
+        quote.getTags().remove(this);
+    }
+
     public void addInterestedProfile(Profile profile) {
         this.whoInterested.add(profile);
         profile.getInterestingTags().add(this);

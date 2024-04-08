@@ -16,6 +16,4 @@ public interface QuoteRepository extends JpaRepository<Quote, Long> {
 
     @NonNull
     Optional<Quote> findById(@NonNull Long id);
-
-    List<Quote> findByProfileId(Long idProfile);
 }
