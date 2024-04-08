@@ -30,7 +30,6 @@ public class Book {
 
     @ManyToMany(mappedBy = "books")
     @ToString.Exclude
-    @JsonIgnore
     private Set<Author> authors = new HashSet<>();
 
     @OneToMany(mappedBy = "book", cascade = {CascadeType.PERSIST, CascadeType.MERGE})

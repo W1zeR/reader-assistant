@@ -29,7 +29,6 @@ public class Quote {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(nullable = false)
     @ToString.Exclude
-    @JsonIgnore
     private Book book;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
