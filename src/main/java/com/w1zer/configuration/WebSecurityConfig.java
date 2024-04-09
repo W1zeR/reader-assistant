@@ -13,6 +13,7 @@ import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -34,6 +35,7 @@ public class WebSecurityConfig {
             "/configuration/security", "/swagger-ui/**", "/webjars/**", "/swagger-ui.html"};
     private static final String AUTH_ALL = "/api/auth/**";
     private static final String PROFILES = "/api/profiles";
+    public static final String ALL = "/**";
 
     private final CustomUserDetailsService customUserDetailsService;
     private final JwtAuthEntryPoint jwtAuthEntryPoint;
@@ -66,12 +68,14 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
+                .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> req
                         .requestMatchers(WHITE_LIST_URL).permitAll()
                         .requestMatchers(AUTH_ALL).permitAll()
                         .requestMatchers(HttpMethod.POST, PROFILES).permitAll()
                         .requestMatchers(HttpMethod.GET, PROFILES).permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, ALL).permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(conf -> conf.authenticationEntryPoint(jwtAuthEntryPoint))

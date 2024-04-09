@@ -23,6 +23,7 @@ import static com.w1zer.constants.ValidationConstants.ID_POSITIVE_MESSAGE;
 
 @RestController
 @Validated
+@CrossOrigin
 @RequestMapping("/api/profiles")
 public class ProfileController {
 
