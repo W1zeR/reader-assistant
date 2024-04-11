@@ -2,10 +2,8 @@ package com.w1zer.service;
 
 import com.w1zer.entity.*;
 import com.w1zer.exception.*;
-import com.w1zer.payload.ApiResponse;
-import com.w1zer.payload.ChangePasswordRequest;
-import com.w1zer.payload.LogoutRequest;
-import com.w1zer.payload.ProfileRequest;
+import com.w1zer.mapping.QuoteMapping;
+import com.w1zer.payload.*;
 import com.w1zer.repository.ProfileRepository;
 import com.w1zer.repository.QuoteRepository;
 import com.w1zer.repository.TagRepository;
@@ -197,5 +195,13 @@ public class ProfileService {
         Tag tag = findTagById(tagId);
         profile.removeInterestingTag(tag);
         profileRepository.save(profile);
+    }
+
+    public List<QuoteResponse> getQuotes(Long id) {
+        return QuoteMapping.mapToQuoteResponse(findById(id).getQuotes());
+    }
+
+    public Set<QuoteResponse> getLikedQuotes(Long id) {
+        return QuoteMapping.mapToQuoteResponse(findById(id).getLikedQuotes());
     }
 }

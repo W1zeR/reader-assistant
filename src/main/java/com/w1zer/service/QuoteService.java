@@ -2,17 +2,16 @@ package com.w1zer.service;
 
 import com.w1zer.entity.*;
 import com.w1zer.exception.NotFoundException;
-import com.w1zer.payload.BookAuthor;
-import com.w1zer.payload.QuoteBook;
+import com.w1zer.mapping.QuoteMapping;
 import com.w1zer.payload.QuoteRequest;
 import com.w1zer.payload.QuoteResponse;
 import com.w1zer.repository.ProfileRepository;
 import com.w1zer.repository.QuoteRepository;
 import com.w1zer.repository.TagRepository;
+import com.w1zer.security.UserPrincipal;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -57,12 +56,12 @@ public class QuoteService {
     }
 
     public QuoteResponse findQuoteResponseById(Long id) {
-        return mapToQuoteResponse(quoteRepository.findById(id).orElseThrow(
+        return QuoteMapping.mapToQuoteResponse(quoteRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(QUOTE_WITH_ID_NOT_FOUND.formatted(id))
         ));
     }
 
-    public Quote findById(Long id){
+    public Quote findById(Long id) {
         return quoteRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(QUOTE_WITH_ID_NOT_FOUND.formatted(id))
         );
@@ -77,23 +76,25 @@ public class QuoteService {
         if (QuoteRequest.content() != null) {
             quote.setContent(QuoteRequest.content());
         }
-        return mapToQuoteResponse(quoteRepository.save(quote));
+        return QuoteMapping.mapToQuoteResponse(quoteRepository.save(quote));
     }
 
     public List<QuoteResponse> findAllPublic() {
         QuoteStatus pub = quoteStatusService.findByName(QuoteStatusName.PUBLIC);
         return quoteRepository.findAll()
                 .stream()
-                .map(this::mapToQuoteResponse)
+                .map(QuoteMapping::mapToQuoteResponse)
                 .filter(quote -> quote.quoteStatus().equals(pub))
                 .collect(Collectors.toList());
     }
 
-    public void create(QuoteRequest quoteRequest) {
+    public void create(QuoteRequest quoteRequest, UserPrincipal userPrincipal) {
         Quote quote = new Quote();
         quote.setContent(quoteRequest.content());
         QuoteStatus pri = quoteStatusService.findByName(QuoteStatusName.PRIVATE);
         quote.setQuoteStatus(pri);
+        Profile profile = findByProfileId(userPrincipal.getId());
+        quote.setProfile(profile);
         quoteRepository.save(quote);
     }
 
@@ -135,15 +136,5 @@ public class QuoteService {
         Tag tag = findByTagId(tagId);
         quote.removeTag(tag);
         quoteRepository.save(quote);
-    }
-
-    private QuoteResponse mapToQuoteResponse(Quote quote){
-        Book book = quote.getBook();
-        Set<BookAuthor> bookAuthors = book.getAuthors()
-                .stream()
-                .map(a -> new BookAuthor(a.getId(), a.getSurname(), a.getName(), a.getPatronymic()))
-                .collect(Collectors.toSet());
-        QuoteBook quoteBook = new QuoteBook(book.getId(), book.getTitle(), bookAuthors);
-        return new QuoteResponse(quote.getId(), quote.getContent(), quoteBook, quote.getQuoteStatus());
     }
 }

@@ -2,11 +2,11 @@ package com.w1zer.payload;
 
 import java.util.Set;
 
-public record QuoteBook(
+public record QuoteBookResponse(
         Long id,
 
         String title,
 
-        Set<BookAuthor> authors
+        Set<BookAuthorResponse> authors
 ) {
 }

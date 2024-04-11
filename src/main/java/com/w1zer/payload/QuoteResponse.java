@@ -8,7 +8,7 @@ public record QuoteResponse(
 
         String content,
 
-        QuoteBook book,
+        QuoteBookResponse book,
 
         QuoteStatus quoteStatus
 ) {

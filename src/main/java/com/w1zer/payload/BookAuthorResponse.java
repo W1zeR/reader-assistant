@@ -1,6 +1,6 @@
 package com.w1zer.payload;
 
-public record BookAuthor(
+public record BookAuthorResponse(
         Long id,
 
         String surname,

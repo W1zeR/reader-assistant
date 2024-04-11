@@ -1,6 +1,5 @@
 package com.w1zer.configuration;
 
-import com.w1zer.security.JwtAuthEntryPoint;
 import com.w1zer.security.JwtRequestFilter;
 import com.w1zer.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
@@ -34,16 +33,15 @@ public class WebSecurityConfig {
             "/v3/api-docs/**", "/swagger-resources", "/swagger-resources/**", "/configuration/ui",
             "/configuration/security", "/swagger-ui/**", "/webjars/**", "/swagger-ui.html"};
     private static final String AUTH_ALL = "/api/auth/**";
-    private static final String PROFILES = "/api/profiles";
+    private static final String QUOTES = "/api/quotes";
     public static final String ALL = "/**";
 
     private final CustomUserDetailsService customUserDetailsService;
-    private final JwtAuthEntryPoint jwtAuthEntryPoint;
     private final JwtRequestFilter jwtRequestFilter;
 
-    public WebSecurityConfig(CustomUserDetailsService customUserDetailsService, JwtAuthEntryPoint jwtAuthEntryPoint, JwtRequestFilter jwtRequestFilter) {
+    public WebSecurityConfig(CustomUserDetailsService customUserDetailsService,
+                             JwtRequestFilter jwtRequestFilter) {
         this.customUserDetailsService = customUserDetailsService;
-        this.jwtAuthEntryPoint = jwtAuthEntryPoint;
         this.jwtRequestFilter = jwtRequestFilter;
     }
 
@@ -73,12 +71,10 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(req -> req
                         .requestMatchers(WHITE_LIST_URL).permitAll()
                         .requestMatchers(AUTH_ALL).permitAll()
-                        .requestMatchers(HttpMethod.POST, PROFILES).permitAll()
-                        .requestMatchers(HttpMethod.GET, PROFILES).permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, ALL).permitAll()
+                        .requestMatchers(HttpMethod.GET, QUOTES).permitAll()
                         .anyRequest().authenticated()
                 )
-                .exceptionHandling(conf -> conf.authenticationEntryPoint(jwtAuthEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)

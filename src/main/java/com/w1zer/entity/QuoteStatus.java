@@ -32,8 +32,8 @@ public class QuoteStatus {
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ?
                 ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Role role = (Role) o;
-        return getId() != null && Objects.equals(getId(), role.getId());
+        QuoteStatus quoteStatus = (QuoteStatus) o;
+        return getId() != null && Objects.equals(getId(), quoteStatus.getId());
     }
 
     @Override

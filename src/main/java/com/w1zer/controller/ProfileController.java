@@ -1,12 +1,8 @@
 package com.w1zer.controller;
 
 import com.w1zer.entity.Profile;
-import com.w1zer.entity.Quote;
 import com.w1zer.entity.Tag;
-import com.w1zer.payload.ApiResponse;
-import com.w1zer.payload.ChangePasswordRequest;
-import com.w1zer.payload.LogoutRequest;
-import com.w1zer.payload.ProfileRequest;
+import com.w1zer.payload.*;
 import com.w1zer.security.CurrentUser;
 import com.w1zer.security.UserPrincipal;
 import com.w1zer.service.ProfileService;
@@ -83,8 +79,8 @@ public class ProfileController {
     }
 
     @GetMapping("/{id}/quotes")
-    public List<Quote> getQuotes(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
-        return profileService.findById(id).getQuotes();
+    public List<QuoteResponse> getQuotes(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
+        return profileService.getQuotes(id);
     }
 
     @PutMapping("/{profileId}/quotes/{quoteId}")
@@ -100,8 +96,8 @@ public class ProfileController {
     }
 
     @GetMapping("/{id}/likedQuotes")
-    public Set<Quote> getLikedQuotes(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
-        return profileService.findById(id).getLikedQuotes();
+    public Set<QuoteResponse> getLikedQuotes(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
+        return profileService.getLikedQuotes(id);
     }
 
     @PutMapping("/{profileId}/likedQuotes/{quoteId}")

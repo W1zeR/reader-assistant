@@ -4,6 +4,8 @@ import com.w1zer.entity.Profile;
 import com.w1zer.entity.Tag;
 import com.w1zer.payload.QuoteRequest;
 import com.w1zer.payload.QuoteResponse;
+import com.w1zer.security.CurrentUser;
+import com.w1zer.security.UserPrincipal;
 import com.w1zer.service.QuoteService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -41,7 +43,7 @@ public class QuoteController {
 
     @PatchMapping("/{id}")
     public QuoteResponse update(@Valid @RequestBody QuoteRequest quoteRequest,
-                        @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
+                                @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
         return quoteService.update(quoteRequest, id);
     }
 
@@ -62,8 +64,9 @@ public class QuoteController {
     }
 
     @PostMapping
-    public void create(@Valid @RequestBody QuoteRequest quoteRequest) {
-        quoteService.create(quoteRequest);
+    public void create(@Valid @RequestBody QuoteRequest quoteRequest,
+                       @CurrentUser UserPrincipal userPrincipal) {
+        quoteService.create(quoteRequest, userPrincipal);
     }
 
     @GetMapping("/{id}/whoLiked")
