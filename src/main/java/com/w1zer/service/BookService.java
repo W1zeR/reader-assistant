@@ -4,7 +4,9 @@ import com.w1zer.entity.Author;
 import com.w1zer.entity.Book;
 import com.w1zer.entity.Quote;
 import com.w1zer.exception.NotFoundException;
+import com.w1zer.mapping.QuoteMapping;
 import com.w1zer.payload.BookRequest;
+import com.w1zer.payload.QuoteResponse;
 import com.w1zer.repository.AuthorRepository;
 import com.w1zer.repository.BookRepository;
 import com.w1zer.repository.QuoteRepository;
@@ -102,5 +104,9 @@ public class BookService {
         Quote quote = findQuoteById(quoteId);
         book.removeQuote(quote);
         bookRepository.save(book);
+    }
+
+    public List<QuoteResponse> getQuotes(Long id) {
+        return QuoteMapping.mapToQuoteResponse(findById(id).getQuotes());
     }
 }

@@ -2,10 +2,13 @@ package com.w1zer.service;
 
 import com.w1zer.entity.*;
 import com.w1zer.exception.NotFoundException;
+import com.w1zer.mapping.QuoteMapping;
 import com.w1zer.payload.QuoteRequest;
+import com.w1zer.payload.QuoteResponse;
 import com.w1zer.repository.ProfileRepository;
 import com.w1zer.repository.QuoteRepository;
 import com.w1zer.repository.TagRepository;
+import com.w1zer.security.UserPrincipal;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -52,6 +55,12 @@ public class QuoteService {
         quoteRepository.save(quote);
     }
 
+    public QuoteResponse findQuoteResponseById(Long id) {
+        return QuoteMapping.mapToQuoteResponse(quoteRepository.findById(id).orElseThrow(
+                () -> new NotFoundException(QUOTE_WITH_ID_NOT_FOUND.formatted(id))
+        ));
+    }
+
     public Quote findById(Long id) {
         return quoteRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(QUOTE_WITH_ID_NOT_FOUND.formatted(id))
@@ -62,27 +71,30 @@ public class QuoteService {
         quoteRepository.deleteById(id);
     }
 
-    public Quote update(QuoteRequest QuoteRequest, Long id) {
+    public QuoteResponse update(QuoteRequest QuoteRequest, Long id) {
         Quote quote = findById(id);
         if (QuoteRequest.content() != null) {
             quote.setContent(QuoteRequest.content());
         }
-        return quoteRepository.save(quote);
+        return QuoteMapping.mapToQuoteResponse(quoteRepository.save(quote));
     }
 
-    public List<Quote> findAllPublic() {
+    public List<QuoteResponse> findAllPublic() {
         QuoteStatus pub = quoteStatusService.findByName(QuoteStatusName.PUBLIC);
         return quoteRepository.findAll()
                 .stream()
-                .filter(quote -> quote.getQuoteStatus().equals(pub))
+                .map(QuoteMapping::mapToQuoteResponse)
+                .filter(quote -> quote.quoteStatus().equals(pub))
                 .collect(Collectors.toList());
     }
 
-    public void create(QuoteRequest quoteRequest) {
+    public void create(QuoteRequest quoteRequest, UserPrincipal userPrincipal) {
         Quote quote = new Quote();
         quote.setContent(quoteRequest.content());
         QuoteStatus pri = quoteStatusService.findByName(QuoteStatusName.PRIVATE);
         quote.setQuoteStatus(pri);
+        Profile profile = findByProfileId(userPrincipal.getId());
+        quote.setProfile(profile);
         quoteRepository.save(quote);
     }
 

@@ -26,8 +26,7 @@ public class Quote {
     @Column(length = CONTENT_LENGTH, nullable = false)
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     private Book book;
 
@@ -37,7 +36,7 @@ public class Quote {
     @JsonIgnore
     private Profile profile;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(nullable = false)
     @ToString.Exclude
     private QuoteStatus quoteStatus;

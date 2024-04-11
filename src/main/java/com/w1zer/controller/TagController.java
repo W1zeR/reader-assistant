@@ -1,8 +1,8 @@
 package com.w1zer.controller;
 
 import com.w1zer.entity.Profile;
-import com.w1zer.entity.Quote;
 import com.w1zer.entity.Tag;
+import com.w1zer.payload.QuoteResponse;
 import com.w1zer.payload.TagRequest;
 import com.w1zer.service.TagService;
 import jakarta.validation.Valid;
@@ -17,6 +17,7 @@ import static com.w1zer.constants.ValidationConstants.ID_POSITIVE_MESSAGE;
 
 @RestController
 @Validated
+@CrossOrigin
 @RequestMapping("/api/tags")
 public class TagController {
     private final TagService tagService;
@@ -52,8 +53,8 @@ public class TagController {
     }
 
     @GetMapping("/{id}/quotes")
-    public Set<Quote> getQuotes(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
-        return tagService.findById(id).getQuotes();
+    public Set<QuoteResponse> getQuotes(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
+        return tagService.getQuotes(id);
     }
 
     @PutMapping("/{tagId}/quotes/{quoteId}")

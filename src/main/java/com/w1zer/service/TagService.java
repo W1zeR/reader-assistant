@@ -5,6 +5,8 @@ import com.w1zer.entity.Quote;
 import com.w1zer.entity.Tag;
 import com.w1zer.exception.NotFoundException;
 import com.w1zer.exception.ProfileAlreadyExistsException;
+import com.w1zer.mapping.QuoteMapping;
+import com.w1zer.payload.QuoteResponse;
 import com.w1zer.payload.TagRequest;
 import com.w1zer.repository.ProfileRepository;
 import com.w1zer.repository.QuoteRepository;
@@ -12,6 +14,7 @@ import com.w1zer.repository.TagRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class TagService {
@@ -107,5 +110,9 @@ public class TagService {
         Profile profile = findProfileById(profileId);
         tag.removeInterestedProfile(profile);
         tagRepository.save(tag);
+    }
+
+    public Set<QuoteResponse> getQuotes(Long id) {
+        return QuoteMapping.mapToQuoteResponse(findById(id).getQuotes());
     }
 }

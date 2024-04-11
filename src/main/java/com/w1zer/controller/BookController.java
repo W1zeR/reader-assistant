@@ -2,8 +2,8 @@ package com.w1zer.controller;
 
 import com.w1zer.entity.Author;
 import com.w1zer.entity.Book;
-import com.w1zer.entity.Quote;
 import com.w1zer.payload.BookRequest;
+import com.w1zer.payload.QuoteResponse;
 import com.w1zer.service.BookService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
@@ -17,6 +17,7 @@ import static com.w1zer.constants.ValidationConstants.ID_POSITIVE_MESSAGE;
 
 @RestController
 @Validated
+@CrossOrigin
 @RequestMapping("/api/books")
 public class BookController {
     private final BookService bookService;
@@ -69,8 +70,8 @@ public class BookController {
     }
 
     @GetMapping("/{id}/quotes")
-    public List<Quote> getQuotes(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
-        return bookService.findById(id).getQuotes();
+    public List<QuoteResponse> getQuotes(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
+        return bookService.getQuotes(id);
     }
 
     @PutMapping("/{bookId}/quotes/{quoteId}")

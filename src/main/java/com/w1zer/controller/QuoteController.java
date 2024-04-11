@@ -1,9 +1,11 @@
 package com.w1zer.controller;
 
 import com.w1zer.entity.Profile;
-import com.w1zer.entity.Quote;
 import com.w1zer.entity.Tag;
 import com.w1zer.payload.QuoteRequest;
+import com.w1zer.payload.QuoteResponse;
+import com.w1zer.security.CurrentUser;
+import com.w1zer.security.UserPrincipal;
 import com.w1zer.service.QuoteService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -19,6 +21,7 @@ import static com.w1zer.constants.ValidationConstants.ID_POSITIVE_MESSAGE;
 
 @RestController
 @Validated
+@CrossOrigin
 @RequestMapping("/api/quotes")
 public class QuoteController {
     private final QuoteService quoteService;
@@ -39,8 +42,8 @@ public class QuoteController {
     }
 
     @PatchMapping("/{id}")
-    public Quote update(@Valid @RequestBody QuoteRequest quoteRequest,
-                        @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
+    public QuoteResponse update(@Valid @RequestBody QuoteRequest quoteRequest,
+                                @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
         return quoteService.update(quoteRequest, id);
     }
 
@@ -51,18 +54,19 @@ public class QuoteController {
 
     @Operation(summary = "Get quotes with public status")
     @GetMapping
-    public List<Quote> findAllPublic() {
+    public List<QuoteResponse> findAllPublic() {
         return quoteService.findAllPublic();
     }
 
     @GetMapping("/{id}")
-    public Quote findById(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
-        return quoteService.findById(id);
+    public QuoteResponse findById(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
+        return quoteService.findQuoteResponseById(id);
     }
 
     @PostMapping
-    public void create(@Valid @RequestBody QuoteRequest quoteRequest) {
-        quoteService.create(quoteRequest);
+    public void create(@Valid @RequestBody QuoteRequest quoteRequest,
+                       @CurrentUser UserPrincipal userPrincipal) {
+        quoteService.create(quoteRequest, userPrincipal);
     }
 
     @GetMapping("/{id}/whoLiked")
