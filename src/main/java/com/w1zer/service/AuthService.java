@@ -3,7 +3,6 @@ package com.w1zer.service;
 import com.w1zer.entity.Profile;
 import com.w1zer.entity.RefreshToken;
 import com.w1zer.entity.UserDevice;
-import com.w1zer.exception.AuthException;
 import com.w1zer.exception.NotFoundException;
 import com.w1zer.exception.ProfileAlreadyExistsException;
 import com.w1zer.payload.*;
@@ -24,7 +23,6 @@ public class AuthService {
     private static final String PROFILE_WITH_EMAIL_NOT_FOUND = "Profile with email '%s' not found";
     private static final String PROFILE_WITH_EMAIL_ALREADY_EXISTS = "Profile with email '%s' already exists";
     private static final String PROFILE_WITH_LOGIN_ALREADY_EXISTS = "Profile with login '%s' already exists";
-    private static final String PASSWORD_MISMATCH = "Password mismatch";
     private final AuthenticationManager authenticationManager;
     private final ProfileRepository profileRepository;
     private final PasswordEncoder passwordEncoder;
@@ -81,9 +79,6 @@ public class AuthService {
     }
 
     public void register(RegisterRequest registerRequest) {
-        if (!registerRequest.password().equals(registerRequest.passwordConfirmation())) {
-            throw new AuthException(PASSWORD_MISMATCH);
-        }
         String email = registerRequest.email().toLowerCase();
         String login = registerRequest.login().toLowerCase();
         validateLogin(login);
