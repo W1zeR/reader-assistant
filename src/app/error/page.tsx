@@ -15,7 +15,7 @@ const ErrorPage = () => {
         <div className="container">
           <div className="flex flex-wrap -mx-4">
             <div className="w-full px-4">
-              <div className="mx-auto max-w-[530px] text-center">
+              <div className="mx-auto max-w-[800px] text-center">
                 <div className="mx-auto text-center mb-9">
                   <svg
                     className="w-full mx-auto text-center"
@@ -142,17 +142,17 @@ const ErrorPage = () => {
                   </svg>
                 </div>
                 <h3 className="mb-4 text-3xl font-bold text-black dark:text-white sm:text-4xl">
-                  Sorry, the page can’t be found
+                  Извините, страница
+                  не найдена
                 </h3>
                 <p className="mb-10 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed">
-                  The page you were looking for appears to have been moved,
-                  deleted or does not exist.
+                  Страница, которую вы искали, была перемещена, удалена или не существует.
                 </p>
                 <Link
                   href="/"
                   className="px-8 py-3 text-base font-bold text-white duration-300 rounded-md bg-primary shadow-signUp hover:bg-white hover:text-primary md:px-9 lg:px-8 xl:px-9"
                 >
-                  Back to Homepage
+                  Вернуться на главную страницу
                 </Link>
               </div>
             </div>
