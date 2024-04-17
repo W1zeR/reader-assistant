@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import PrivateQuotes from "@/components/PrivateQuotes";
 
 export const metadata: Metadata = {
   title: "Помощник читателя | Приватные цитаты",
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
 const Private = () => {
   return (
     <>
+      <PrivateQuotes/>
     </>
   );
 };

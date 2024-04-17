@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import PendingQuotes from "@/components/PendingQuotes";
 
 export const metadata: Metadata = {
   title: "Помощник читателя | Цитаты в ожидании опубликования",
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
 const Pending = () => {
   return (
     <>
+      <PendingQuotes/>
     </>
   );
 };

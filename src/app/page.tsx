@@ -1,6 +1,6 @@
 import ScrollUp from "@/components/Common/ScrollUp";
 
-import Testimonials from "@/components/Testimonials";
+import Quotes from "@/components/Quotes";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <>
       <ScrollUp />
-      <Testimonials />
+      <Quotes />
     </>
   );
 }
