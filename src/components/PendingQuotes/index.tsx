@@ -3,83 +3,44 @@ import SinglePendingQuote from "./SinglePendingQuote";
 
 const quoteData: Quote[] = [
   {
-    id: 1,
-    content: "Правильного выбора в реальности не существует — есть только сделанный выбор и его последствия.",
-    book: {
-      id: 1,
-      title: "Мне тебя обещали",
-      authors: [
-        {
-          id: 1,
-          surname: "Сафарли",
-          name: "Эльчин",
-          patronymic: null
-        }
-      ]
-    },
-    profile:{
-      id: 1,
-      email: "string@string.ru",
-      login: "sergeylavrov",
-    },
-    status: {
-      id: 1,
-      name: "PUBLIC"
-    },
-    likes: 3,
-    tags: [
-      {
-        id: 1,
-        name: "выбор"
-      },
-      {
-        id: 1,
-        name: "последствия"
-      },
-    ]
-  },
-
-  {
-    id: 2,
-    content: "Разговоры... Странная это все таки вещь. Можно обменяться миллионом слов и... не сказать главного. А можно молча смотреть в глаза и... поведать обо всем.",
+    id: 3,
+    content: "Проще расстаться с человеком, чем с иллюзиями на его счёт.",
     book: {
       id: 2,
-      title: "Тяжело быть младшим",
+      title: "Улыбайся всегда, любовь моя",
       authors: [
         {
           id: 2,
-          surname: "Баштовая",
-          name: "Ксения",
-          patronymic: null
-        },
-        {
-          id: 3,
-          surname: "Иванова",
-          name: "Виктория",
+          surname: "Кетро",
+          name: "Марта",
           patronymic: null
         }
       ]
     },
-    profile:{
-      id: 2,
-      email: "test@test.ru",
-      login: "testuser",
+    profile: {
+      id: 1,
+      email: "string@string.ru",
+      login: "sergeylavrov"
     },
     status: {
-      id: 1,
-      name: "PUBLIC"
+      id: 2,
+      name: "PENDING"
     },
     likes: 1,
     tags: [
       {
         id: 1,
-        name: "разговор"
+        name: "расставание"
       },
       {
-        id: 1,
-        name: "общение"
+        id: 2,
+        name: "отношения"
       },
-    ],
+      {
+        id: 3,
+        name: "иллюзии"
+      }
+    ]
   }
 ];
 

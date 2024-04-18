@@ -1,8 +1,15 @@
 import { Quote } from "@/types/quote";
-import { BookOpenIcon, HeartIcon, PencilIcon, HashtagIcon, UserIcon } from "@heroicons/react/24/outline";
+import {
+  BookOpenIcon,
+  GlobeAltIcon,
+  HashtagIcon,
+  PencilIcon,
+  UserIcon,
+  XMarkIcon
+} from "@heroicons/react/24/outline";
 
 const SinglePendingQuote = ({ quote }: { quote: Quote }) => {
-  const { content, book, likes } = quote;
+  const { content, book } = quote;
 
   return (
     <div className="w-full mt-10">
@@ -36,8 +43,14 @@ const SinglePendingQuote = ({ quote }: { quote: Quote }) => {
             </div>
             <div className="mt-5">
               <button
-                className="bg-blue-500 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-900 text-white font-bold py-2 px-4 rounded-full text-base">
-                <HeartIcon className="h-6 w-6 inline-block" /> {likes}
+                className="bg-blue-500 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-900 text-white py-2 px-4 rounded-full text-base">
+                <GlobeAltIcon className="h-6 w-6 inline-block" /> Опубликовать
+              </button>
+            </div>
+            <div className="mt-5">
+              <button
+                className="bg-red-500 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-900 text-white py-2 px-4 rounded-full text-base">
+                <XMarkIcon className="h-6 w-6 inline-block" /> Отклонить
               </button>
             </div>
           </div>
