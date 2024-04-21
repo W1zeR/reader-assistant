@@ -24,10 +24,6 @@ public record RegisterRequest(
         @Size(min = PASSWORD_MIN_SIZE, max = PASSWORD_MAX_SIZE, message = PASSWORD_SIZE_MESSAGE)
         String password,
 
-        @NotBlank(message = PASSWORD_NOT_BLANK_MESSAGE)
-        @Size(min = PASSWORD_MIN_SIZE, max = PASSWORD_MAX_SIZE, message = PASSWORD_SIZE_MESSAGE)
-        String passwordConfirmation,
-
         @Positive
         Long roleId
 ) {
