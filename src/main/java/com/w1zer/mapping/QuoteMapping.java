@@ -29,10 +29,10 @@ public final class QuoteMapping {
     public static QuoteResponse mapToQuoteResponse(Quote quote) {
         Book book = quote.getBook();
         if (book == null) {
-            return new QuoteResponse(quote.getId(), quote.getContent(), null, quote.getQuoteStatus());
+            return new QuoteResponse(quote.getId(), quote.getContent(), null, quote.getStatus());
         }
         QuoteBookResponse quoteBookResponse = new QuoteBookResponse(book.getId(), book.getTitle(), getBookAuthors(book));
-        return new QuoteResponse(quote.getId(), quote.getContent(), quoteBookResponse, quote.getQuoteStatus());
+        return new QuoteResponse(quote.getId(), quote.getContent(), quoteBookResponse, quote.getStatus());
     }
 
     private static Set<BookAuthorResponse> getBookAuthors(Book book) {

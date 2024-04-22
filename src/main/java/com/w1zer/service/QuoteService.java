@@ -19,6 +19,9 @@ public class QuoteService {
     private static final String QUOTE_WITH_ID_NOT_FOUND = "Quote with id '%d' not found";
     private static final String PROFILE_WITH_ID_NOT_FOUND = "Profile with id %s not found";
     private static final String TAG_WITH_ID_NOT_FOUND = "Tag with id %s not found";
+    public static final String QUOTE_STATUS_MUST_BE_PRIVATE = "Quote status must be private";
+    public static final String QUOTE_STATUS_MUST_BE_PENDING = "Quote status must be pending";
+    public static final String QUOTE_STATUS_MUST_BE_PUBLIC = "Quote status must be public";
 
     private final QuoteRepository quoteRepository;
     private final QuoteStatusService quoteStatusService;
@@ -33,26 +36,39 @@ public class QuoteService {
         this.tagRepository = tagRepository;
     }
 
-    public void markAsPending(Long id) {
+    public void markPrivateAsPending(Long id) {
+        changeQuoteStatus(id, QuoteStatusName.PRIVATE, QuoteStatusName.PENDING);
+    }
+
+    public void markPendingAsPublic(Long id) {
+        changeQuoteStatus(id, QuoteStatusName.PENDING, QuoteStatusName.PUBLIC);
+    }
+
+    public void markPendingAsPrivate(Long id) {
+        changeQuoteStatus(id, QuoteStatusName.PENDING, QuoteStatusName.PRIVATE);
+    }
+
+    public void markPublicAsPrivate(Long id) {
+        changeQuoteStatus(id, QuoteStatusName.PUBLIC, QuoteStatusName.PRIVATE);
+    }
+
+    private void changeQuoteStatus(Long id, QuoteStatusName currentStatusName, QuoteStatusName newStatusName) {
         Quote quote = findById(id);
-        QuoteStatus quoteStatus = quote.getQuoteStatus();
-        if (quoteStatus.getName() != QuoteStatusName.PRIVATE) {
-            throw new RuntimeException("Quote status must be private");
+        if (quote.getStatus().getName() != currentStatusName) {
+            throw new RuntimeException(getExceptionMessageByQuoteStatusName(currentStatusName));
         }
-        QuoteStatus pending = quoteStatusService.findByName(QuoteStatusName.PENDING);
-        quote.setQuoteStatus(pending);
+        quote.setStatus(quoteStatusService.findByName(newStatusName));
         quoteRepository.save(quote);
     }
 
-    public void markAsPublic(Long id) {
-        Quote quote = findById(id);
-        QuoteStatus quoteStatus = quote.getQuoteStatus();
-        if (quoteStatus.getName() != QuoteStatusName.PENDING) {
-            throw new RuntimeException("Quote status must be pending");
+    private String getExceptionMessageByQuoteStatusName(QuoteStatusName statusName){
+        if (statusName == QuoteStatusName.PRIVATE) {
+            return QUOTE_STATUS_MUST_BE_PRIVATE;
         }
-        QuoteStatus pub = quoteStatusService.findByName(QuoteStatusName.PUBLIC);
-        quote.setQuoteStatus(pub);
-        quoteRepository.save(quote);
+        if (statusName == QuoteStatusName.PENDING) {
+            return QUOTE_STATUS_MUST_BE_PENDING;
+        }
+        return QUOTE_STATUS_MUST_BE_PUBLIC;
     }
 
     public QuoteResponse findQuoteResponseById(Long id) {
@@ -84,7 +100,7 @@ public class QuoteService {
         return quoteRepository.findAll()
                 .stream()
                 .map(QuoteMapping::mapToQuoteResponse)
-                .filter(quote -> quote.quoteStatus().equals(pub))
+                .filter(quote -> quote.status().equals(pub))
                 .collect(Collectors.toList());
     }
 
@@ -92,7 +108,7 @@ public class QuoteService {
         Quote quote = new Quote();
         quote.setContent(quoteRequest.content());
         QuoteStatus pri = quoteStatusService.findByName(QuoteStatusName.PRIVATE);
-        quote.setQuoteStatus(pri);
+        quote.setStatus(pri);
         Profile profile = findByProfileId(userPrincipal.getId());
         quote.setProfile(profile);
         quoteRepository.save(quote);

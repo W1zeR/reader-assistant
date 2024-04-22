@@ -1,6 +1,9 @@
 package com.w1zer.payload;
 
 import com.w1zer.entity.QuoteStatus;
+import com.w1zer.entity.Tag;
+
+import java.util.Set;
 
 @SuppressWarnings("unused")
 public record QuoteResponse(
@@ -10,6 +13,12 @@ public record QuoteResponse(
 
         QuoteBookResponse book,
 
-        QuoteStatus quoteStatus
+        QuoteStatus status,
+
+        Set<Tag> tags,
+
+        QuoteProfileResponse profile,
+
+        Long likes
 ) {
 }

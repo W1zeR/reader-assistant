@@ -30,15 +30,27 @@ public class QuoteController {
         this.quoteService = quoteService;
     }
 
-    @PutMapping("/{id}/markAsPending")
-    public void markAsPending(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
-        quoteService.markAsPending(id);
+    @PutMapping("/{id}/markPrivateAsPending")
+    public void markPrivateAsPending(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
+        quoteService.markPrivateAsPending(id);
     }
 
-    @PutMapping("/{id}/markAsPublic")
+    @PutMapping("/{id}/markPendingAsPublic")
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
-    public void markAsPublic(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
-        quoteService.markAsPublic(id);
+    public void markPendingAsPublic(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
+        quoteService.markPendingAsPublic(id);
+    }
+
+    @PutMapping("/{id}/markPendingAsPrivate")
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+    public void markPendingAsPrivate(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
+        quoteService.markPendingAsPrivate(id);
+    }
+
+    @PutMapping("/{id}/markPublicAsPrivate")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void markPublicAsPrivate(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
+        quoteService.markPublicAsPrivate(id);
     }
 
     @PatchMapping("/{id}")

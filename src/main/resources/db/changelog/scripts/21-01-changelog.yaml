@@ -1,8 +1,8 @@
 #file: noinspection SpellCheckingInspection
 databaseChangeLog:
   - changeSet:
-      id: 1712659243375-1
-      author: Tolyk (generated)
+      id: 1713711487513-1
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - createTable:
@@ -41,8 +41,8 @@ databaseChangeLog:
                   type: VARCHAR(1000)
             tableName: author
   - changeSet:
-      id: 1712659243375-2
-      author: Tolyk (generated)
+      id: 1713711487513-2
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - createTable:
@@ -63,8 +63,8 @@ databaseChangeLog:
                   type: BIGINT
             tableName: authors_books
   - changeSet:
-      id: 1712659243375-3
-      author: Tolyk (generated)
+      id: 1713711487513-3
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - createTable:
@@ -90,8 +90,8 @@ databaseChangeLog:
                   type: VARCHAR(1000)
             tableName: book
   - changeSet:
-      id: 1712659243375-4
-      author: Tolyk (generated)
+      id: 1713711487513-4
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - createTable:
@@ -112,8 +112,8 @@ databaseChangeLog:
                   type: BIGINT
             tableName: liked_quotes
   - changeSet:
-      id: 1712659243375-5
-      author: Tolyk (generated)
+      id: 1713711487513-5
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - createTable:
@@ -143,8 +143,8 @@ databaseChangeLog:
                   type: TEXT
             tableName: profile
   - changeSet:
-      id: 1712659243375-6
-      author: Tolyk (generated)
+      id: 1713711487513-6
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - createTable:
@@ -165,8 +165,8 @@ databaseChangeLog:
                   type: BIGINT
             tableName: profiles_roles
   - changeSet:
-      id: 1712659243375-7
-      author: Tolyk (generated)
+      id: 1713711487513-7
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - createTable:
@@ -187,8 +187,8 @@ databaseChangeLog:
                   type: BIGINT
             tableName: profiles_tags
   - changeSet:
-      id: 1712659243375-8
-      author: Tolyk (generated)
+      id: 1713711487513-8
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - createTable:
@@ -207,6 +207,8 @@ databaseChangeLog:
                   name: content
                   type: VARCHAR(1000)
               - column:
+                  constraints:
+                    nullable: false
                   name: book_id
                   type: BIGINT
               - column:
@@ -217,12 +219,12 @@ databaseChangeLog:
               - column:
                   constraints:
                     nullable: false
-                  name: quote_status_id
+                  name: status_id
                   type: BIGINT
             tableName: quote
   - changeSet:
-      id: 1712659243375-9
-      author: Tolyk (generated)
+      id: 1713711487513-9
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - createTable:
@@ -242,8 +244,8 @@ databaseChangeLog:
                   type: VARCHAR(7)
             tableName: quote_status
   - changeSet:
-      id: 1712659243375-10
-      author: Tolyk (generated)
+      id: 1713711487513-10
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - createTable:
@@ -264,8 +266,8 @@ databaseChangeLog:
                   type: BIGINT
             tableName: quotes_tags
   - changeSet:
-      id: 1712659243375-11
-      author: Tolyk (generated)
+      id: 1713711487513-11
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - createTable:
@@ -300,8 +302,8 @@ databaseChangeLog:
                   type: DATETIME
             tableName: refresh_token
   - changeSet:
-      id: 1712659243375-12
-      author: Tolyk (generated)
+      id: 1713711487513-12
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - createTable:
@@ -321,8 +323,8 @@ databaseChangeLog:
                   type: VARCHAR(20)
             tableName: role
   - changeSet:
-      id: 1712659243375-13
-      author: Tolyk (generated)
+      id: 1713711487513-13
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - createTable:
@@ -342,8 +344,8 @@ databaseChangeLog:
                   type: VARCHAR(30)
             tableName: tag
   - changeSet:
-      id: 1712659243375-14
-      author: Tolyk (generated)
+      id: 1713711487513-14
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - createTable:
@@ -378,8 +380,8 @@ databaseChangeLog:
                   type: BOOLEAN
             tableName: user_device
   - changeSet:
-      id: 1712659243375-15
-      author: Tolyk (generated)
+      id: 1713711487513-15
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addUniqueConstraint:
@@ -387,8 +389,8 @@ databaseChangeLog:
             constraintName: uc_profile_email
             tableName: profile
   - changeSet:
-      id: 1712659243375-16
-      author: Tolyk (generated)
+      id: 1713711487513-16
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addUniqueConstraint:
@@ -396,8 +398,8 @@ databaseChangeLog:
             constraintName: uc_profile_login
             tableName: profile
   - changeSet:
-      id: 1712659243375-17
-      author: Tolyk (generated)
+      id: 1713711487513-17
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addUniqueConstraint:
@@ -405,8 +407,8 @@ databaseChangeLog:
             constraintName: uc_refreshtoken_id_user_device
             tableName: refresh_token
   - changeSet:
-      id: 1712659243375-18
-      author: Tolyk (generated)
+      id: 1713711487513-18
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addUniqueConstraint:
@@ -414,8 +416,8 @@ databaseChangeLog:
             constraintName: uc_refreshtoken_token
             tableName: refresh_token
   - changeSet:
-      id: 1712659243375-19
-      author: Tolyk (generated)
+      id: 1713711487513-19
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addUniqueConstraint:
@@ -423,8 +425,8 @@ databaseChangeLog:
             constraintName: uc_role_name
             tableName: role
   - changeSet:
-      id: 1712659243375-20
-      author: Tolyk (generated)
+      id: 1713711487513-20
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addUniqueConstraint:
@@ -432,8 +434,8 @@ databaseChangeLog:
             constraintName: uc_tag_name
             tableName: tag
   - changeSet:
-      id: 1712659243375-21
-      author: Tolyk (generated)
+      id: 1713711487513-21
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addUniqueConstraint:
@@ -441,8 +443,8 @@ databaseChangeLog:
             constraintName: uc_userdevice_id_profile
             tableName: user_device
   - changeSet:
-      id: 1712659243375-22
-      author: Tolyk (generated)
+      id: 1713711487513-22
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
@@ -452,8 +454,8 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: book
   - changeSet:
-      id: 1712659243375-23
-      author: Tolyk (generated)
+      id: 1713711487513-23
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
@@ -463,19 +465,19 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: profile
   - changeSet:
-      id: 1712659243375-24
-      author: Tolyk (generated)
+      id: 1713711487513-24
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
-            baseColumnNames: quote_status_id
+            baseColumnNames: status_id
             baseTableName: quote
-            constraintName: FK_QUOTE_ON_QUOTESTATUS
+            constraintName: FK_QUOTE_ON_STATUS
             referencedColumnNames: id
             referencedTableName: quote_status
   - changeSet:
-      id: 1712659243375-25
-      author: Tolyk (generated)
+      id: 1713711487513-25
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
@@ -485,8 +487,8 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: user_device
   - changeSet:
-      id: 1712659243375-26
-      author: Tolyk (generated)
+      id: 1713711487513-26
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
@@ -496,8 +498,8 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: profile
   - changeSet:
-      id: 1712659243375-27
-      author: Tolyk (generated)
+      id: 1713711487513-27
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
@@ -507,8 +509,8 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: author
   - changeSet:
-      id: 1712659243375-28
-      author: Tolyk (generated)
+      id: 1713711487513-28
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
@@ -518,8 +520,8 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: book
   - changeSet:
-      id: 1712659243375-29
-      author: Tolyk (generated)
+      id: 1713711487513-29
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
@@ -529,8 +531,8 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: profile
   - changeSet:
-      id: 1712659243375-30
-      author: Tolyk (generated)
+      id: 1713711487513-30
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
@@ -540,8 +542,8 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: quote
   - changeSet:
-      id: 1712659243375-31
-      author: Tolyk (generated)
+      id: 1713711487513-31
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
@@ -551,8 +553,8 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: profile
   - changeSet:
-      id: 1712659243375-32
-      author: Tolyk (generated)
+      id: 1713711487513-32
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
@@ -562,8 +564,8 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: role
   - changeSet:
-      id: 1712659243375-33
-      author: Tolyk (generated)
+      id: 1713711487513-33
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
@@ -573,8 +575,8 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: profile
   - changeSet:
-      id: 1712659243375-34
-      author: Tolyk (generated)
+      id: 1713711487513-34
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
@@ -584,8 +586,8 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: tag
   - changeSet:
-      id: 1712659243375-35
-      author: Tolyk (generated)
+      id: 1713711487513-35
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
@@ -595,8 +597,8 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: quote
   - changeSet:
-      id: 1712659243375-36
-      author: Tolyk (generated)
+      id: 1713711487513-36
+      author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:

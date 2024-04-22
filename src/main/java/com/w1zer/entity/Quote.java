@@ -26,7 +26,8 @@ public class Quote {
     @Column(length = CONTENT_LENGTH, nullable = false)
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(nullable = false)
     @ToString.Exclude
     private Book book;
 
@@ -39,7 +40,7 @@ public class Quote {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(nullable = false)
     @ToString.Exclude
-    private QuoteStatus quoteStatus;
+    private QuoteStatus status;
 
     @ManyToMany(mappedBy = "likedQuotes")
     @ToString.Exclude
