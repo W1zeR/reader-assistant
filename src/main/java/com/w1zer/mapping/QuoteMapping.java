@@ -25,7 +25,6 @@ public final class QuoteMapping {
                 .collect(Collectors.toSet());
     }
 
-
     public static QuoteResponse mapToQuoteResponse(Quote quote) {
         Book book = quote.getBook();
         if (book == null) {
@@ -43,6 +42,5 @@ public final class QuoteMapping {
     }
 
     private QuoteMapping() {
-
     }
 }
