@@ -9,10 +9,15 @@ import com.w1zer.repository.ProfileRepository;
 import com.w1zer.repository.QuoteRepository;
 import com.w1zer.repository.TagRepository;
 import com.w1zer.security.UserPrincipal;
+import jakarta.validation.constraints.Positive;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import static com.w1zer.constants.ValidationConstants.ID_POSITIVE_MESSAGE;
 
 @Service
 public class QuoteService {
@@ -71,13 +76,13 @@ public class QuoteService {
         return QUOTE_STATUS_MUST_BE_PUBLIC;
     }
 
-    public QuoteResponse findQuoteResponseById(Long id) {
+    public QuoteResponse findQuoteById(Long id) {
         return QuoteMapping.mapToQuoteResponse(quoteRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(QUOTE_WITH_ID_NOT_FOUND.formatted(id))
         ));
     }
 
-    public Quote findById(Long id) {
+    private Quote findById(Long id) {
         return quoteRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(QUOTE_WITH_ID_NOT_FOUND.formatted(id))
         );
@@ -87,12 +92,15 @@ public class QuoteService {
         quoteRepository.deleteById(id);
     }
 
-    public QuoteResponse update(QuoteRequest QuoteRequest, Long id) {
-        Quote quote = findById(id);
-        if (QuoteRequest.content() != null) {
-            quote.setContent(QuoteRequest.content());
-        }
-        return QuoteMapping.mapToQuoteResponse(quoteRepository.save(quote));
+    public QuoteResponse replace(QuoteRequest QuoteRequest, Long id) {
+//        Quote quote = findById(id);
+//        if (QuoteRequest.content() != null) {
+//            quote.setContent(QuoteRequest.content());
+//        }
+//        if (QuoteRequest.book() != null && QuoteRequest.book().title() != null) {
+//            quote.getBook().setTitle(QuoteRequest.book().title());
+//        }
+//        return QuoteMapping.mapToQuoteResponse(quoteRepository.save(quote));
     }
 
     public List<QuoteResponse> findAllPublic() {
@@ -112,6 +120,10 @@ public class QuoteService {
         Profile profile = findByProfileId(userPrincipal.getId());
         quote.setProfile(profile);
         quoteRepository.save(quote);
+    }
+
+    public Set<Profile> getWhoLiked(Long id) {
+        return findById(id).getWhoLiked();
     }
 
     private Tag findByTagId(Long id) {
@@ -138,6 +150,10 @@ public class QuoteService {
         return profileRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(PROFILE_WITH_ID_NOT_FOUND.formatted(id))
         );
+    }
+
+    public Set<Tag> getTags(Long id) {
+        return findById(id).getTags();
     }
 
     public void addTag(Long quoteId, Long tagId) {

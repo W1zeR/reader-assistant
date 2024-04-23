@@ -108,19 +108,20 @@ public class ProfileService {
         return new ApiResponse(PASSWORD_CHANGED_SUCCESSFULLY);
     }
 
-    public Profile update(ProfileRequest profileRequest, Long id) {
-        Profile profile = findById(id);
-        if (profileRequest.email() != null) {
-            String email = profileRequest.email().toLowerCase();
-            validateEmail(email);
-            profile.setEmail(email);
-        }
-        if (profileRequest.login() != null) {
-            String login = profileRequest.login().toLowerCase();
-            validateLogin(login);
-            profile.setLogin(login);
-        }
-        return profileRepository.save(profile);
+    public Profile replace(ProfileRequest profileRequest, Long id) {
+        return profileRepository.findById(id)
+                .map(profile -> {
+                    profile.setEmail(profileRequest.email().toLowerCase());
+                    profile.setLogin(profileRequest.login().toLowerCase());
+                    return profileRepository.save(profile);
+                })
+                .orElseGet(() -> {
+                    Profile profile = new Profile();
+                    profile.setId(id);
+                    profile.setEmail(profileRequest.email().toLowerCase());
+                    profile.setLogin(profileRequest.login().toLowerCase());
+                    return profileRepository.save(profile);
+                });
     }
 
     private void validateEmail(String email) {

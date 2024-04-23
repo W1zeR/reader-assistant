@@ -33,26 +33,23 @@ public class AuthorService {
         authorRepository.deleteById(id);
     }
 
-    public Author update(AuthorRequest authorRequest, Long id) {
-        Author author = findById(id);
-        if (authorRequest.surname() != null) {
-            author.setSurname(authorRequest.surname());
-        }
-        if (authorRequest.name() != null) {
-            author.setName(authorRequest.name());
-        }
-        if (authorRequest.patronymic() != null) {
-            author.setPatronymic(authorRequest.patronymic());
-        }
-        if (authorRequest.birthday() != null) {
-            author.setBirthday(authorRequest.birthday());
-        }
-        if (authorRequest.death() != null) {
-            author.setDeath(authorRequest.death());
-        }
-        if (authorRequest.description() != null) {
-            author.setDescription(authorRequest.description());
-        }
+    public Author replace(AuthorRequest authorRequest, Long id) {
+        return authorRepository.findById(id)
+                .map(author -> getAuthor(authorRequest, author))
+                .orElseGet(() -> {
+                    Author author = new Author();
+                    author.setId(id);
+                    return getAuthor(authorRequest, author);
+                });
+    }
+
+    private Author getAuthor(AuthorRequest authorRequest, Author author) {
+        author.setSurname(authorRequest.surname());
+        author.setName(authorRequest.name());
+        author.setPatronymic(authorRequest.patronymic());
+        author.setBirthday(authorRequest.birthday());
+        author.setDeath(authorRequest.death());
+        author.setDescription(authorRequest.description());
         return authorRepository.save(author);
     }
 
