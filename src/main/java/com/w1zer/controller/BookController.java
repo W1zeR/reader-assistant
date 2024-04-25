@@ -26,10 +26,10 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    @PatchMapping("/{id}")
-    public Book update(@Valid @RequestBody BookRequest bookRequest,
+    @PutMapping("/{id}")
+    public Book replace(@Valid @RequestBody BookRequest bookRequest,
                        @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
-        return bookService.update(bookRequest, id);
+        return bookService.replace(bookRequest, id);
     }
 
     @DeleteMapping("/{id}")

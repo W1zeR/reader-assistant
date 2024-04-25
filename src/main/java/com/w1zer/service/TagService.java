@@ -44,14 +44,18 @@ public class TagService {
         tagRepository.deleteById(id);
     }
 
-    public Tag update(TagRequest tagRequest, Long id) {
-        Tag tag = findById(id);
-        if (tagRequest.name() != null) {
-            String name = tagRequest.name().toLowerCase();
-            validateName(name);
-            tag.setName(name);
-        }
-        return tagRepository.save(tag);
+    public Tag replace(TagRequest tagRequest, Long id) {
+        return tagRepository.findById(id)
+                .map(tag -> {
+                    tag.setName(tagRequest.name().toLowerCase());
+                    return tagRepository.save(tag);
+                })
+                .orElseGet(() -> {
+                    Tag tag = new Tag();
+                    tag.setId(id);
+                    tag.setName(tagRequest.name().toLowerCase());
+                    return tagRepository.save(tag);
+                });
     }
 
     private void validateName(String name) {

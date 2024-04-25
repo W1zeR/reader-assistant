@@ -53,10 +53,10 @@ public class QuoteController {
         quoteService.markPublicAsPrivate(id);
     }
 
-    @PatchMapping("/{id}")
-    public QuoteResponse update(@Valid @RequestBody QuoteRequest quoteRequest,
+    @PutMapping("/{id}")
+    public QuoteResponse replace(@Valid @RequestBody QuoteRequest quoteRequest,
                                 @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
-        return quoteService.update(quoteRequest, id);
+        return quoteService.replace(quoteRequest, id);
     }
 
     @DeleteMapping("/{id}")
@@ -72,7 +72,7 @@ public class QuoteController {
 
     @GetMapping("/{id}")
     public QuoteResponse findById(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
-        return quoteService.findQuoteResponseById(id);
+        return quoteService.findQuoteById(id);
     }
 
     @PostMapping
@@ -83,7 +83,7 @@ public class QuoteController {
 
     @GetMapping("/{id}/whoLiked")
     public Set<Profile> getWhoLiked(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
-        return quoteService.findById(id).getWhoLiked();
+        return quoteService.getWhoLiked(id);
     }
 
     @PutMapping("/{quoteId}/whoLiked/{profileId}")
@@ -100,7 +100,7 @@ public class QuoteController {
 
     @GetMapping("/{id}/tags")
     public Set<Tag> getTags(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
-        return quoteService.findById(id).getTags();
+        return quoteService.getTags(id);
     }
 
     @PutMapping("/{quoteId}/tags/{tagId}")

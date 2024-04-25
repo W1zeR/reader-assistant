@@ -40,18 +40,22 @@ public class BookService {
         bookRepository.deleteById(id);
     }
 
-    public Book update(BookRequest bookRequest, Long id) {
-        Book book = findById(id);
-        if (bookRequest.title() != null) {
-            book.setTitle(bookRequest.title());
-        }
-        if (bookRequest.publishingYear() != null) {
-            book.setPublishingYear(bookRequest.publishingYear());
-        }
-        if (bookRequest.description() != null) {
-            book.setDescription(bookRequest.description());
-        }
-        return bookRepository.save(book);
+    public Book replace(BookRequest bookRequest, Long id) {
+        return bookRepository.findById(id)
+                .map(book -> {
+                    book.setTitle(bookRequest.title());
+                    book.setPublishingYear(bookRequest.publishingYear());
+                    book.setDescription(bookRequest.description());
+                    return bookRepository.save(book);
+                })
+                .orElseGet(() -> {
+                    Book book = new Book();
+                    book.setId(id);
+                    book.setTitle(bookRequest.title());
+                    book.setPublishingYear(bookRequest.publishingYear());
+                    book.setDescription(bookRequest.description());
+                    return bookRepository.save(book);
+                });
     }
 
     public List<Book> findAll() {

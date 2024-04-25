@@ -26,10 +26,10 @@ public class TagController {
         this.tagService = tagService;
     }
 
-    @PatchMapping("/{id}")
-    public Tag update(@Valid @RequestBody TagRequest tagRequest,
+    @PutMapping("/{id}")
+    public Tag replace(@Valid @RequestBody TagRequest tagRequest,
                       @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
-        return tagService.update(tagRequest, id);
+        return tagService.replace(tagRequest, id);
     }
 
     @DeleteMapping("/{id}")
