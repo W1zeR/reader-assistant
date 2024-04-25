@@ -4,7 +4,6 @@ import com.w1zer.entity.Author;
 import com.w1zer.entity.Book;
 import com.w1zer.payload.AuthorRequest;
 import com.w1zer.service.AuthorService;
-import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import org.springframework.validation.annotation.Validated;
@@ -28,7 +27,7 @@ public class AuthorController {
 
     @PutMapping("/{id}")
     public Author replace(@Valid @RequestBody AuthorRequest authorRequest,
-                         @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
+                          @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
         return authorService.replace(authorRequest, id);
     }
 

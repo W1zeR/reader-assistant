@@ -117,6 +117,6 @@ public class TagService {
     }
 
     public Set<QuoteResponse> getQuotes(Long id) {
-        return QuoteMapping.mapToQuoteResponse(findById(id).getQuotes());
+        return QuoteMapping.mapToQuoteResponses(findById(id).getQuotes());
     }
 }

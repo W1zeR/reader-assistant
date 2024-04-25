@@ -28,7 +28,7 @@ public class BookController {
 
     @PutMapping("/{id}")
     public Book replace(@Valid @RequestBody BookRequest bookRequest,
-                       @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
+                        @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
         return bookService.replace(bookRequest, id);
     }
 

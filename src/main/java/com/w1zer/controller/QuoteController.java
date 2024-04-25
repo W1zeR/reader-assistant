@@ -55,7 +55,7 @@ public class QuoteController {
 
     @PutMapping("/{id}")
     public QuoteResponse replace(@Valid @RequestBody QuoteRequest quoteRequest,
-                                @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
+                                 @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
         return quoteService.replace(quoteRequest, id);
     }
 

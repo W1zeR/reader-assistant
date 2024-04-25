@@ -1,9 +1,12 @@
 package com.w1zer.mapping;
 
 import com.w1zer.entity.Book;
+import com.w1zer.entity.Profile;
 import com.w1zer.entity.Quote;
+import com.w1zer.entity.QuoteStatusName;
 import com.w1zer.payload.BookAuthorResponse;
 import com.w1zer.payload.QuoteBookResponse;
+import com.w1zer.payload.QuoteProfileResponse;
 import com.w1zer.payload.QuoteResponse;
 
 import java.util.List;
@@ -11,14 +14,17 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public final class QuoteMapping {
-    public static List<QuoteResponse> mapToQuoteResponse(List<Quote> quotes) {
+    private QuoteMapping() {
+    }
+
+    public static List<QuoteResponse> mapToQuoteResponses(List<Quote> quotes) {
         return quotes
                 .stream()
                 .map(QuoteMapping::mapToQuoteResponse)
                 .collect(Collectors.toList());
     }
 
-    public static Set<QuoteResponse> mapToQuoteResponse(Set<Quote> quotes) {
+    public static Set<QuoteResponse> mapToQuoteResponses(Set<Quote> quotes) {
         return quotes
                 .stream()
                 .map(QuoteMapping::mapToQuoteResponse)
@@ -27,11 +33,21 @@ public final class QuoteMapping {
 
     public static QuoteResponse mapToQuoteResponse(Quote quote) {
         Book book = quote.getBook();
-        if (book == null) {
-            return new QuoteResponse(quote.getId(), quote.getContent(), null, quote.getStatus());
+        QuoteBookResponse quoteBookResponse = new QuoteBookResponse(book.getId(), book.getTitle(),
+                getBookAuthors(book));
+        return new QuoteResponse(quote.getId(), quote.getContent(), quoteBookResponse, quote.getStatus(),
+                quote.getTags(), mapToQuoteProfileResponse(quote.getProfile()), getLikesCount(quote));
+    }
+
+    private static Long getLikesCount(Quote quote) {
+        if (quote.getStatus().getName() == QuoteStatusName.PUBLIC){
+            return (long) quote.getWhoLiked().size();
         }
-        QuoteBookResponse quoteBookResponse = new QuoteBookResponse(book.getId(), book.getTitle(), getBookAuthors(book));
-        return new QuoteResponse(quote.getId(), quote.getContent(), quoteBookResponse, quote.getStatus());
+        return 0L;
+    }
+
+    private static QuoteProfileResponse mapToQuoteProfileResponse(Profile profile) {
+        return new QuoteProfileResponse(profile.getId(), profile.getLogin());
     }
 
     private static Set<BookAuthorResponse> getBookAuthors(Book book) {
@@ -39,8 +55,5 @@ public final class QuoteMapping {
                 .stream()
                 .map(a -> new BookAuthorResponse(a.getId(), a.getSurname(), a.getName(), a.getPatronymic()))
                 .collect(Collectors.toSet());
-    }
-
-    private QuoteMapping() {
     }
 }

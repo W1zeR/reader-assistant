@@ -4,7 +4,6 @@ import com.w1zer.entity.Profile;
 import com.w1zer.entity.RefreshToken;
 import com.w1zer.entity.UserDevice;
 import com.w1zer.exception.NotFoundException;
-import com.w1zer.exception.ProfileAlreadyExistsException;
 import com.w1zer.payload.*;
 import com.w1zer.repository.ProfileRepository;
 import com.w1zer.security.JwtProvider;
@@ -21,8 +20,6 @@ import java.util.Set;
 @Service
 public class AuthService {
     private static final String PROFILE_WITH_EMAIL_NOT_FOUND = "Profile with email '%s' not found";
-    private static final String PROFILE_WITH_EMAIL_ALREADY_EXISTS = "Profile with email '%s' already exists";
-    private static final String PROFILE_WITH_LOGIN_ALREADY_EXISTS = "Profile with login '%s' already exists";
     private final AuthenticationManager authenticationManager;
     private final ProfileRepository profileRepository;
     private final PasswordEncoder passwordEncoder;
@@ -30,6 +27,7 @@ public class AuthService {
     private final RefreshTokenService refreshTokenService;
     private final UserDeviceService userDeviceService;
     private final RoleService roleService;
+    private final ProfileValidationService profileValidationService;
 
     @Value("${w1zer.jwt.access-expiration-hours}")
     private long accessExpirationHours;
@@ -37,7 +35,7 @@ public class AuthService {
     public AuthService(AuthenticationManager authenticationManager, ProfileRepository profileRepository,
                        PasswordEncoder passwordEncoder, JwtProvider jwtProvider,
                        RefreshTokenService refreshTokenService, UserDeviceService userDeviceService,
-                       RoleService roleService) {
+                       RoleService roleService, ProfileValidationService profileValidationService) {
         this.authenticationManager = authenticationManager;
         this.profileRepository = profileRepository;
         this.passwordEncoder = passwordEncoder;
@@ -45,6 +43,7 @@ public class AuthService {
         this.refreshTokenService = refreshTokenService;
         this.userDeviceService = userDeviceService;
         this.roleService = roleService;
+        this.profileValidationService = profileValidationService;
     }
 
     private Profile findByEmail(String email) {
@@ -81,8 +80,8 @@ public class AuthService {
     public void register(RegisterRequest registerRequest) {
         String email = registerRequest.email().toLowerCase();
         String login = registerRequest.login().toLowerCase();
-        validateLogin(login);
-        validateEmail(email);
+        profileValidationService.validateLogin(login);
+        profileValidationService.validateEmail(email);
         profileRepository.save(createProfile(login, email, registerRequest.password(), registerRequest.roleId()));
     }
 
@@ -99,18 +98,6 @@ public class AuthService {
         email = email.toLowerCase();
         Boolean isAvailable = !profileRepository.existsByEmail(email);
         return new UserIdentityAvailability(isAvailable);
-    }
-
-    private void validateEmail(String email) {
-        if (profileRepository.existsByEmail(email)) {
-            throw new ProfileAlreadyExistsException(PROFILE_WITH_EMAIL_ALREADY_EXISTS.formatted(email));
-        }
-    }
-
-    private void validateLogin(String login) {
-        if (profileRepository.existsByLogin(login)) {
-            throw new ProfileAlreadyExistsException(PROFILE_WITH_LOGIN_ALREADY_EXISTS.formatted(login));
-        }
     }
 
     public AuthResponse refresh(RefreshTokenRequest refreshTokenRequest) {

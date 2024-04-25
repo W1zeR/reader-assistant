@@ -1,12 +1,13 @@
 package com.w1zer.payload;
 
-import com.w1zer.validation.NotBlankIfPresent;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.Set;
 
+@SuppressWarnings("unused")
 public record QuoteBookRequest(
-        @NotBlankIfPresent
+        @NotBlank
         String title,
 
         Set<@Valid BookAuthorRequest> authors

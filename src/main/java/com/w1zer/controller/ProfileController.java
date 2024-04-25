@@ -6,7 +6,6 @@ import com.w1zer.payload.*;
 import com.w1zer.security.CurrentUser;
 import com.w1zer.security.UserPrincipal;
 import com.w1zer.service.ProfileService;
-import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -60,7 +59,7 @@ public class ProfileController {
 
     @PutMapping("/{id}")
     public Profile replace(@Valid @RequestBody ProfileRequest profileRequest,
-                          @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
+                           @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
         return profileService.replace(profileRequest, id);
     }
 

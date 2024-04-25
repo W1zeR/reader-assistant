@@ -1,12 +1,13 @@
 package com.w1zer.payload;
 
-import com.w1zer.validation.NotBlankIfPresent;
+import jakarta.validation.constraints.NotBlank;
 
+@SuppressWarnings("unused")
 public record BookAuthorRequest(
-        @NotBlankIfPresent
+        @NotBlank
         String surname,
 
-        @NotBlankIfPresent
+        @NotBlank
         String name,
 
         String patronymic

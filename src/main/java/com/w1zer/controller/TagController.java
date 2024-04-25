@@ -28,7 +28,7 @@ public class TagController {
 
     @PutMapping("/{id}")
     public Tag replace(@Valid @RequestBody TagRequest tagRequest,
-                      @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
+                       @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
         return tagService.replace(tagRequest, id);
     }
 

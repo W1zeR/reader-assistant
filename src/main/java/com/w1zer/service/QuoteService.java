@@ -3,31 +3,25 @@ package com.w1zer.service;
 import com.w1zer.entity.*;
 import com.w1zer.exception.NotFoundException;
 import com.w1zer.mapping.QuoteMapping;
-import com.w1zer.payload.QuoteRequest;
-import com.w1zer.payload.QuoteResponse;
+import com.w1zer.payload.*;
 import com.w1zer.repository.ProfileRepository;
 import com.w1zer.repository.QuoteRepository;
 import com.w1zer.repository.TagRepository;
 import com.w1zer.security.UserPrincipal;
-import jakarta.validation.constraints.Positive;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.w1zer.constants.ValidationConstants.ID_POSITIVE_MESSAGE;
-
 @Service
 public class QuoteService {
-    private static final String QUOTE_WITH_ID_NOT_FOUND = "Quote with id '%d' not found";
-    private static final String PROFILE_WITH_ID_NOT_FOUND = "Profile with id %s not found";
-    private static final String TAG_WITH_ID_NOT_FOUND = "Tag with id %s not found";
     public static final String QUOTE_STATUS_MUST_BE_PRIVATE = "Quote status must be private";
     public static final String QUOTE_STATUS_MUST_BE_PENDING = "Quote status must be pending";
     public static final String QUOTE_STATUS_MUST_BE_PUBLIC = "Quote status must be public";
-
+    private static final String QUOTE_WITH_ID_NOT_FOUND = "Quote with id '%d' not found";
+    private static final String PROFILE_WITH_ID_NOT_FOUND = "Profile with id %s not found";
+    private static final String TAG_WITH_ID_NOT_FOUND = "Tag with id %s not found";
     private final QuoteRepository quoteRepository;
     private final QuoteStatusService quoteStatusService;
     private final ProfileRepository profileRepository;
@@ -66,7 +60,7 @@ public class QuoteService {
         quoteRepository.save(quote);
     }
 
-    private String getExceptionMessageByQuoteStatusName(QuoteStatusName statusName){
+    private String getExceptionMessageByQuoteStatusName(QuoteStatusName statusName) {
         if (statusName == QuoteStatusName.PRIVATE) {
             return QUOTE_STATUS_MUST_BE_PRIVATE;
         }
@@ -92,15 +86,22 @@ public class QuoteService {
         quoteRepository.deleteById(id);
     }
 
-    public QuoteResponse replace(QuoteRequest QuoteRequest, Long id) {
-//        Quote quote = findById(id);
-//        if (QuoteRequest.content() != null) {
-//            quote.setContent(QuoteRequest.content());
-//        }
-//        if (QuoteRequest.book() != null && QuoteRequest.book().title() != null) {
-//            quote.getBook().setTitle(QuoteRequest.book().title());
-//        }
-//        return QuoteMapping.mapToQuoteResponse(quoteRepository.save(quote));
+    public QuoteResponse replace(QuoteRequest quoteRequest, Long id) {
+        return QuoteMapping.mapToQuoteResponse(quoteRepository.findById(id)
+                .map(quote -> {
+                    quote.setContent(quoteRequest.content());
+                    quote.setBook(mapToBook(quoteRequest.book()));
+                    quote.setTags(mapToTags(quoteRequest.tags()));
+                    return quoteRepository.save(quote);
+                })
+                .orElseGet(() -> {
+                    Quote quote = new Quote();
+                    quote.setId(id);
+                    quote.setContent(quoteRequest.content());
+                    quote.setBook(mapToBook(quoteRequest.book()));
+                    quote.setTags(mapToTags(quoteRequest.tags()));
+                    return quoteRepository.save(quote);
+                }));
     }
 
     public List<QuoteResponse> findAllPublic() {
@@ -115,11 +116,51 @@ public class QuoteService {
     public void create(QuoteRequest quoteRequest, UserPrincipal userPrincipal) {
         Quote quote = new Quote();
         quote.setContent(quoteRequest.content());
-        QuoteStatus pri = quoteStatusService.findByName(QuoteStatusName.PRIVATE);
-        quote.setStatus(pri);
-        Profile profile = findByProfileId(userPrincipal.getId());
-        quote.setProfile(profile);
+        quote.setBook(mapToBook(quoteRequest.book()));
+        quote.setTags(mapToTags(quoteRequest.tags()));
+        quote.setStatus(quoteStatusService.findByName(QuoteStatusName.PRIVATE));
+        quote.setProfile(findByProfileId(userPrincipal.getId()));
         quoteRepository.save(quote);
+    }
+
+    private Book mapToBook(QuoteBookRequest quoteBookRequest) {
+        Book book = new Book();
+        book.setTitle(quoteBookRequest.title());
+        book.setAuthors(mapToAuthors(quoteBookRequest.authors()));
+        return book;
+    }
+
+    private Set<Author> mapToAuthors(Set<BookAuthorRequest> bookAuthorRequests) {
+        return bookAuthorRequests
+                .stream()
+                .map(this::mapToAuthor)
+                .collect(Collectors.toSet());
+    }
+
+    private Author mapToAuthor(BookAuthorRequest bookAuthorRequest) {
+        Author author = new Author();
+        author.setSurname(bookAuthorRequest.surname());
+        author.setName(bookAuthorRequest.name());
+        author.setPatronymic(bookAuthorRequest.patronymic());
+        return author;
+    }
+
+    private Set<Tag> mapToTags(Set<TagRequest> tagRequests) {
+        return tagRequests
+                .stream()
+                .map(this::mapToTag)
+                .collect(Collectors.toSet());
+    }
+
+    private Tag mapToTag(TagRequest tagRequest) {
+        return tagRepository.findByName(tagRequest.name())
+                .orElse(createTag(tagRequest.name()));
+    }
+
+    private Tag createTag(String name) {
+        Tag tag = new Tag();
+        tag.setName(name);
+        return tag;
     }
 
     public Set<Profile> getWhoLiked(Long id) {

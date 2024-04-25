@@ -26,8 +26,6 @@ public class ProfileService {
     private static final String PASSWORD_CHANGED_SUCCESSFULLY = "Password changed successfully";
     private static final String QUOTE_WITH_ID_NOT_FOUND = "Quote with id '%d' not found";
     private static final String TAG_WITH_ID_NOT_FOUND = "Tag with id %s not found";
-    private static final String PROFILE_WITH_EMAIL_ALREADY_EXISTS = "Profile with email '%s' already exists";
-    private static final String PROFILE_WITH_LOGIN_ALREADY_EXISTS = "Profile with login '%s' already exists";
 
     private final ProfileRepository profileRepository;
     private final QuoteRepository quoteRepository;
@@ -36,11 +34,12 @@ public class ProfileService {
     private final ApplicationEventPublisher applicationEventPublisher;
     private final RefreshTokenService refreshTokenService;
     private final TagRepository tagRepository;
+    private final ProfileValidationService profileValidationService;
 
     public ProfileService(ProfileRepository profileRepository, QuoteRepository quoteRepository,
                           RoleService roleService, UserDeviceService userDeviceService,
                           ApplicationEventPublisher applicationEventPublisher,
-                          RefreshTokenService refreshTokenService, TagRepository tagRepository) {
+                          RefreshTokenService refreshTokenService, TagRepository tagRepository, ProfileValidationService profileValidationService) {
         this.profileRepository = profileRepository;
         this.quoteRepository = quoteRepository;
         this.roleService = roleService;
@@ -48,6 +47,7 @@ public class ProfileService {
         this.applicationEventPublisher = applicationEventPublisher;
         this.refreshTokenService = refreshTokenService;
         this.tagRepository = tagRepository;
+        this.profileValidationService = profileValidationService;
     }
 
     public void promote(Long id) {
@@ -109,6 +109,8 @@ public class ProfileService {
     }
 
     public Profile replace(ProfileRequest profileRequest, Long id) {
+        profileValidationService.validateLogin(profileRequest.login());
+        profileValidationService.validateEmail(profileRequest.email());
         return profileRepository.findById(id)
                 .map(profile -> {
                     profile.setEmail(profileRequest.email().toLowerCase());
@@ -122,18 +124,6 @@ public class ProfileService {
                     profile.setLogin(profileRequest.login().toLowerCase());
                     return profileRepository.save(profile);
                 });
-    }
-
-    private void validateEmail(String email) {
-        if (profileRepository.existsByEmail(email)) {
-            throw new ProfileAlreadyExistsException(PROFILE_WITH_EMAIL_ALREADY_EXISTS.formatted(email));
-        }
-    }
-
-    private void validateLogin(String login) {
-        if (profileRepository.existsByLogin(login)) {
-            throw new ProfileAlreadyExistsException(PROFILE_WITH_LOGIN_ALREADY_EXISTS.formatted(login));
-        }
     }
 
     public void delete(Long id) {
@@ -199,10 +189,10 @@ public class ProfileService {
     }
 
     public List<QuoteResponse> getQuotes(Long id) {
-        return QuoteMapping.mapToQuoteResponse(findById(id).getQuotes());
+        return QuoteMapping.mapToQuoteResponses(findById(id).getQuotes());
     }
 
     public Set<QuoteResponse> getLikedQuotes(Long id) {
-        return QuoteMapping.mapToQuoteResponse(findById(id).getLikedQuotes());
+        return QuoteMapping.mapToQuoteResponses(findById(id).getLikedQuotes());
     }
 }
