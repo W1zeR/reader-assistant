@@ -1,15 +1,8 @@
-/** @type {import('next').NextConfig} */
+/** @type {import("next").NextConfig} */
 const nextConfig = {
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        pathname: "cdn.sanity.io",
-        hostname: "localhost",
-        port: "",
-      },
-    ],
-  },
+  env: {
+    apiURL: "http://localhost:8081/api",
+  }
 };
 
 module.exports = nextConfig;
