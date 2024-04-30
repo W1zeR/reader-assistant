@@ -26,13 +26,15 @@ const ErrorPage = () => {
                   >
                     <path
                       opacity="0.5"
-                      d="M25 163.051H101.211V191H133.308V163.051H153V136.111H133.308V32H91.2871L25 136.577V163.051ZM101.831 136.111H58.8025V134.869L100.591 68.6445H101.831V136.111Z"
+                      d="M25 163.051H101.211V191H133.308V163.051H153V136.111H133.308V32H91.2871L25
+                      136.577V163.051ZM101.831 136.111H58.8025V134.869L100.591 68.6445H101.831V136.111Z"
                       stroke="url(#paint0_linear_116:1137)"
                       strokeWidth="3"
                     />
                     <path
                       opacity="0.5"
-                      d="M307 133.051H383.211V161H415.308V133.051H435V106.111H415.308V2H373.287L307 106.577V133.051ZM383.831 106.111H340.803V104.869L382.591 38.6445H383.831V106.111Z"
+                      d="M307 133.051H383.211V161H415.308V133.051H435V106.111H415.308V2H373.287L307
+                      106.577V133.051ZM383.831 106.111H340.803V104.869L382.591 38.6445H383.831V106.111Z"
                       stroke="url(#paint1_linear_116:1137)"
                       strokeWidth="3"
                     />
@@ -78,7 +80,8 @@ const ErrorPage = () => {
                       </g>
                     </g>
                     <path
-                      d="M0 182H83.5V209H150.5V178H169.5V148.5C169.5 148.5 194 165 229.5 165C265 165 294 134.5 294 134.5V152H306.5H361V178H435V152H474"
+                      d="M0 182H83.5V209H150.5V178H169.5V148.5C169.5 148.5 194 165 229.5 165C265 165 294 134.5 294
+                      134.5V152H306.5H361V178H435V152H474"
                       stroke="white"
                       strokeOpacity="0.08"
                       strokeWidth="2"
@@ -150,7 +153,8 @@ const ErrorPage = () => {
                 </p>
                 <Link
                   href="/"
-                  className="px-8 py-3 text-base font-bold text-white duration-300 rounded-md bg-primary shadow-signUp hover:bg-white hover:text-primary md:px-9 lg:px-8 xl:px-9"
+                  className="px-8 py-3 text-base font-bold text-white duration-300 rounded-md bg-primary shadow-signUp
+                  hover:bg-white hover:text-primary md:px-9 lg:px-8 xl:px-9"
                 >
                   Вернуться на главную страницу
                 </Link>

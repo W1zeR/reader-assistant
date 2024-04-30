@@ -122,7 +122,8 @@ const PrivateQuotes = () => {
       <div className="container">
         <div className="py-4 flex justify-center mt-10">
           <button
-            className="bg-green-500 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-900 text-white py-2 px-4 rounded-full text-base">
+            className="bg-green-500 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-900 text-white py-2 px-4
+            rounded-full text-base">
             <Link
               href="/new-quote">
               <PlusIcon className="h-6 w-6 inline-block" /> Добавить новую цитату

@@ -7,7 +7,8 @@ const Footer = () => {
     <>
       <footer className="relative z-10 bg-white dark:bg-gray-dark mt-auto">
         <div className="container">
-          <div className="h-px w-full bg-gradient-to-r from-transparent via-[#D2D8E183] to-transparent dark:via-[#959CB183]"></div>
+          <div className="h-px w-full bg-gradient-to-r from-transparent via-[#D2D8E183] to-transparent
+          dark:via-[#959CB183]"></div>
           <div className="py-4 flex justify-center">
             <Link href="/" className="inline-block mr-10">
               <Image

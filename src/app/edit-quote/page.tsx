@@ -24,7 +24,9 @@ const EditQuote = () => {
                       name="content"
                       rows={5}
                       placeholder="Введите текст цитаты"
-                      className="border-stroke w-full resize-none rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
+                      className="border-stroke w-full resize-none rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base
+                      text-body-color outline-none focus:border-primary dark:border-transparent dark:bg-[#2C303B]
+                      dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
                     ></textarea>
                   </div>
                   <div className="mb-8">
@@ -39,7 +41,10 @@ const EditQuote = () => {
                       type="text"
                       name="book"
                       placeholder="Введите название книги"
-                      className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary dark:focus:shadow-none"
+                      className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border
+                      bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300
+                      focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary
+                      dark:focus:shadow-none"
                     />
                   </div>
                   <div className="mb-8">
@@ -54,7 +59,10 @@ const EditQuote = () => {
                       type="text"
                       name="authors"
                       placeholder="Введите авторов"
-                      className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary dark:focus:shadow-none"
+                      className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border
+                      bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300
+                      focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary
+                      dark:focus:shadow-none"
                     />
                   </div>
                   <div className="mb-8">
@@ -69,18 +77,25 @@ const EditQuote = () => {
                       type="text"
                       name="tags"
                       placeholder="Введите теги"
-                      className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary dark:focus:shadow-none"
+                      className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border
+                      bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300
+                      focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary
+                      dark:focus:shadow-none"
                     />
                   </div>
                   <div className="mb-6">
                     <button
-                      className="shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center rounded-sm bg-primary px-9 py-4 text-base font-medium text-white duration-300 hover:bg-primary/90">
+                      className="shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center
+                      rounded-sm bg-primary px-9 py-4 text-base font-medium text-white duration-300
+                       hover:bg-primary/90">
                       Сохранить
                     </button>
                   </div>
                   <div className="mb-6">
                     <button
-                      className="shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center rounded-sm bg-red-700 px-9 py-4 text-base font-medium text-white duration-300 hover:bg-red-700/90">
+                      className="shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center
+                      rounded-sm bg-red-700 px-9 py-4 text-base font-medium text-white duration-300
+                       hover:bg-red-700/90">
                       Отмена
                     </button>
                   </div>
