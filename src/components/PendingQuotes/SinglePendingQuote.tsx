@@ -1,12 +1,5 @@
 import { Quote } from "@/types/quote";
-import {
-  BookOpenIcon,
-  GlobeAltIcon,
-  HashtagIcon,
-  PencilIcon,
-  UserIcon,
-  XMarkIcon
-} from "@heroicons/react/24/outline";
+import { BookOpenIcon, GlobeAltIcon, HashtagIcon, PencilIcon, UserIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 const SinglePendingQuote = ({ quote }: { quote: Quote }) => {
   const { content, book } = quote;

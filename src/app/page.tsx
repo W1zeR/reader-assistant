@@ -5,8 +5,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Помощник читателя | Публичные цитаты",
-  description: "Это главная страница с публичными цитатами",
-  // other metadata
+  description: "Это главная страница с публичными цитатами"
 };
 
 export default function Home() {

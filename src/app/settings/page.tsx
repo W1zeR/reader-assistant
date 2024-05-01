@@ -1,3 +1,10 @@
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Помощник читателя | Настройки",
+  description: "Это страница с настройками аккаунта"
+};
+
 const Settings = () => {
   return (
     <>

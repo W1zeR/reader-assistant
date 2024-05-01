@@ -4,8 +4,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Помощник читателя | Регистрация",
-  description: "Это страница регистрации аккаунта",
-  // other metadata
+  description: "Это страница регистрации аккаунта"
 };
 
 const SignupPage = () => {
@@ -19,7 +18,7 @@ const SignupPage = () => {
                 <h3 className="mb-3 text-center text-2xl font-bold text-black dark:text-white sm:text-3xl">
                   Создать аккаунт
                 </h3>
-                <div className="mb-8 flex items-center justify-center"/>
+                <div className="mb-8 flex items-center justify-center" />
                 <form>
                   <div className="mb-8">
                     <label

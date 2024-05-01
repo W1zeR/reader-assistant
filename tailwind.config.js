@@ -1,17 +1,17 @@
-/** @type {import('tailwindcss').Config} */
+/** @type {import("tailwindcss").Config} */
 const colors = require("tailwindcss/colors");
 
 module.exports = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}"
   ],
   darkMode: "class",
   theme: {
     container: {
       center: true,
-      padding: "1rem",
+      padding: "1rem"
     },
 
     screens: {
@@ -30,7 +30,7 @@ module.exports = {
       xl: "1200px",
       // => @media (min-width: 1200px) { ... }
 
-      "2xl": "1400px",
+      "2xl": "1400px"
       // => @media (min-width: 1400px) { ... }
     },
     extend: {
@@ -45,17 +45,17 @@ module.exports = {
         "bg-color-dark": "#171C28",
         "body-color": {
           DEFAULT: "#788293",
-          dark: "#959CB1",
+          dark: "#959CB1"
         },
         stroke: {
           stroke: "#E3E8EF",
-          dark: "#353943",
+          dark: "#353943"
         },
         gray: {
           ...colors.gray,
           dark: "#1E232E",
-          light: "#F0F2F9",
-        },
+          light: "#F0F2F9"
+        }
       },
 
       boxShadow: {
@@ -70,12 +70,12 @@ module.exports = {
         "submit-dark": "0px 5px 20px rgba(4, 10, 34, 0.1)",
         btn: "0px 1px 2px rgba(4, 10, 34, 0.15)",
         "btn-hover": "0px 1px 2px rgba(0, 0, 0, 0.15)",
-        "btn-light": "0px 1px 2px rgba(0, 0, 0, 0.1)",
+        "btn-light": "0px 1px 2px rgba(0, 0, 0, 0.1)"
       },
       dropShadow: {
-        three: "0px 5px 15px rgba(6, 8, 15, 0.05)",
-      },
-    },
+        three: "0px 5px 15px rgba(6, 8, 15, 0.05)"
+      }
+    }
   },
-  plugins: [],
+  plugins: []
 };

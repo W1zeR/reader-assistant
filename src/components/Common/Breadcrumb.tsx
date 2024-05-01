@@ -1,9 +1,6 @@
 import Link from "next/link";
 
-const Breadcrumb = ({
-  pageName,
-  description,
-}: {
+const Breadcrumb = ({ pageName, description }: {
   pageName: string;
   description: string;
 }) => {

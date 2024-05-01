@@ -5,19 +5,19 @@ const menuData: Menu[] = [
     id: 1,
     title: "Публичные цитаты",
     path: "/",
-    newTab: false,
+    newTab: false
   },
   {
     id: 2,
     title: "Личные цитаты",
     path: "/private",
-    newTab: false,
+    newTab: false
   },
   {
     id: 33,
     title: "Цитаты в ожидании опубликования",
     path: "/pending",
-    newTab: false,
-  },
+    newTab: false
+  }
 ];
 export default menuData;

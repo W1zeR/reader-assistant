@@ -3,9 +3,8 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Error Page | Free Next.js Template for Startup and SaaS",
-  description: "This is Error Page for Startup Nextjs Template",
-  // other metadata
+  title: "Помощник читателя | Ошибка 404",
+  description: "Это страница ошибки 404"
 };
 
 const ErrorPage = () => {
@@ -148,7 +147,8 @@ const ErrorPage = () => {
                   Извините, страница
                   не найдена
                 </h3>
-                <p className="mb-10 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed">
+                <p
+                  className="mb-10 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed">
                   Страница, которую вы искали, была перемещена, удалена или не существует.
                 </p>
                 <Link

@@ -4,8 +4,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Помощник читателя | Вход",
-  description: "Это страница входа в аккаунт",
-  // other metadata
+  description: "Это страница входа в аккаунт"
 };
 
 const SigninPage = () => {
@@ -19,7 +18,7 @@ const SigninPage = () => {
                 <h3 className="mb-3 text-center text-2xl font-bold text-black dark:text-white sm:text-3xl">
                   Войти в аккаунт
                 </h3>
-                <div className="mb-8 flex items-center justify-center"/>
+                <div className="mb-8 flex items-center justify-center" />
                 <form>
                   <div className="mb-8">
                     <label

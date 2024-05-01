@@ -1,4 +1,10 @@
-import { BookOpenIcon, PencilIcon, HashtagIcon } from "@heroicons/react/24/outline";
+import { BookOpenIcon, HashtagIcon, PencilIcon } from "@heroicons/react/24/outline";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Помощник читателя | Редактировать цитату",
+  description: "Это страница редактирования цитаты"
+};
 
 const EditQuote = () => {
   return (

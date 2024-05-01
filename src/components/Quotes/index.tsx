@@ -17,10 +17,10 @@ const quoteData: Quote[] = [
         }
       ]
     },
-    profile:{
+    profile: {
       id: 1,
       email: "string@string.ru",
-      login: "sergeylavrov",
+      login: "sergeylavrov"
     },
     status: {
       id: 3,
@@ -35,7 +35,7 @@ const quoteData: Quote[] = [
       {
         id: 1,
         name: "последствия"
-      },
+      }
     ]
   },
 
@@ -61,10 +61,10 @@ const quoteData: Quote[] = [
         }
       ]
     },
-    profile:{
+    profile: {
       id: 2,
       email: "test@test.ru",
-      login: "testuser",
+      login: "testuser"
     },
     status: {
       id: 3,
@@ -79,8 +79,8 @@ const quoteData: Quote[] = [
       {
         id: 1,
         name: "общение"
-      },
-    ],
+      }
+    ]
   }
 ];
 
