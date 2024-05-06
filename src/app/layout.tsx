@@ -11,7 +11,7 @@ import React from "react";
 const inter = Inter({ subsets: ["cyrillic"] });
 
 export default function RootLayout({ children }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <html suppressHydrationWarning lang="en">
