@@ -1,7 +1,10 @@
 package com.w1zer.service;
 
 import com.w1zer.entity.*;
-import com.w1zer.exception.*;
+import com.w1zer.exception.ChangePasswordException;
+import com.w1zer.exception.NotFoundException;
+import com.w1zer.exception.ProfileRolesException;
+import com.w1zer.exception.UserLogoutException;
 import com.w1zer.mapping.QuoteMapping;
 import com.w1zer.payload.*;
 import com.w1zer.repository.ProfileRepository;

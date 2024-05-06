@@ -16,5 +16,5 @@ spring:
 w1zer:
   jwt:
     secret-key: dzF6ZXJTZWNyZXRLZXk=dzF6ZXJTZWNyZXRLZXk=dzF6ZXJTZWNyZXRLZXk=
-    access-expiration-hours: 1 # 1 hour
-    refresh-expiration-hours: 168 # 7 days
+    access-expiration-hours: 24 # 1 day
+    refresh-expiration-hours: 720 # 30 days

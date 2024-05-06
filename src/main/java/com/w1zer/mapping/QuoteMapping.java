@@ -40,7 +40,7 @@ public final class QuoteMapping {
     }
 
     private static Long getLikesCount(Quote quote) {
-        if (quote.getStatus().getName() == QuoteStatusName.PUBLIC){
+        if (quote.getStatus().getName() == QuoteStatusName.PUBLIC) {
             return (long) quote.getWhoLiked().size();
         }
         return 0L;

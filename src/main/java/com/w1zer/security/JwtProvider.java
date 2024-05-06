@@ -34,7 +34,7 @@ public class JwtProvider {
     public static final String LOGOUT_TOKEN_CACHE_SET =
             "Logout token cache set for %s with a TTL of %s seconds. Token will expiry in %s";
     public static final String TOKEN_CORRESPONDS_TO_AN_ALREADY_LOGGED_OUT_USER =
-            "Token corresponds to an already logged out user [%s] at [%s]";
+            "Token corresponds to an already logged out user %s at %s";
     public static final String JWT = "JWT";
     private static final Logger logger = LoggerFactory.getLogger(JwtProvider.class);
     private final ExpiringMap<String, OnUserLogoutSuccessEvent> tokenEventMap;
@@ -50,31 +50,35 @@ public class JwtProvider {
                 .build();
     }
 
-    public String generateJwtFromAuth(Authentication authentication) {
+    public JwtWithExpiry generateJwtFromAuth(Authentication authentication) {
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-        Date issue = Date.from(Instant.now());
-        Date expiration = Date.from(Instant.now().plus(accessExpirationHours, HOURS));
-        return Jwts.builder()
+        Instant now = Instant.now();
+        Date issue = Date.from(now);
+        Instant expiryInstant = now.plus(accessExpirationHours, HOURS);
+        String token = Jwts.builder()
                 .subject((userPrincipal.getUsername()))
                 .issuer("auth")
                 .id(Long.toString(userPrincipal.getId()))
                 .issuedAt(issue)
-                .expiration(expiration)
+                .expiration(Date.from(expiryInstant))
                 .signWith(getSignInKey())
                 .compact();
+        return new JwtWithExpiry(token, expiryInstant.toEpochMilli());
     }
 
-    public String generateJwtFromProfile(Profile profile) {
-        Date issue = Date.from(Instant.now());
-        Date expiration = Date.from(Instant.now().plus(accessExpirationHours, HOURS));
-        return Jwts.builder()
+    public JwtWithExpiry generateJwtFromProfile(Profile profile) {
+        Instant now = Instant.now();
+        Date issue = Date.from(now);
+        Instant expiryInstant = now.plus(accessExpirationHours, HOURS);
+        String token = Jwts.builder()
                 .subject(profile.getEmail())
                 .issuer("profile")
                 .id(Long.toString(profile.getId()))
                 .issuedAt(issue)
-                .expiration(expiration)
+                .expiration(Date.from(expiryInstant))
                 .signWith(getSignInKey())
                 .compact();
+        return new JwtWithExpiry(token, expiryInstant.toEpochMilli());
     }
 
     public String getUsernameFromJwt(String jwt) {

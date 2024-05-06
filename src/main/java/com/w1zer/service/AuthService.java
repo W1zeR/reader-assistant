@@ -7,7 +7,7 @@ import com.w1zer.exception.NotFoundException;
 import com.w1zer.payload.*;
 import com.w1zer.repository.ProfileRepository;
 import com.w1zer.security.JwtProvider;
-import org.springframework.beans.factory.annotation.Value;
+import com.w1zer.security.JwtWithExpiry;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -28,9 +28,6 @@ public class AuthService {
     private final UserDeviceService userDeviceService;
     private final RoleService roleService;
     private final ProfileValidationService profileValidationService;
-
-    @Value("${w1zer.jwt.access-expiration-hours}")
-    private long accessExpirationHours;
 
     public AuthService(AuthenticationManager authenticationManager, ProfileRepository profileRepository,
                        PasswordEncoder passwordEncoder, JwtProvider jwtProvider,
@@ -66,7 +63,7 @@ public class AuthService {
                 new UsernamePasswordAuthenticationToken(email, loginRequest.password())
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtProvider.generateJwtFromAuth(authentication);
+        JwtWithExpiry jwtWithExpiry = jwtProvider.generateJwtFromAuth(authentication);
         deleteRefreshTokenIfPresent(profile.getId());
         UserDevice userDevice = userDeviceService.createUserDevice(loginRequest.deviceInfo());
         RefreshToken refreshToken = refreshTokenService.createRefreshToken();
@@ -74,7 +71,7 @@ public class AuthService {
         userDevice.setRefreshToken(refreshToken);
         refreshToken.setUserDevice(userDevice);
         refreshToken = refreshTokenService.save(refreshToken);
-        return new AuthResponse(jwt, refreshToken.getToken(), accessExpirationHours);
+        return new AuthResponse(jwtWithExpiry.token(), refreshToken.getToken(), jwtWithExpiry.expiry());
     }
 
     public void register(RegisterRequest registerRequest) {
@@ -101,12 +98,12 @@ public class AuthService {
     }
 
     public AuthResponse refresh(RefreshTokenRequest refreshTokenRequest) {
-        String token = refreshTokenRequest.refreshToken();
-        RefreshToken refreshToken = refreshTokenService.findByToken(token);
+        String refreshTokenFromRequest = refreshTokenRequest.refreshToken();
+        RefreshToken refreshToken = refreshTokenService.findByToken(refreshTokenFromRequest);
         refreshTokenService.verifyExpiration(refreshToken);
         userDeviceService.verifyRefreshAvailability(refreshToken);
         refreshTokenService.incRefreshCount(refreshToken);
-        String newAccessToken = jwtProvider.generateJwtFromProfile(refreshToken.getUserDevice().getProfile());
-        return new AuthResponse(newAccessToken, token, accessExpirationHours);
+        JwtWithExpiry newAccessToken = jwtProvider.generateJwtFromProfile(refreshToken.getUserDevice().getProfile());
+        return new AuthResponse(newAccessToken.token(), refreshTokenFromRequest, newAccessToken.expiry());
     }
 }
