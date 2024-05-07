@@ -3,7 +3,7 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { RefreshToken } from "@/types/quote";
 
-const API_URL = process.env.API_URL
+const API_URL = process.env.NEXT_PUBLIC_API_URL
 // There are 1000 mils in 1 second, 60 seconds in 1 min, 60 minutes in 1 hour
 const refreshTokenBeforeExpiryTime = 60 * 60 * 1000
 

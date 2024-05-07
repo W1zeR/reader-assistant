@@ -13,7 +13,6 @@ export default function useAuth(shouldRedirect: boolean) {
     }
 
     if (session === null) {
-      router.replace("/signin");
       setIsAuthenticated(false);
     } else if (session !== undefined) {
       setIsAuthenticated(true);
