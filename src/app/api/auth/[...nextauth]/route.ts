@@ -29,8 +29,8 @@ const providers = [
   CredentialsProvider({
     name: "Credentials",
     credentials: {
-      email: { label: "Email", type: "text" },
-      password: { label: "Password", type: "password" }
+      email: { label: "email", type: "text" },
+      password: { label: "password", type: "password" }
     },
     async authorize(credentials) {
       try {
@@ -64,25 +64,25 @@ const callbacks = {
 
     // If the token is still valid, just return it.
     if (shouldRefreshTime > 0) {
-      return token
+      return Promise.resolve(token)
     }
 
     // If the call arrives after 23 hours have passed, we allow to refresh the token.
     token = refreshAccessToken(token)
-    return token
+    return Promise.resolve(token)
   },
 
   async session({ session, token }) {
     // Here we pass accessToken to the client to be used in authentication with your API
-    session.accessToken = token.accessToken;
-    session.accessTokenExpiry = token.accessTokenExpiry;
-    session.error = token.error;
+    session.accessToken = token.accessToken
+    session.accessTokenExpiry = token.accessTokenExpiry
+    session.error = token.error
 
-    return session;
+    return Promise.resolve(session)
   }
 };
 
-const handler = NextAuth({
+export const handler = NextAuth({
   providers: providers,
   callbacks: callbacks,
   pages: {

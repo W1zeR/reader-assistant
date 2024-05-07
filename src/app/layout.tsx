@@ -6,25 +6,33 @@ import ScrollToTop from "@/components/ScrollToTop";
 import { Inter } from "next/font/google";
 import "../styles/index.css";
 import { Providers } from "./providers";
-import React from "react";
+import React, { useState } from "react";
+import { SessionProvider } from "next-auth/react";
+import RefreshTokenHandler from "@/components/RefreshTokenHandler/refreshTokenHandler";
+import { getServerSession } from "next-auth";
 
 const inter = Inter({ subsets: ["cyrillic"] });
 
 export default function RootLayout({ children }: {
   children: React.ReactNode
 }) {
+  const [interval, setInterval] = useState(0);
+
   return (
     <html suppressHydrationWarning lang="en">
 
     <head><title></title></head>
 
     <body className={`bg-gray-light dark:bg-black flex flex-col min-h-screen ${inter.className}`}>
-    <Providers>
-      <Header />
-      {children}
-      <Footer />
-      <ScrollToTop />
-    </Providers>
+    <SessionProvider session={} refetchInterval={interval}>
+      <RefreshTokenHandler setInterval={setInterval} />
+      <Providers>
+        <Header />
+        {children}
+        <Footer />
+        <ScrollToTop />
+      </Providers>
+    </SessionProvider>
     </body>
     </html>
   );
