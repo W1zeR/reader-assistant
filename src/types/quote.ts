@@ -36,7 +36,3 @@ export type Profile = {
   email: string
   login: string
 };
-
-export type RefreshToken = {
-  refreshToken: string
-};
