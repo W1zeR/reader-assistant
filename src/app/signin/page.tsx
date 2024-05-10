@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { Metadata } from "next";
+import React from "react";
+import LoginForm from "@/components/LoginForm";
 
 export const metadata: Metadata = {
   title: "Помощник читателя | Вход",
   description: "Это страница входа в аккаунт"
 };
 
-const SigninPage = () => {
+export default function SigninPage() {
   return (
     <>
       <section className="relative z-10 overflow-hidden pb-16 pt-36 md:pb-20 lg:pb-28 lg:pt-[180px]">
@@ -18,53 +20,7 @@ const SigninPage = () => {
                   Войти в аккаунт
                 </h3>
                 <div className="mb-8 flex items-center justify-center" />
-
-                <form>
-                  <div className="mb-8">
-                    <label
-                      htmlFor="email"
-                      className="mb-3 block text-sm text-dark dark:text-white"
-                    >
-                      Адрес электронной почты
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      placeholder="Введите адрес электронной почты"
-                      className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border
-                      bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300
-                      focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary
-                      dark:focus:shadow-none"
-                    />
-                  </div>
-                  <div className="mb-8">
-                    <label
-                      htmlFor="password"
-                      className="mb-3 block text-sm text-dark dark:text-white"
-                    >
-                      Пароль
-                    </label>
-                    <input
-                      type="password"
-                      name="password"
-                      placeholder="Введите пароль"
-                      className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border
-                      bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300
-                      focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary
-                      dark:focus:shadow-none"
-                    />
-                  </div>
-                  <div className="mb-6">
-
-                    <button className="shadow-submit dark:shadow-submit-dark flex w-full
-                    items-center justify-center rounded-sm bg-primary px-9 py-4 text-base font-medium text-white
-                    duration-300 hover:bg-primary/90">
-                      Войти
-                    </button>
-
-                  </div>
-                </form>
-
+                <LoginForm/>
                 <p className="text-center text-base font-medium text-body-color">
                   Нет аккаунта?{" "}
                   <Link href="/signup" className="text-primary hover:underline">
@@ -136,5 +92,3 @@ const SigninPage = () => {
     </>
   );
 };
-
-export default SigninPage;

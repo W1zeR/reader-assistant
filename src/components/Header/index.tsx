@@ -183,7 +183,7 @@ const Header = () => {
               <div className="flex items-center justify-end pr-16 lg:pr-0">
                 {isAuthenticated ?
                   <Authenticated />
-                  : <NotAuthenticated/>}
+                  : <NotAuthenticated />}
                 <div>
                   <ThemeToggler />
                 </div>

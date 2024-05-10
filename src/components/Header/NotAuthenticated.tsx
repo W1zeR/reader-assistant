@@ -18,6 +18,6 @@ const NotAuthenticated = () => {
       </Link>
     </>
   );
-}
+};
 
 export default NotAuthenticated;
