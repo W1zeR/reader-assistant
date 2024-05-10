@@ -47,9 +47,6 @@ public class AuthorService {
         author.setSurname(authorRequest.surname());
         author.setName(authorRequest.name());
         author.setPatronymic(authorRequest.patronymic());
-        author.setBirthday(authorRequest.birthday());
-        author.setDeath(authorRequest.death());
-        author.setDescription(authorRequest.description());
         return authorRepository.save(author);
     }
 
@@ -62,9 +59,6 @@ public class AuthorService {
         author.setSurname(authorRequest.surname());
         author.setName(authorRequest.name());
         author.setPatronymic(authorRequest.patronymic());
-        author.setBirthday(authorRequest.birthday());
-        author.setDeath(authorRequest.death());
-        author.setDescription(authorRequest.description());
         authorRepository.save(author);
     }
 

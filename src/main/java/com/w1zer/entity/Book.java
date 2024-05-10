@@ -7,8 +7,6 @@ import org.hibernate.proxy.HibernateProxy;
 
 import java.util.*;
 
-import static com.w1zer.constants.EntityConstants.DESCRIPTION_LENGTH;
-
 @Getter
 @Setter
 @ToString
@@ -22,11 +20,6 @@ public class Book {
 
     @Column(nullable = false)
     private String title;
-
-    private Integer publishingYear;
-
-    @Column(length = DESCRIPTION_LENGTH)
-    private String description;
 
     @ManyToMany(mappedBy = "books")
     @ToString.Exclude

@@ -71,7 +71,8 @@ public class AuthService {
         userDevice.setRefreshToken(refreshToken);
         refreshToken.setUserDevice(userDevice);
         refreshToken = refreshTokenService.save(refreshToken);
-        return new AuthResponse(jwtWithExpiry.token(), refreshToken.getToken(), jwtWithExpiry.expiry());
+        return new AuthResponse(profile.getId(), jwtWithExpiry.token(), refreshToken.getToken(),
+                jwtWithExpiry.expiry());
     }
 
     public void register(RegisterRequest registerRequest) {
@@ -103,7 +104,9 @@ public class AuthService {
         refreshTokenService.verifyExpiration(refreshToken);
         userDeviceService.verifyRefreshAvailability(refreshToken);
         refreshTokenService.incRefreshCount(refreshToken);
-        JwtWithExpiry newAccessToken = jwtProvider.generateJwtFromProfile(refreshToken.getUserDevice().getProfile());
-        return new AuthResponse(newAccessToken.token(), refreshTokenFromRequest, newAccessToken.expiry());
+        Profile profile = refreshToken.getUserDevice().getProfile();
+        JwtWithExpiry newAccessToken = jwtProvider.generateJwtFromProfile(profile);
+        return new AuthResponse(profile.getId(), newAccessToken.token(), refreshTokenFromRequest,
+                newAccessToken.expiry());
     }
 }

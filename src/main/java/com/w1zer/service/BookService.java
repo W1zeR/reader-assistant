@@ -44,16 +44,12 @@ public class BookService {
         return bookRepository.findById(id)
                 .map(book -> {
                     book.setTitle(bookRequest.title());
-                    book.setPublishingYear(bookRequest.publishingYear());
-                    book.setDescription(bookRequest.description());
                     return bookRepository.save(book);
                 })
                 .orElseGet(() -> {
                     Book book = new Book();
                     book.setId(id);
                     book.setTitle(bookRequest.title());
-                    book.setPublishingYear(bookRequest.publishingYear());
-                    book.setDescription(bookRequest.description());
                     return bookRepository.save(book);
                 });
     }
@@ -65,8 +61,6 @@ public class BookService {
     public void create(BookRequest bookRequest) {
         Book book = new Book();
         book.setTitle(bookRequest.title());
-        book.setPublishingYear(bookRequest.publishingYear());
-        book.setDescription(bookRequest.description());
         bookRepository.save(book);
     }
 

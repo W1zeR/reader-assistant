@@ -28,7 +28,7 @@ public class UserDevice {
     private String deviceType;
 
     @Column(nullable = false)
-    private String deviceId;
+    private String browserName;
 
     @OneToOne(optional = false, mappedBy = "userDevice")
     @ToString.Exclude

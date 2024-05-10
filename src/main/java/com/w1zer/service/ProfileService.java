@@ -23,7 +23,8 @@ public class ProfileService {
     private static final String PROFILE_WITH_ID_NOT_FOUND = "Profile with id %s not found";
     private static final String PROFILE_MUST_HAVE_2_ROLES_USER_MODERATOR = "Profile must have 2 roles: USER, MODERATOR";
     private static final String PROFILE_MUST_HAVE_1_ROLE_USER = "Profile must have 1 role: USER";
-    private static final String INVALID_DEVICE_ID = "Invalid device Id. No matching device found for the given user";
+    private static final String DEVICE_INFO = "Browser name: %s, device type: %s";
+    private static final String NO_MATCHING_DEVICE = "No matching device found for the given user";
     private static final String USER_HAS_SUCCESSFULLY_LOGGED_OUT = "User has successfully logged out";
     private static final String OLD_PASSWORD_IS_INCORRECT = "Old password is incorrect";
     private static final String PASSWORD_CHANGED_SUCCESSFULLY = "Password changed successfully";
@@ -42,7 +43,8 @@ public class ProfileService {
     public ProfileService(ProfileRepository profileRepository, QuoteRepository quoteRepository,
                           RoleService roleService, UserDeviceService userDeviceService,
                           ApplicationEventPublisher applicationEventPublisher,
-                          RefreshTokenService refreshTokenService, TagRepository tagRepository, ProfileValidationService profileValidationService) {
+                          RefreshTokenService refreshTokenService, TagRepository tagRepository,
+                          ProfileValidationService profileValidationService) {
         this.profileRepository = profileRepository;
         this.quoteRepository = quoteRepository;
         this.roleService = roleService;
@@ -91,10 +93,13 @@ public class ProfileService {
     }
 
     public ApiResponse logout(UserPrincipal currentUser, LogoutRequest logoutRequest) {
-        String deviceId = logoutRequest.deviceInfo().getDeviceId();
+        String browserName = logoutRequest.deviceInfo().browserName();
+        String deviceType = logoutRequest.deviceInfo().deviceType();
         UserDevice userDevice = userDeviceService.findByProfileId(currentUser.getId())
-                .filter(device -> device.getDeviceId().equals(deviceId))
-                .orElseThrow(() -> new UserLogoutException(deviceId, INVALID_DEVICE_ID));
+                .filter(device -> device.getBrowserName().equals(browserName) &&
+                        device.getDeviceType().equals(deviceType))
+                .orElseThrow(() -> new UserLogoutException(DEVICE_INFO.formatted(browserName, deviceType),
+                        NO_MATCHING_DEVICE));
         refreshTokenService.deleteById(userDevice.getRefreshToken().getId());
         OnUserLogoutSuccessEvent logoutSuccessEvent = new OnUserLogoutSuccessEvent(currentUser.getEmail(),
                 logoutRequest.token(), logoutRequest);

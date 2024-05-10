@@ -5,12 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
-import static com.w1zer.constants.EntityConstants.DESCRIPTION_LENGTH;
 
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Getter
@@ -31,14 +28,6 @@ public class Author {
     private String name;
 
     private String patronymic;
-
-    @Column(nullable = false)
-    private LocalDate birthday;
-
-    private LocalDate death;
-
-    @Column(length = DESCRIPTION_LENGTH)
-    private String description;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "authors_books", joinColumns = @JoinColumn(name = "id_author"),

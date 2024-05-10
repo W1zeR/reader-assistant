@@ -2,17 +2,16 @@ package com.w1zer.exception;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.io.Serial;
 
 @Getter
 @Setter
-@ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
 public class InvalidTokenRequestException extends RuntimeException {
     @Serial
     private static final long serialVersionUID = 1L;
+
+    private static final String INVALID_TOKEN_REQUEST = "'%s': '%s' token: '%s'";
 
     private final String tokenType;
 
@@ -21,7 +20,7 @@ public class InvalidTokenRequestException extends RuntimeException {
     private final String message;
 
     public InvalidTokenRequestException(String tokenType, String token, String message) {
-        super(String.format("%s: [%s] token: [%s] ", message, tokenType, token));
+        super(INVALID_TOKEN_REQUEST.formatted(message, tokenType, token));
         this.tokenType = tokenType;
         this.token = token;
         this.message = message;

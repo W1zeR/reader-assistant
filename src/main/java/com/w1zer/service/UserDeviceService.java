@@ -30,8 +30,8 @@ public class UserDeviceService {
 
     public UserDevice createUserDevice(DeviceInfo deviceInfo) {
         UserDevice userDevice = new UserDevice();
-        userDevice.setDeviceId(deviceInfo.getDeviceId());
-        userDevice.setDeviceType(deviceInfo.getDeviceType());
+        userDevice.setBrowserName(deviceInfo.browserName());
+        userDevice.setDeviceType(deviceInfo.deviceType());
         userDevice.setIsRefreshActive(true);
         return userDevice;
     }

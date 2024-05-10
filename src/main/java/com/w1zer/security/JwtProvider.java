@@ -36,6 +36,9 @@ public class JwtProvider {
     public static final String TOKEN_CORRESPONDS_TO_AN_ALREADY_LOGGED_OUT_USER =
             "Token corresponds to an already logged out user %s at %s";
     public static final String JWT = "JWT";
+    public static final int MAX_SIZE = 1000;
+    public static final String AUTH_ISSUER = "auth";
+    public static final String PROFILE_ISSUER = "profile";
     private static final Logger logger = LoggerFactory.getLogger(JwtProvider.class);
     private final ExpiringMap<String, OnUserLogoutSuccessEvent> tokenEventMap;
     @Value("${w1zer.jwt.secret-key}")
@@ -46,7 +49,7 @@ public class JwtProvider {
     public JwtProvider() {
         this.tokenEventMap = ExpiringMap.builder()
                 .variableExpiration()
-                .maxSize(1000)
+                .maxSize(MAX_SIZE)
                 .build();
     }
 
@@ -57,7 +60,7 @@ public class JwtProvider {
         Instant expiryInstant = now.plus(accessExpirationHours, HOURS);
         String token = Jwts.builder()
                 .subject((userPrincipal.getUsername()))
-                .issuer("auth")
+                .issuer(AUTH_ISSUER)
                 .id(Long.toString(userPrincipal.getId()))
                 .issuedAt(issue)
                 .expiration(Date.from(expiryInstant))
@@ -72,7 +75,7 @@ public class JwtProvider {
         Instant expiryInstant = now.plus(accessExpirationHours, HOURS);
         String token = Jwts.builder()
                 .subject(profile.getEmail())
-                .issuer("profile")
+                .issuer(PROFILE_ISSUER)
                 .id(Long.toString(profile.getId()))
                 .issuedAt(issue)
                 .expiration(Date.from(expiryInstant))

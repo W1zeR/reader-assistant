@@ -15,6 +15,7 @@ import static java.time.temporal.ChronoUnit.HOURS;
 @Service
 public class RefreshTokenService {
     public static final String REFRESH_TOKEN_EXPIRED = "Refresh token %s was expired";
+    public static final long REFRESH_COUNT = 0L;
     private static final String REFRESH_TOKEN_NOT_FOUND = "Refresh token '%s' not found";
     private final RefreshTokenRepository refreshTokenRepository;
     @Value("${w1zer.jwt.refresh-expiration-hours}")
@@ -38,7 +39,7 @@ public class RefreshTokenService {
         RefreshToken refreshToken = new RefreshToken();
         refreshToken.setToken(UUID.randomUUID().toString());
         refreshToken.setExpiryDate(Instant.now().plus(refreshExpirationHours, HOURS));
-        refreshToken.setRefreshCount(0L);
+        refreshToken.setRefreshCount(REFRESH_COUNT);
         return refreshToken;
     }
 
