@@ -5,6 +5,7 @@ import com.w1zer.entity.QuoteStatus;
 import com.w1zer.entity.QuoteStatusName;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.lang.NonNull;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface QuoteRepository extends PagingAndSortingRepository<Quote, Long> {
+public interface QuoteRepository extends JpaRepository<Quote, Long> {
     // Public or pending quotes
     Page<Quote> findAllByStatusNameIs(QuoteStatusName statusName, Pageable p);
 
@@ -21,9 +22,6 @@ public interface QuoteRepository extends PagingAndSortingRepository<Quote, Long>
     @Query("select q from Quote q where q.profile.id = ?#{ principal?.id }")
     Page<Quote> findAllByStatusIs(QuoteStatus status, Pageable p);
 
+    @NonNull
     Optional<Quote> findById(@NonNull Long id);
-
-    Quote save(Quote quote);
-
-    void deleteById(@NonNull Long id);
 }
