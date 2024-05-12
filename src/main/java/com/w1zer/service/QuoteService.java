@@ -8,9 +8,10 @@ import com.w1zer.repository.ProfileRepository;
 import com.w1zer.repository.QuoteRepository;
 import com.w1zer.repository.TagRepository;
 import com.w1zer.security.UserPrincipal;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -104,13 +105,19 @@ public class QuoteService {
                 }));
     }
 
-    public List<QuoteResponse> findAllPublic() {
-        QuoteStatus pub = quoteStatusService.findByName(QuoteStatusName.PUBLIC);
-        return quoteRepository.findAll()
-                .stream()
-                .map(QuoteMapping::mapToQuoteResponse)
-                .filter(quote -> quote.status().equals(pub))
-                .collect(Collectors.toList());
+    public Page<QuoteResponse> findAllPublic(Pageable p) {
+        QuoteStatusName pub = QuoteStatusName.PUBLIC;
+        return QuoteMapping.mapToQuoteResponsesPage(quoteRepository.findAllByStatusNameIs(pub, p));
+    }
+
+    public Page<QuoteResponse> findAllPending(Pageable p) {
+        QuoteStatusName pending = QuoteStatusName.PENDING;
+        return QuoteMapping.mapToQuoteResponsesPage(quoteRepository.findAllByStatusNameIs(pending, p));
+    }
+
+    public Page<QuoteResponse> findAllPrivate(Pageable p) {
+        QuoteStatus pri = quoteStatusService.findByName(QuoteStatusName.PRIVATE);
+        return QuoteMapping.mapToQuoteResponsesPage(quoteRepository.findAllByStatusIs(pri, p));
     }
 
     public void create(QuoteRequest quoteRequest, UserPrincipal userPrincipal) {

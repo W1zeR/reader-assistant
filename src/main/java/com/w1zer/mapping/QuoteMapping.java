@@ -8,6 +8,7 @@ import com.w1zer.payload.BookAuthorResponse;
 import com.w1zer.payload.QuoteBookResponse;
 import com.w1zer.payload.QuoteProfileResponse;
 import com.w1zer.payload.QuoteResponse;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.Set;
@@ -15,6 +16,10 @@ import java.util.stream.Collectors;
 
 public final class QuoteMapping {
     private QuoteMapping() {
+    }
+
+    public static Page<QuoteResponse> mapToQuoteResponsesPage(Page<Quote> quotesPage){
+        return quotesPage.map(QuoteMapping::mapToQuoteResponse);
     }
 
     public static List<QuoteResponse> mapToQuoteResponses(List<Quote> quotes) {

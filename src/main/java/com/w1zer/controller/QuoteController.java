@@ -10,13 +10,12 @@ import com.w1zer.service.QuoteService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 import java.util.Set;
-
 import static com.w1zer.constants.ValidationConstants.ID_POSITIVE_MESSAGE;
 
 @RestController
@@ -66,8 +65,21 @@ public class QuoteController {
 
     @Operation(summary = "Get quotes with public status")
     @GetMapping
-    public List<QuoteResponse> findAllPublic() {
-        return quoteService.findAllPublic();
+    public Page<QuoteResponse> findAllPublic(Pageable p) {
+        return quoteService.findAllPublic(p);
+    }
+
+    @Operation(summary = "Get quotes with pending status")
+    @GetMapping("/pending")
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+    public Page<QuoteResponse> findAllPending(Pageable p) {
+        return quoteService.findAllPending(p);
+    }
+
+    @Operation(summary = "Get quotes with private status")
+    @GetMapping("/private")
+    public Page<QuoteResponse> findAllPrivate(Pageable p) {
+        return quoteService.findAllPrivate(p);
     }
 
     @GetMapping("/{id}")
