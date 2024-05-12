@@ -8,6 +8,7 @@ import com.w1zer.repository.ProfileRepository;
 import com.w1zer.repository.QuoteRepository;
 import com.w1zer.repository.TagRepository;
 import com.w1zer.security.UserPrincipal;
+import com.w1zer.validation.QuoteValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,9 +18,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class QuoteService {
-    public static final String QUOTE_STATUS_MUST_BE_PRIVATE = "Quote status must be private";
-    public static final String QUOTE_STATUS_MUST_BE_PENDING = "Quote status must be pending";
-    public static final String QUOTE_STATUS_MUST_BE_PUBLIC = "Quote status must be public";
     private static final String QUOTE_WITH_ID_NOT_FOUND = "Quote with id '%d' not found";
     private static final String PROFILE_WITH_ID_NOT_FOUND = "Profile with id %s not found";
     private static final String TAG_WITH_ID_NOT_FOUND = "Tag with id %s not found";
@@ -27,16 +25,20 @@ public class QuoteService {
     private final QuoteStatusService quoteStatusService;
     private final ProfileRepository profileRepository;
     private final TagRepository tagRepository;
+    private final QuoteValidator quoteValidator;
 
     public QuoteService(QuoteRepository quoteRepository, QuoteStatusService quoteStatusService,
-                        ProfileRepository profileRepository, TagRepository tagRepository) {
+                        ProfileRepository profileRepository, TagRepository tagRepository,
+                        QuoteValidator quoteValidator) {
         this.quoteRepository = quoteRepository;
         this.quoteStatusService = quoteStatusService;
         this.profileRepository = profileRepository;
         this.tagRepository = tagRepository;
+        this.quoteValidator = quoteValidator;
     }
 
-    public void markPrivateAsPending(Long id) {
+    public void markPrivateAsPending(Long id, UserPrincipal userPrincipal) {
+        quoteValidator.validateQuoteOwning(id, userPrincipal);
         changeQuoteStatus(id, QuoteStatusName.PRIVATE, QuoteStatusName.PENDING);
     }
 
@@ -54,24 +56,13 @@ public class QuoteService {
 
     private void changeQuoteStatus(Long id, QuoteStatusName currentStatusName, QuoteStatusName newStatusName) {
         Quote quote = findById(id);
-        if (quote.getStatus().getName() != currentStatusName) {
-            throw new RuntimeException(getExceptionMessageByQuoteStatusName(currentStatusName));
-        }
+        quoteValidator.validateCurrentQuoteStatusName(quote.getStatus().getName(), currentStatusName);
         quote.setStatus(quoteStatusService.findByName(newStatusName));
         quoteRepository.save(quote);
     }
 
-    private String getExceptionMessageByQuoteStatusName(QuoteStatusName statusName) {
-        if (statusName == QuoteStatusName.PRIVATE) {
-            return QUOTE_STATUS_MUST_BE_PRIVATE;
-        }
-        if (statusName == QuoteStatusName.PENDING) {
-            return QUOTE_STATUS_MUST_BE_PENDING;
-        }
-        return QUOTE_STATUS_MUST_BE_PUBLIC;
-    }
-
-    public QuoteResponse findQuoteById(Long id) {
+    public QuoteResponse findQuoteById(Long id, UserPrincipal userPrincipal) {
+        quoteValidator.validateQuoteIsPublicOrQuoteOwning(id, userPrincipal.getId());
         return QuoteMapping.mapToQuoteResponse(quoteRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(QUOTE_WITH_ID_NOT_FOUND.formatted(id))
         ));
@@ -83,11 +74,15 @@ public class QuoteService {
         );
     }
 
-    public void delete(Long id) {
+    public void delete(Long id, UserPrincipal userPrincipal) {
+        quoteValidator.validateQuoteOwning(id, userPrincipal);
+        quoteValidator.validateQuoteChange(id);
         quoteRepository.deleteById(id);
     }
 
-    public QuoteResponse replace(QuoteRequest quoteRequest, Long id) {
+    public QuoteResponse replace(QuoteRequest quoteRequest, Long id, UserPrincipal userPrincipal) {
+        quoteValidator.validateQuoteOwning(id, userPrincipal);
+        quoteValidator.validateQuoteChange(id);
         return QuoteMapping.mapToQuoteResponse(quoteRepository.findById(id)
                 .map(quote -> {
                     quote.setContent(quoteRequest.content());
@@ -181,6 +176,7 @@ public class QuoteService {
     }
 
     public void addLikedProfile(Long quoteId, Long profileId) {
+        quoteValidator.validateQuoteIsPublicOrQuoteOwning(quoteId, profileId);
         Quote quote = findById(quoteId);
         Profile profile = findByProfileId(profileId);
         quote.addLikedProfile(profile);
@@ -188,6 +184,7 @@ public class QuoteService {
     }
 
     public void removeLikedProfile(Long quoteId, Long profileId) {
+        quoteValidator.validateQuoteIsPublicOrQuoteOwning(quoteId, profileId);
         Quote quote = findById(quoteId);
         Profile profile = findByProfileId(profileId);
         quote.removeLikedProfile(profile);
@@ -200,18 +197,21 @@ public class QuoteService {
         );
     }
 
-    public Set<Tag> getTags(Long id) {
+    public Set<Tag> getTags(Long id, UserPrincipal userPrincipal) {
+        quoteValidator.validateQuoteIsPublicOrQuoteOwning(id, userPrincipal.getId());
         return findById(id).getTags();
     }
 
-    public void addTag(Long quoteId, Long tagId) {
+    public void addTag(Long quoteId, Long tagId, UserPrincipal userPrincipal) {
+        quoteValidator.validateQuoteOwning(quoteId, userPrincipal);
         Quote quote = findById(quoteId);
         Tag tag = findByTagId(tagId);
         quote.addTag(tag);
         quoteRepository.save(quote);
     }
 
-    public void removeTag(Long quoteId, Long tagId) {
+    public void removeTag(Long quoteId, Long tagId, UserPrincipal userPrincipal) {
+        quoteValidator.validateQuoteOwning(quoteId, userPrincipal);
         Quote quote = findById(quoteId);
         Tag tag = findByTagId(tagId);
         quote.removeTag(tag);

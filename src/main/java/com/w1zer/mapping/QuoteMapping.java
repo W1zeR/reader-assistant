@@ -18,7 +18,7 @@ public final class QuoteMapping {
     private QuoteMapping() {
     }
 
-    public static Page<QuoteResponse> mapToQuoteResponsesPage(Page<Quote> quotesPage){
+    public static Page<QuoteResponse> mapToQuoteResponsesPage(Page<Quote> quotesPage) {
         return quotesPage.map(QuoteMapping::mapToQuoteResponse);
     }
 

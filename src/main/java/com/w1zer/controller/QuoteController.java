@@ -1,7 +1,6 @@
 package com.w1zer.controller;
 
 import com.w1zer.entity.Profile;
-import com.w1zer.entity.QuoteStatusName;
 import com.w1zer.entity.Tag;
 import com.w1zer.payload.QuoteRequest;
 import com.w1zer.payload.QuoteResponse;
@@ -13,11 +12,12 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.Set;
+
 import static com.w1zer.constants.ValidationConstants.ID_POSITIVE_MESSAGE;
 
 @RestController
@@ -32,8 +32,9 @@ public class QuoteController {
     }
 
     @PutMapping("/{id}/markPrivateAsPending")
-    public void markPrivateAsPending(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
-        quoteService.markPrivateAsPending(id);
+    public void markPrivateAsPending(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id,
+                                     @CurrentUser UserPrincipal userPrincipal) {
+        quoteService.markPrivateAsPending(id, userPrincipal);
     }
 
     @PutMapping("/{id}/markPendingAsPublic")
@@ -56,13 +57,15 @@ public class QuoteController {
 
     @PutMapping("/{id}")
     public QuoteResponse replace(@Valid @RequestBody QuoteRequest quoteRequest,
-                                 @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
-        return quoteService.replace(quoteRequest, id);
+                                 @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id,
+                                 @CurrentUser UserPrincipal userPrincipal) {
+        return quoteService.replace(quoteRequest, id, userPrincipal);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
-        quoteService.delete(id);
+    public void delete(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id,
+                       @CurrentUser UserPrincipal userPrincipal) {
+        quoteService.delete(id, userPrincipal);
     }
 
     @Operation(summary = "Get quotes with public status")
@@ -85,9 +88,9 @@ public class QuoteController {
     }
 
     @GetMapping("/{id}")
-    @PostAuthorize("returnObject.profile().id() == authentication.principal.id")
-    public QuoteResponse findById(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
-        return quoteService.findQuoteById(id);
+    public QuoteResponse findById(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id,
+                                  @CurrentUser UserPrincipal userPrincipal) {
+        return quoteService.findQuoteById(id, userPrincipal);
     }
 
     @PostMapping
@@ -116,22 +119,22 @@ public class QuoteController {
     }
 
     @GetMapping("/{id}/tags")
-    @PostAuthorize("#quoteService.findQuoteById(#id).status().name == #pub")
-    public Set<Tag> getTags(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
-        return quoteService.getTags(id);
+    public Set<Tag> getTags(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id,
+                            @CurrentUser UserPrincipal userPrincipal) {
+        return quoteService.getTags(id, userPrincipal);
     }
 
     @PutMapping("/{quoteId}/tags/{tagId}")
-    @PreAuthorize("#quoteService.findQuoteById(#quoteId).profile().id() == authentication.principal.id")
     public void addTag(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long quoteId,
-                       @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long tagId) {
-        quoteService.addTag(quoteId, tagId);
+                       @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long tagId,
+                       @CurrentUser UserPrincipal userPrincipal) {
+        quoteService.addTag(quoteId, tagId, userPrincipal);
     }
 
     @DeleteMapping("/{quoteId}/tags/{tagId}")
-    @PreAuthorize("#quoteService.findQuoteById(#quoteId).profile().id() == authentication.principal.id")
     public void removeTag(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long quoteId,
-                          @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long tagId) {
-        quoteService.removeTag(quoteId, tagId);
+                          @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long tagId,
+                          @CurrentUser UserPrincipal userPrincipal) {
+        quoteService.removeTag(quoteId, tagId, userPrincipal);
     }
 }

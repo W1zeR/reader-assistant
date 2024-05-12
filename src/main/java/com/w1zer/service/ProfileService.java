@@ -12,6 +12,7 @@ import com.w1zer.repository.QuoteRepository;
 import com.w1zer.repository.TagRepository;
 import com.w1zer.security.OnUserLogoutSuccessEvent;
 import com.w1zer.security.UserPrincipal;
+import com.w1zer.validation.ProfileValidator;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
@@ -38,13 +39,13 @@ public class ProfileService {
     private final ApplicationEventPublisher applicationEventPublisher;
     private final RefreshTokenService refreshTokenService;
     private final TagRepository tagRepository;
-    private final ProfileValidationService profileValidationService;
+    private final ProfileValidator profileValidator;
 
     public ProfileService(ProfileRepository profileRepository, QuoteRepository quoteRepository,
                           RoleService roleService, UserDeviceService userDeviceService,
                           ApplicationEventPublisher applicationEventPublisher,
                           RefreshTokenService refreshTokenService, TagRepository tagRepository,
-                          ProfileValidationService profileValidationService) {
+                          ProfileValidator profileValidator) {
         this.profileRepository = profileRepository;
         this.quoteRepository = quoteRepository;
         this.roleService = roleService;
@@ -52,7 +53,7 @@ public class ProfileService {
         this.applicationEventPublisher = applicationEventPublisher;
         this.refreshTokenService = refreshTokenService;
         this.tagRepository = tagRepository;
-        this.profileValidationService = profileValidationService;
+        this.profileValidator = profileValidator;
     }
 
     public void promote(Long id) {
@@ -117,8 +118,8 @@ public class ProfileService {
     }
 
     public Profile replace(ProfileRequest profileRequest, Long id) {
-        profileValidationService.validateLogin(profileRequest.login());
-        profileValidationService.validateEmail(profileRequest.email());
+        profileValidator.validateLogin(profileRequest.login());
+        profileValidator.validateEmail(profileRequest.email());
         return profileRepository.findById(id)
                 .map(profile -> {
                     profile.setEmail(profileRequest.email().toLowerCase());

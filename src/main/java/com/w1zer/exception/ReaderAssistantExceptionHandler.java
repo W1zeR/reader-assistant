@@ -79,4 +79,9 @@ public class ReaderAssistantExceptionHandler {
     public ResponseEntity<String> handleUserLogoutException(UserLogoutException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.EXPECTATION_FAILED);
     }
+
+    @ExceptionHandler(QuoteChangeException.class)
+    public ResponseEntity<String> handleQuoteDeleteException(QuoteChangeException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }

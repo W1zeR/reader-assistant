@@ -8,6 +8,7 @@ import com.w1zer.payload.*;
 import com.w1zer.repository.ProfileRepository;
 import com.w1zer.security.JwtProvider;
 import com.w1zer.security.JwtWithExpiry;
+import com.w1zer.validation.ProfileValidator;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,12 +28,12 @@ public class AuthService {
     private final RefreshTokenService refreshTokenService;
     private final UserDeviceService userDeviceService;
     private final RoleService roleService;
-    private final ProfileValidationService profileValidationService;
+    private final ProfileValidator profileValidator;
 
     public AuthService(AuthenticationManager authenticationManager, ProfileRepository profileRepository,
                        PasswordEncoder passwordEncoder, JwtProvider jwtProvider,
                        RefreshTokenService refreshTokenService, UserDeviceService userDeviceService,
-                       RoleService roleService, ProfileValidationService profileValidationService) {
+                       RoleService roleService, ProfileValidator profileValidator) {
         this.authenticationManager = authenticationManager;
         this.profileRepository = profileRepository;
         this.passwordEncoder = passwordEncoder;
@@ -40,7 +41,7 @@ public class AuthService {
         this.refreshTokenService = refreshTokenService;
         this.userDeviceService = userDeviceService;
         this.roleService = roleService;
-        this.profileValidationService = profileValidationService;
+        this.profileValidator = profileValidator;
     }
 
     private Profile findByEmail(String email) {
@@ -78,8 +79,8 @@ public class AuthService {
     public void register(RegisterRequest registerRequest) {
         String email = registerRequest.email().toLowerCase();
         String login = registerRequest.login().toLowerCase();
-        profileValidationService.validateLogin(login);
-        profileValidationService.validateEmail(email);
+        profileValidator.validateLogin(login);
+        profileValidator.validateEmail(email);
         profileRepository.save(createProfile(login, email, registerRequest.password(), registerRequest.roleId()));
     }
 
