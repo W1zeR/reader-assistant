@@ -3,7 +3,6 @@ package com.w1zer.mapping;
 import com.w1zer.entity.Book;
 import com.w1zer.entity.Profile;
 import com.w1zer.entity.Quote;
-import com.w1zer.entity.QuoteStatusName;
 import com.w1zer.payload.BookAuthorResponse;
 import com.w1zer.payload.QuoteBookResponse;
 import com.w1zer.payload.QuoteProfileResponse;
@@ -41,14 +40,7 @@ public final class QuoteMapping {
         QuoteBookResponse quoteBookResponse = new QuoteBookResponse(book.getId(), book.getTitle(),
                 getBookAuthors(book));
         return new QuoteResponse(quote.getId(), quote.getContent(), quoteBookResponse, quote.getStatus(),
-                quote.getTags(), mapToQuoteProfileResponse(quote.getProfile()), getLikesCount(quote));
-    }
-
-    private static Long getLikesCount(Quote quote) {
-        if (quote.getStatus().getName() == QuoteStatusName.PUBLIC) {
-            return (long) quote.getWhoLiked().size();
-        }
-        return 0L;
+                quote.getTags(), mapToQuoteProfileResponse(quote.getProfile()), quote.getLikesCount());
     }
 
     private static QuoteProfileResponse mapToQuoteProfileResponse(Profile profile) {

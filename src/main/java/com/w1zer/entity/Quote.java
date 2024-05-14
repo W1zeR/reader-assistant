@@ -3,8 +3,10 @@ package com.w1zer.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Formula;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -25,6 +27,12 @@ public class Quote {
 
     @Column(length = CONTENT_LENGTH, nullable = false)
     private String content;
+
+    @Column
+    private Date changeDate;
+
+    @Formula("(select count(lq.id_profile) from liked_quotes lq where lq.id_quote = id)")
+    private Long likesCount;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(nullable = false)
