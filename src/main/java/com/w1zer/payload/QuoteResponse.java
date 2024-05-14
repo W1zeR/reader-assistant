@@ -2,7 +2,9 @@ package com.w1zer.payload;
 
 import com.w1zer.entity.QuoteStatus;
 import com.w1zer.entity.Tag;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @SuppressWarnings("unused")
@@ -19,6 +21,8 @@ public record QuoteResponse(
 
         QuoteProfileResponse profile,
 
-        Long likes
+        Long likes,
+
+        String changeDate
 ) {
 }

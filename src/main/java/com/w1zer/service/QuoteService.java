@@ -13,6 +13,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -58,6 +61,7 @@ public class QuoteService {
         Quote quote = findById(id);
         quoteValidator.validateCurrentQuoteStatusName(quote.getStatus().getName(), currentStatusName);
         quote.setStatus(quoteStatusService.findByName(newStatusName));
+        quote.setChangeDate(LocalDateTime.now());
         quoteRepository.save(quote);
     }
 
@@ -88,6 +92,7 @@ public class QuoteService {
                     quote.setContent(quoteRequest.content());
                     quote.setBook(mapToBook(quoteRequest.book()));
                     quote.setTags(mapToTags(quoteRequest.tags()));
+                    quote.setChangeDate(LocalDateTime.now());
                     return quoteRepository.save(quote);
                 })
                 .orElseGet(() -> {
@@ -96,6 +101,7 @@ public class QuoteService {
                     quote.setContent(quoteRequest.content());
                     quote.setBook(mapToBook(quoteRequest.book()));
                     quote.setTags(mapToTags(quoteRequest.tags()));
+                    quote.setChangeDate(LocalDateTime.now());
                     return quoteRepository.save(quote);
                 }));
     }
@@ -122,6 +128,7 @@ public class QuoteService {
         quote.setTags(mapToTags(quoteRequest.tags()));
         quote.setStatus(quoteStatusService.findByName(QuoteStatusName.PRIVATE));
         quote.setProfile(findByProfileId(userPrincipal.getId()));
+        quote.setChangeDate(LocalDateTime.now());
         quoteRepository.save(quote);
     }
 

@@ -6,6 +6,7 @@ import com.w1zer.payload.AuthorRequest;
 import com.w1zer.service.AuthorService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,7 @@ import static com.w1zer.constants.ValidationConstants.ID_POSITIVE_MESSAGE;
 @Validated
 @CrossOrigin
 @RequestMapping("/api/authors")
+@PreAuthorize("hasRole('ADMIN')")
 public class AuthorController {
     private final AuthorService authorService;
 

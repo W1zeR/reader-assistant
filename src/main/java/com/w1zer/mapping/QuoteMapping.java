@@ -9,6 +9,8 @@ import com.w1zer.payload.QuoteProfileResponse;
 import com.w1zer.payload.QuoteResponse;
 import org.springframework.data.domain.Page;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -39,8 +41,12 @@ public final class QuoteMapping {
         Book book = quote.getBook();
         QuoteBookResponse quoteBookResponse = new QuoteBookResponse(book.getId(), book.getTitle(),
                 getBookAuthors(book));
+        LocalDateTime localDateTime = quote.getChangeDate();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+        String changeDate = localDateTime.format(dateTimeFormatter);
         return new QuoteResponse(quote.getId(), quote.getContent(), quoteBookResponse, quote.getStatus(),
-                quote.getTags(), mapToQuoteProfileResponse(quote.getProfile()), quote.getLikesCount());
+                quote.getTags(), mapToQuoteProfileResponse(quote.getProfile()), quote.getLikesCount(),
+                changeDate);
     }
 
     private static QuoteProfileResponse mapToQuoteProfileResponse(Profile profile) {

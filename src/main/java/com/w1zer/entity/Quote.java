@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Formula;
 import org.hibernate.proxy.HibernateProxy;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
@@ -29,7 +31,7 @@ public class Quote {
     private String content;
 
     @Column
-    private Date changeDate;
+    private LocalDateTime changeDate;
 
     @Formula("(select count(lq.id_profile) from liked_quotes lq where lq.id_quote = id)")
     private Long likesCount;

@@ -22,6 +22,10 @@ public interface QuoteRepository extends JpaRepository<Quote, Long> {
     @Query("select q from Quote q where q.profile.id = ?#{ principal?.id }")
     Page<Quote> findAllByStatusIs(QuoteStatus status, Pageable p);
 
+    // Sort by interesting tags for public or pending quotes
+    @Query("select q from Quote q ")
+    Page<Quote> findQuotesByStatusNameIs(QuoteStatusName statusName, Pageable p);
+
     @NonNull
     Optional<Quote> findById(@NonNull Long id);
 }
