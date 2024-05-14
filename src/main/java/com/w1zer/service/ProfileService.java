@@ -149,20 +149,6 @@ public class ProfileService {
         );
     }
 
-    public void addQuote(Long profileId, Long quoteId) {
-        Profile profile = findById(profileId);
-        Quote quote = findQuoteById(quoteId);
-        profile.addQuote(quote);
-        profileRepository.save(profile);
-    }
-
-    public void removeQuote(Long profileId, Long quoteId) {
-        Profile profile = findById(profileId);
-        Quote quote = findQuoteById(quoteId);
-        profile.removeQuote(quote);
-        profileRepository.save(profile);
-    }
-
     public void addLikedQuote(Long profileId, Long quoteId) {
         Profile profile = findById(profileId);
         Quote quote = findQuoteById(quoteId);
@@ -195,10 +181,6 @@ public class ProfileService {
         Tag tag = findTagById(tagId);
         profile.removeInterestingTag(tag);
         profileRepository.save(profile);
-    }
-
-    public List<QuoteResponse> getQuotes(Long id) {
-        return QuoteMapping.mapToQuoteResponses(findById(id).getQuotes());
     }
 
     public Set<QuoteResponse> getLikedQuotes(Long id) {

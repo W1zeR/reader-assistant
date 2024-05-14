@@ -57,16 +57,6 @@ public class Profile {
     @JsonIgnore
     private Set<Tag> interestingTags = new HashSet<>();
 
-    public void addQuote(Quote quote) {
-        this.quotes.add(quote);
-        quote.setProfile(this);
-    }
-
-    public void removeQuote(Quote quote) {
-        this.quotes.remove(quote);
-        quote.setProfile(null);
-    }
-
     public void addLikedQuote(Quote quote) {
         this.likedQuotes.add(quote);
         quote.getWhoLiked().add(this);

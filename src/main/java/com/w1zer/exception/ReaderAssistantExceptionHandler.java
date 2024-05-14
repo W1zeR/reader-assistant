@@ -81,7 +81,7 @@ public class ReaderAssistantExceptionHandler {
     }
 
     @ExceptionHandler(QuoteChangeException.class)
-    public ResponseEntity<String> handleQuoteDeleteException(QuoteChangeException e) {
+    public ResponseEntity<String> handleQuoteChangeException(QuoteChangeException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }
