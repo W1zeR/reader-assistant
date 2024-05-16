@@ -13,9 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -106,19 +104,43 @@ public class QuoteService {
                 }));
     }
 
+    // Public quotes
     public Page<QuoteResponse> findAllPublic(Pageable p) {
         QuoteStatusName pub = QuoteStatusName.PUBLIC;
         return QuoteMapping.mapToQuoteResponsesPage(quoteRepository.findAllByStatusNameIs(pub, p));
     }
 
+    // Pending quotes
     public Page<QuoteResponse> findAllPending(Pageable p) {
         QuoteStatusName pending = QuoteStatusName.PENDING;
         return QuoteMapping.mapToQuoteResponsesPage(quoteRepository.findAllByStatusNameIs(pending, p));
     }
 
+    // Private quotes
     public Page<QuoteResponse> findAllPrivate(Pageable p) {
         QuoteStatus pri = quoteStatusService.findByName(QuoteStatusName.PRIVATE);
         return QuoteMapping.mapToQuoteResponsesPage(quoteRepository.findAllByStatusIs(pri, p));
+    }
+
+    // Sort by interesting tags for public quotes
+    public Page<QuoteResponse> findPublicInteresting(Pageable p, UserPrincipal userPrincipal) {
+        return QuoteMapping.mapToQuoteResponsesPage(
+                quoteRepository.findPublicQuotesSortByInterestingTags(userPrincipal.getId(), p)
+        );
+    }
+
+    // Sort by interesting tags for pending quotes
+    public Page<QuoteResponse> findPendingInteresting(Pageable p, UserPrincipal userPrincipal) {
+        return QuoteMapping.mapToQuoteResponsesPage(
+                quoteRepository.findPendingQuotesSortByInterestingTags(userPrincipal.getId(), p)
+        );
+    }
+
+    // Sort by interesting tags for private quotes
+    public Page<QuoteResponse> findPrivateInteresting(Pageable p, UserPrincipal userPrincipal) {
+        return QuoteMapping.mapToQuoteResponsesPage(
+                quoteRepository.findPrivateQuotesSortByInterestingTags(userPrincipal.getId(), p)
+        );
     }
 
     public void create(QuoteRequest quoteRequest, UserPrincipal userPrincipal) {

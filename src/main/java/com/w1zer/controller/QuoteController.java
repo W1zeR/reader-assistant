@@ -69,7 +69,7 @@ public class QuoteController {
     }
 
     @Operation(summary = "Get quotes with public status")
-    @GetMapping
+    @GetMapping("/public")
     public Page<QuoteResponse> findAllPublic(Pageable p) {
         return quoteService.findAllPublic(p);
     }
@@ -85,6 +85,25 @@ public class QuoteController {
     @GetMapping("/private")
     public Page<QuoteResponse> findAllPrivate(Pageable p) {
         return quoteService.findAllPrivate(p);
+    }
+
+    @Operation(summary = "Get quotes with public status sort by interesting tags")
+    @GetMapping("/publicInteresting")
+    public Page<QuoteResponse> findPublicInteresting(Pageable p, @CurrentUser UserPrincipal userPrincipal) {
+        return quoteService.findPublicInteresting(p, userPrincipal);
+    }
+
+    @Operation(summary = "Get quotes with pending status sort by interesting tags")
+    @GetMapping("/pendingInteresting")
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+    public Page<QuoteResponse> findPendingInteresting(Pageable p, @CurrentUser UserPrincipal userPrincipal) {
+        return quoteService.findPendingInteresting(p, userPrincipal);
+    }
+
+    @Operation(summary = "Get quotes with private status sort by interesting tags")
+    @GetMapping("/privateInteresting")
+    public Page<QuoteResponse> findPrivateInteresting(Pageable p, @CurrentUser UserPrincipal userPrincipal) {
+        return quoteService.findPrivateInteresting(p, userPrincipal);
     }
 
     @GetMapping("/{id}")
