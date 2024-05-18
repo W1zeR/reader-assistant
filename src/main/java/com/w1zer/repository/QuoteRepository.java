@@ -1,7 +1,6 @@
 package com.w1zer.repository;
 
 import com.w1zer.entity.Quote;
-import com.w1zer.entity.QuoteStatus;
 import com.w1zer.entity.QuoteStatusName;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +28,21 @@ public interface QuoteRepository extends JpaRepository<Quote, Long> {
                 GROUP BY qt.id_tag) tl ON tl.tag = qt.id_tag
             """;
 
+    String INTERESTING_TAGS_KEYWORD_CENTER_START = """
+            LEFT JOIN profile p ON q.profile_id = p.id
+            LEFT JOIN book b ON q.book_id = b.id
+            LEFT JOIN author a ON b.id_author = a.id
+            """;
+
+    String INTERESTING_TAGS_KEYWORD_CENTER_END = """
+            AND (UPPER(q.content) LIKE CONCAT('%', UPPER(?2), '%') OR
+            UPPER(b.title) LIKE CONCAT('%', UPPER(?2), '%') OR
+            UPPER(p.login) LIKE CONCAT('%', UPPER(?2), '%') OR
+            UPPER(a.surname) LIKE CONCAT('%', UPPER(?2), '%') OR
+            UPPER(a.name) LIKE CONCAT('%', UPPER(?2), '%') OR
+            UPPER(a.patronymic) LIKE CONCAT('%', UPPER(?2), '%'))
+            """;
+
     String INTERESTING_TAGS_QUERY_END = """
             GROUP BY q.id, q.content, q.change_date, q.likes_count, q.book_id, q.profile_id, q.status_id
             ORDER BY MAX(tl.likes) DESC, q.change_date DESC""";
@@ -45,13 +59,36 @@ public interface QuoteRepository extends JpaRepository<Quote, Long> {
             WHERE q.status_id = 1 AND q.profile_id = ?1
             """;
 
+    String FIND_BY_STATUS_NAME_AND_KEYWORD = """
+            select q from Quote q
+            left join q.book b
+            left join b.authors a
+            where q.status.name = ?1 and
+            (upper(q.content) like concat('%', upper(?2), '%') or
+            upper(b.title) like concat('%', upper(?2), '%') or
+            upper(q.profile.login) like concat('%', upper(?2), '%') or
+            upper(a.surname) like concat('%', upper(?2), '%') or
+            upper(a.name) like concat('%', upper(?2), '%') or
+            upper(a.patronymic) like concat('%', upper(?2), '%'))""";
+
+    String PRIVATE_QUOTES_BY_KEYWORD_CONDITION = " and q.profile.id = ?#{ principal?.id }";
+
+    String PRIVATE_QUOTES_QUERY = "select q from Quote q where q.profile.id = ?#{ principal?.id }";
+
     // Public or pending quotes
     Page<Quote> findAllByStatusNameIs(QuoteStatusName statusName, Pageable p);
 
+    // Public or pending quotes by keyword
+    @Query(FIND_BY_STATUS_NAME_AND_KEYWORD)
+    Page<Quote> findPublicOrPendingByStatusNameAndKeyword(QuoteStatusName statusName, String keyword, Pageable p);
+
     // Private quotes
-    @SuppressWarnings("SpringElInspection")
-    @Query("select q from Quote q where q.profile.id = ?#{ principal?.id }")
-    Page<Quote> findAllByStatusIs(QuoteStatus status, Pageable p);
+    @Query(PRIVATE_QUOTES_QUERY)
+    Page<Quote> findAllByStatusName(QuoteStatusName statusName, Pageable p);
+
+    // Private quotes by keyword
+    @Query(FIND_BY_STATUS_NAME_AND_KEYWORD + PRIVATE_QUOTES_BY_KEYWORD_CONDITION)
+    Page<Quote> findPrivateByStatusNameAndKeyword(QuoteStatusName statusName, String keyword, Pageable p);
 
     // Sort by interesting tags for public quotes
     @Query(value = INTERESTING_TAGS_QUERY_START +
@@ -60,7 +97,7 @@ public interface QuoteRepository extends JpaRepository<Quote, Long> {
             nativeQuery = true)
     Page<Quote> findPublicQuotesSortByInterestingTags(Long principalId, Pageable p);
 
-    // Sort by interesting tags for private quotes
+    // Sort by interesting tags for pending quotes
     @Query(value = INTERESTING_TAGS_QUERY_START +
             INTERESTING_TAGS_PENDING_QUERY_CENTER +
             INTERESTING_TAGS_QUERY_END,
@@ -73,6 +110,30 @@ public interface QuoteRepository extends JpaRepository<Quote, Long> {
             INTERESTING_TAGS_QUERY_END,
             nativeQuery = true)
     Page<Quote> findPrivateQuotesSortByInterestingTags(Long principalId, Pageable p);
+
+    @Query(value = INTERESTING_TAGS_QUERY_START +
+            INTERESTING_TAGS_KEYWORD_CENTER_START +
+            INTERESTING_TAGS_PUBLIC_QUERY_CENTER +
+            INTERESTING_TAGS_KEYWORD_CENTER_END +
+            INTERESTING_TAGS_QUERY_END,
+            nativeQuery = true)
+    Page<Quote> findPublicQuotesByKeywordSortByInterestingTags(Long principalId, String keyword, Pageable p);
+
+    @Query(value = INTERESTING_TAGS_QUERY_START +
+            INTERESTING_TAGS_KEYWORD_CENTER_START +
+            INTERESTING_TAGS_PENDING_QUERY_CENTER +
+            INTERESTING_TAGS_KEYWORD_CENTER_END +
+            INTERESTING_TAGS_QUERY_END,
+            nativeQuery = true)
+    Page<Quote> findPendingQuotesByKeywordSortByInterestingTags(Long principalId, String keyword, Pageable p);
+
+    @Query(value = INTERESTING_TAGS_QUERY_START +
+            INTERESTING_TAGS_KEYWORD_CENTER_START +
+            INTERESTING_TAGS_PRIVATE_QUERY_CENTER +
+            INTERESTING_TAGS_KEYWORD_CENTER_END +
+            INTERESTING_TAGS_QUERY_END,
+            nativeQuery = true)
+    Page<Quote> findPrivateQuotesByKeywordSortByInterestingTags(Long principalId, String keyword, Pageable p);
 
     @NonNull
     Optional<Quote> findById(@NonNull Long id);

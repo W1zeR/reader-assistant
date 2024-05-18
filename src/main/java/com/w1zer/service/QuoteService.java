@@ -105,41 +105,71 @@ public class QuoteService {
     }
 
     // Public quotes
-    public Page<QuoteResponse> findAllPublic(Pageable p) {
+    public Page<QuoteResponse> findAllPublic(String keyword, Pageable p) {
         QuoteStatusName pub = QuoteStatusName.PUBLIC;
-        return QuoteMapping.mapToQuoteResponsesPage(quoteRepository.findAllByStatusNameIs(pub, p));
+        if (keyword == null) {
+            return QuoteMapping.mapToQuoteResponsesPage(quoteRepository.findAllByStatusNameIs(pub, p));
+        }
+        return QuoteMapping.mapToQuoteResponsesPage(quoteRepository.findPublicOrPendingByStatusNameAndKeyword(
+                pub, keyword, p)
+        );
     }
 
     // Pending quotes
-    public Page<QuoteResponse> findAllPending(Pageable p) {
+    public Page<QuoteResponse> findAllPending(String keyword, Pageable p) {
         QuoteStatusName pending = QuoteStatusName.PENDING;
-        return QuoteMapping.mapToQuoteResponsesPage(quoteRepository.findAllByStatusNameIs(pending, p));
+        if (keyword == null) {
+            return QuoteMapping.mapToQuoteResponsesPage(quoteRepository.findAllByStatusNameIs(pending, p));
+        }
+        return QuoteMapping.mapToQuoteResponsesPage(quoteRepository.findPublicOrPendingByStatusNameAndKeyword(
+                pending, keyword, p)
+        );
     }
 
     // Private quotes
-    public Page<QuoteResponse> findAllPrivate(Pageable p) {
-        QuoteStatus pri = quoteStatusService.findByName(QuoteStatusName.PRIVATE);
-        return QuoteMapping.mapToQuoteResponsesPage(quoteRepository.findAllByStatusIs(pri, p));
+    public Page<QuoteResponse> findAllPrivate(String keyword, Pageable p) {
+        QuoteStatusName pri = QuoteStatusName.PRIVATE;
+        if (keyword == null) {
+            return QuoteMapping.mapToQuoteResponsesPage(quoteRepository.findAllByStatusName(pri, p));
+        }
+        return QuoteMapping.mapToQuoteResponsesPage(quoteRepository.findPrivateByStatusNameAndKeyword(
+                pri, keyword, p)
+        );
     }
 
     // Sort by interesting tags for public quotes
-    public Page<QuoteResponse> findPublicInteresting(Pageable p, UserPrincipal userPrincipal) {
+    public Page<QuoteResponse> findPublicInteresting(String keyword, Pageable p, UserPrincipal userPrincipal) {
+        if (keyword == null) {
+            return QuoteMapping.mapToQuoteResponsesPage(
+                    quoteRepository.findPublicQuotesSortByInterestingTags(userPrincipal.getId(), p)
+            );
+        }
         return QuoteMapping.mapToQuoteResponsesPage(
-                quoteRepository.findPublicQuotesSortByInterestingTags(userPrincipal.getId(), p)
+                quoteRepository.findPublicQuotesByKeywordSortByInterestingTags(userPrincipal.getId(), keyword, p)
         );
     }
 
     // Sort by interesting tags for pending quotes
-    public Page<QuoteResponse> findPendingInteresting(Pageable p, UserPrincipal userPrincipal) {
+    public Page<QuoteResponse> findPendingInteresting(String keyword, Pageable p, UserPrincipal userPrincipal) {
+        if (keyword == null) {
+            return QuoteMapping.mapToQuoteResponsesPage(
+                    quoteRepository.findPendingQuotesSortByInterestingTags(userPrincipal.getId(), p)
+            );
+        }
         return QuoteMapping.mapToQuoteResponsesPage(
-                quoteRepository.findPendingQuotesSortByInterestingTags(userPrincipal.getId(), p)
+                quoteRepository.findPendingQuotesByKeywordSortByInterestingTags(userPrincipal.getId(), keyword, p)
         );
     }
 
     // Sort by interesting tags for private quotes
-    public Page<QuoteResponse> findPrivateInteresting(Pageable p, UserPrincipal userPrincipal) {
+    public Page<QuoteResponse> findPrivateInteresting(String keyword, Pageable p, UserPrincipal userPrincipal) {
+        if (keyword == null) {
+            return QuoteMapping.mapToQuoteResponsesPage(
+                    quoteRepository.findPrivateQuotesSortByInterestingTags(userPrincipal.getId(), p)
+            );
+        }
         return QuoteMapping.mapToQuoteResponsesPage(
-                quoteRepository.findPrivateQuotesSortByInterestingTags(userPrincipal.getId(), p)
+                quoteRepository.findPrivateQuotesByKeywordSortByInterestingTags(userPrincipal.getId(), keyword, p)
         );
     }
 
