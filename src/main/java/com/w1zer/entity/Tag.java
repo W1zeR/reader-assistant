@@ -30,11 +30,6 @@ public class Tag {
     @JsonIgnore
     private Set<Quote> quotes = new HashSet<>();
 
-    @ManyToMany(mappedBy = "interestingTags")
-    @ToString.Exclude
-    @JsonIgnore
-    private Set<Profile> whoInterested = new HashSet<>();
-
     public void addQuote(Quote quote) {
         this.quotes.add(quote);
         quote.getTags().add(this);
@@ -43,16 +38,6 @@ public class Tag {
     public void removeQuote(Quote quote) {
         this.quotes.remove(quote);
         quote.getTags().remove(this);
-    }
-
-    public void addInterestedProfile(Profile profile) {
-        this.whoInterested.add(profile);
-        profile.getInterestingTags().add(this);
-    }
-
-    public void removeInterestedProfile(Profile profile) {
-        this.whoInterested.remove(profile);
-        profile.getInterestingTags().remove(this);
     }
 
     @Override

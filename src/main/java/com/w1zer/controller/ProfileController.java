@@ -1,7 +1,6 @@
 package com.w1zer.controller;
 
 import com.w1zer.entity.Profile;
-import com.w1zer.entity.Tag;
 import com.w1zer.payload.*;
 import com.w1zer.security.CurrentUser;
 import com.w1zer.security.UserPrincipal;
@@ -101,25 +100,5 @@ public class ProfileController {
     public void removeLikedQuote(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long profileId,
                                  @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long quoteId) {
         profileService.removeLikedQuote(profileId, quoteId);
-    }
-
-    @GetMapping("/{id}/interestingTags")
-    @PreAuthorize("#id == authentication.principal.id")
-    public Set<Tag> getInterestingTags(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
-        return profileService.findById(id).getInterestingTags();
-    }
-
-    @PutMapping("/{profileId}/interestingTags/{tagId}")
-    @PreAuthorize("#profileId == authentication.principal.id")
-    public void addInterestingTag(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long profileId,
-                                  @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long tagId) {
-        profileService.addInterestingTag(profileId, tagId);
-    }
-
-    @DeleteMapping("/{profileId}/interestingTags/{tagId}")
-    @PreAuthorize("#profileId == authentication.principal.id")
-    public void removeInterestingTag(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long profileId,
-                                     @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long tagId) {
-        profileService.removeInterestingTag(profileId, tagId);
     }
 }

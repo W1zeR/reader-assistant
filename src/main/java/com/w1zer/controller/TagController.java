@@ -1,6 +1,5 @@
 package com.w1zer.controller;
 
-import com.w1zer.entity.Profile;
 import com.w1zer.entity.Tag;
 import com.w1zer.payload.QuoteResponse;
 import com.w1zer.payload.TagRequest;
@@ -69,22 +68,5 @@ public class TagController {
     public void removeQuote(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long tagId,
                             @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long quoteId) {
         tagService.removeQuote(tagId, quoteId);
-    }
-
-    @GetMapping("/{id}/whoInterested")
-    public Set<Profile> getWhoInterested(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
-        return tagService.findById(id).getWhoInterested();
-    }
-
-    @PutMapping("/{tagId}/whoInterested/{profileId}")
-    public void addInterestedProfile(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long tagId,
-                                     @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long profileId) {
-        tagService.addInterestedProfile(tagId, profileId);
-    }
-
-    @DeleteMapping("/{tagId}/whoInterested/{profileId}")
-    public void removeInterestedProfile(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long tagId,
-                                        @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long profileId) {
-        tagService.removeInterestedProfile(tagId, profileId);
     }
 }

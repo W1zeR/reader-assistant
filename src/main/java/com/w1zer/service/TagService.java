@@ -1,6 +1,5 @@
 package com.w1zer.service;
 
-import com.w1zer.entity.Profile;
 import com.w1zer.entity.Quote;
 import com.w1zer.entity.Tag;
 import com.w1zer.exception.NotFoundException;
@@ -8,7 +7,6 @@ import com.w1zer.exception.ProfileAlreadyExistsException;
 import com.w1zer.mapping.QuoteMapping;
 import com.w1zer.payload.QuoteResponse;
 import com.w1zer.payload.TagRequest;
-import com.w1zer.repository.ProfileRepository;
 import com.w1zer.repository.QuoteRepository;
 import com.w1zer.repository.TagRepository;
 import org.springframework.stereotype.Service;
@@ -20,18 +18,14 @@ import java.util.Set;
 public class TagService {
     private static final String TAG_WITH_ID_NOT_FOUND = "Tag with id %s not found";
     private static final String QUOTE_WITH_ID_NOT_FOUND = "Quote with id '%d' not found";
-    private static final String PROFILE_WITH_ID_NOT_FOUND = "Profile with id %s not found";
     private static final String TAG_WITH_NAME_ALREADY_EXISTS = "Tag with name '%s' already exists";
 
     private final TagRepository tagRepository;
     private final QuoteRepository quoteRepository;
-    private final ProfileRepository profileRepository;
 
-    public TagService(TagRepository tagRepository, QuoteRepository quoteRepository,
-                      ProfileRepository profileRepository) {
+    public TagService(TagRepository tagRepository, QuoteRepository quoteRepository) {
         this.tagRepository = tagRepository;
         this.quoteRepository = quoteRepository;
-        this.profileRepository = profileRepository;
     }
 
     public Tag findById(Long id) {
@@ -93,26 +87,6 @@ public class TagService {
         Tag tag = findById(tagId);
         Quote quote = findQuoteById(quoteId);
         tag.removeQuote(quote);
-        tagRepository.save(tag);
-    }
-
-    private Profile findProfileById(Long id) {
-        return profileRepository.findById(id).orElseThrow(
-                () -> new NotFoundException(PROFILE_WITH_ID_NOT_FOUND.formatted(id))
-        );
-    }
-
-    public void addInterestedProfile(Long tagId, Long profileId) {
-        Tag tag = findById(tagId);
-        Profile profile = findProfileById(profileId);
-        tag.addInterestedProfile(profile);
-        tagRepository.save(tag);
-    }
-
-    public void removeInterestedProfile(Long tagId, Long profileId) {
-        Tag tag = findById(tagId);
-        Profile profile = findProfileById(profileId);
-        tag.removeInterestedProfile(profile);
         tagRepository.save(tag);
     }
 

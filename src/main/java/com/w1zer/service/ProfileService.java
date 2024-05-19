@@ -9,7 +9,6 @@ import com.w1zer.mapping.QuoteMapping;
 import com.w1zer.payload.*;
 import com.w1zer.repository.ProfileRepository;
 import com.w1zer.repository.QuoteRepository;
-import com.w1zer.repository.TagRepository;
 import com.w1zer.security.OnUserLogoutSuccessEvent;
 import com.w1zer.security.UserPrincipal;
 import com.w1zer.validation.ProfileValidator;
@@ -30,7 +29,6 @@ public class ProfileService {
     private static final String OLD_PASSWORD_IS_INCORRECT = "Old password is incorrect";
     private static final String PASSWORD_CHANGED_SUCCESSFULLY = "Password changed successfully";
     private static final String QUOTE_WITH_ID_NOT_FOUND = "Quote with id '%d' not found";
-    private static final String TAG_WITH_ID_NOT_FOUND = "Tag with id %s not found";
 
     private final ProfileRepository profileRepository;
     private final QuoteRepository quoteRepository;
@@ -38,13 +36,11 @@ public class ProfileService {
     private final UserDeviceService userDeviceService;
     private final ApplicationEventPublisher applicationEventPublisher;
     private final RefreshTokenService refreshTokenService;
-    private final TagRepository tagRepository;
     private final ProfileValidator profileValidator;
 
     public ProfileService(ProfileRepository profileRepository, QuoteRepository quoteRepository,
                           RoleService roleService, UserDeviceService userDeviceService,
-                          ApplicationEventPublisher applicationEventPublisher,
-                          RefreshTokenService refreshTokenService, TagRepository tagRepository,
+                          ApplicationEventPublisher applicationEventPublisher, RefreshTokenService refreshTokenService,
                           ProfileValidator profileValidator) {
         this.profileRepository = profileRepository;
         this.quoteRepository = quoteRepository;
@@ -52,7 +48,6 @@ public class ProfileService {
         this.userDeviceService = userDeviceService;
         this.applicationEventPublisher = applicationEventPublisher;
         this.refreshTokenService = refreshTokenService;
-        this.tagRepository = tagRepository;
         this.profileValidator = profileValidator;
     }
 
@@ -160,26 +155,6 @@ public class ProfileService {
         Profile profile = findById(profileId);
         Quote quote = findQuoteById(quoteId);
         profile.removeLikedQuote(quote);
-        profileRepository.save(profile);
-    }
-
-    private Tag findTagById(Long id) {
-        return tagRepository.findById(id).orElseThrow(
-                () -> new NotFoundException(TAG_WITH_ID_NOT_FOUND.formatted(id))
-        );
-    }
-
-    public void addInterestingTag(Long profileId, Long tagId) {
-        Profile profile = findById(profileId);
-        Tag tag = findTagById(tagId);
-        profile.addInterestingTag(tag);
-        profileRepository.save(profile);
-    }
-
-    public void removeInterestingTag(Long profileId, Long tagId) {
-        Profile profile = findById(profileId);
-        Tag tag = findTagById(tagId);
-        profile.removeInterestingTag(tag);
         profileRepository.save(profile);
     }
 

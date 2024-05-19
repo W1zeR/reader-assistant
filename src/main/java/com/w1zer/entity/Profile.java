@@ -50,13 +50,6 @@ public class Profile {
     @JsonIgnore
     private Set<Quote> likedQuotes = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "profiles_tags", joinColumns = @JoinColumn(name = "id_profile"),
-            inverseJoinColumns = @JoinColumn(name = "id_tag"))
-    @ToString.Exclude
-    @JsonIgnore
-    private Set<Tag> interestingTags = new HashSet<>();
-
     public void addLikedQuote(Quote quote) {
         this.likedQuotes.add(quote);
         quote.getWhoLiked().add(this);
@@ -65,16 +58,6 @@ public class Profile {
     public void removeLikedQuote(Quote quote) {
         this.likedQuotes.remove(quote);
         quote.getWhoLiked().remove(this);
-    }
-
-    public void addInterestingTag(Tag tag) {
-        this.interestingTags.add(tag);
-        tag.getWhoInterested().add(this);
-    }
-
-    public void removeInterestingTag(Tag tag) {
-        this.interestingTags.remove(tag);
-        tag.getWhoInterested().remove(this);
     }
 
     @Override

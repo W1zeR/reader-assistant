@@ -1,7 +1,7 @@
 #file: noinspection SpellCheckingInspection
 databaseChangeLog:
   - changeSet:
-      id: 1715701995803-1
+      id: 1716147862008-1
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -30,7 +30,7 @@ databaseChangeLog:
                   type: VARCHAR(255)
             tableName: author
   - changeSet:
-      id: 1715701995803-2
+      id: 1716147862008-2
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -52,7 +52,7 @@ databaseChangeLog:
                   type: BIGINT
             tableName: authors_books
   - changeSet:
-      id: 1715701995803-3
+      id: 1716147862008-3
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -73,7 +73,7 @@ databaseChangeLog:
                   type: VARCHAR(255)
             tableName: book
   - changeSet:
-      id: 1715701995803-4
+      id: 1716147862008-4
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -95,7 +95,7 @@ databaseChangeLog:
                   type: BIGINT
             tableName: liked_quotes
   - changeSet:
-      id: 1715701995803-5
+      id: 1716147862008-5
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -126,7 +126,7 @@ databaseChangeLog:
                   type: TEXT
             tableName: profile
   - changeSet:
-      id: 1715701995803-6
+      id: 1716147862008-6
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -148,29 +148,7 @@ databaseChangeLog:
                   type: BIGINT
             tableName: profiles_roles
   - changeSet:
-      id: 1715701995803-7
-      author: Sergey (generated)
-      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
-      changes:
-        - createTable:
-            columns:
-              - column:
-                  constraints:
-                    nullable: false
-                    primaryKey: true
-                    primaryKeyName: pk_profiles_tags
-                  name: id_profile
-                  type: BIGINT
-              - column:
-                  constraints:
-                    nullable: false
-                    primaryKey: true
-                    primaryKeyName: pk_profiles_tags
-                  name: id_tag
-                  type: BIGINT
-            tableName: profiles_tags
-  - changeSet:
-      id: 1715701995803-8
+      id: 1716147862008-7
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -212,7 +190,7 @@ databaseChangeLog:
                   type: BIGINT
             tableName: quote
   - changeSet:
-      id: 1715701995803-9
+      id: 1716147862008-8
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -233,7 +211,7 @@ databaseChangeLog:
                   type: VARCHAR(7)
             tableName: quote_status
   - changeSet:
-      id: 1715701995803-10
+      id: 1716147862008-9
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -255,7 +233,7 @@ databaseChangeLog:
                   type: BIGINT
             tableName: quotes_tags
   - changeSet:
-      id: 1715701995803-11
+      id: 1716147862008-10
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -291,7 +269,7 @@ databaseChangeLog:
                   type: DATETIME
             tableName: refresh_token
   - changeSet:
-      id: 1715701995803-12
+      id: 1716147862008-11
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -312,7 +290,7 @@ databaseChangeLog:
                   type: VARCHAR(20)
             tableName: role
   - changeSet:
-      id: 1715701995803-13
+      id: 1716147862008-12
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -333,7 +311,7 @@ databaseChangeLog:
                   type: VARCHAR(30)
             tableName: tag
   - changeSet:
-      id: 1715701995803-14
+      id: 1716147862008-13
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -369,7 +347,7 @@ databaseChangeLog:
                   type: BOOLEAN
             tableName: user_device
   - changeSet:
-      id: 1715701995803-15
+      id: 1716147862008-14
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -378,7 +356,7 @@ databaseChangeLog:
             constraintName: uc_profile_email
             tableName: profile
   - changeSet:
-      id: 1715701995803-16
+      id: 1716147862008-15
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -387,7 +365,7 @@ databaseChangeLog:
             constraintName: uc_profile_login
             tableName: profile
   - changeSet:
-      id: 1715701995803-17
+      id: 1716147862008-16
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -396,7 +374,7 @@ databaseChangeLog:
             constraintName: uc_refreshtoken_id_user_device
             tableName: refresh_token
   - changeSet:
-      id: 1715701995803-18
+      id: 1716147862008-17
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -405,7 +383,7 @@ databaseChangeLog:
             constraintName: uc_refreshtoken_token
             tableName: refresh_token
   - changeSet:
-      id: 1715701995803-19
+      id: 1716147862008-18
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -414,7 +392,7 @@ databaseChangeLog:
             constraintName: uc_role_name
             tableName: role
   - changeSet:
-      id: 1715701995803-20
+      id: 1716147862008-19
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -423,7 +401,7 @@ databaseChangeLog:
             constraintName: uc_tag_name
             tableName: tag
   - changeSet:
-      id: 1715701995803-21
+      id: 1716147862008-20
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -432,7 +410,7 @@ databaseChangeLog:
             constraintName: uc_userdevice_id_profile
             tableName: user_device
   - changeSet:
-      id: 1715701995803-22
+      id: 1716147862008-21
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -443,7 +421,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: book
   - changeSet:
-      id: 1715701995803-23
+      id: 1716147862008-22
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -454,7 +432,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: profile
   - changeSet:
-      id: 1715701995803-24
+      id: 1716147862008-23
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -465,7 +443,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: quote_status
   - changeSet:
-      id: 1715701995803-25
+      id: 1716147862008-24
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -476,7 +454,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: user_device
   - changeSet:
-      id: 1715701995803-26
+      id: 1716147862008-25
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -487,7 +465,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: profile
   - changeSet:
-      id: 1715701995803-27
+      id: 1716147862008-26
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -498,7 +476,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: author
   - changeSet:
-      id: 1715701995803-28
+      id: 1716147862008-27
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -509,7 +487,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: book
   - changeSet:
-      id: 1715701995803-29
+      id: 1716147862008-28
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -520,7 +498,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: profile
   - changeSet:
-      id: 1715701995803-30
+      id: 1716147862008-29
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -531,7 +509,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: quote
   - changeSet:
-      id: 1715701995803-31
+      id: 1716147862008-30
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -542,7 +520,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: profile
   - changeSet:
-      id: 1715701995803-32
+      id: 1716147862008-31
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -553,29 +531,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: role
   - changeSet:
-      id: 1715701995803-33
-      author: Sergey (generated)
-      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
-      changes:
-        - addForeignKeyConstraint:
-            baseColumnNames: id_profile
-            baseTableName: profiles_tags
-            constraintName: fk_protag_on_profile
-            referencedColumnNames: id
-            referencedTableName: profile
-  - changeSet:
-      id: 1715701995803-34
-      author: Sergey (generated)
-      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
-      changes:
-        - addForeignKeyConstraint:
-            baseColumnNames: id_tag
-            baseTableName: profiles_tags
-            constraintName: fk_protag_on_tag
-            referencedColumnNames: id
-            referencedTableName: tag
-  - changeSet:
-      id: 1715701995803-35
+      id: 1716147862008-32
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -586,7 +542,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: quote
   - changeSet:
-      id: 1715701995803-36
+      id: 1716147862008-33
       author: Sergey (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
