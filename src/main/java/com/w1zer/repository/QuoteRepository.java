@@ -14,11 +14,9 @@ import java.util.Optional;
 @Repository
 public interface QuoteRepository extends JpaRepository<Quote, Long> {
     String INTERESTING_TAGS_QUERY_START = """
-            SELECT q.id, q.content, q.change_date,
-                (SELECT COUNT(lq.id_profile)
-                FROM liked_quotes lq WHERE lq.id_quote = q.id) likesCount,
-            q.book_id, q.profile_id, q.status_id
+            SELECT q.id, q.content, q.change_date, COUNT(lq.id_profile) likesCount, q.book_id, q.profile_id, q.status_id
             FROM quote q
+            LEFT JOIN liked_quotes lq ON lq.id_quote = q.id
             LEFT JOIN quotes_tags qt ON qt.id_quote = q.id
             LEFT JOIN
                 (SELECT qt.id_tag tag, COUNT(lq.id_quote) likes
@@ -31,7 +29,8 @@ public interface QuoteRepository extends JpaRepository<Quote, Long> {
     String INTERESTING_TAGS_KEYWORD_CENTER_START = """
             LEFT JOIN profile p ON q.profile_id = p.id
             LEFT JOIN book b ON q.book_id = b.id
-            LEFT JOIN author a ON b.id_author = a.id
+            LEFT JOIN authors_books ab ON ab.id_book = b.id
+            LEFT JOIN author a ON ab.id_author = a.id
             """;
 
     String INTERESTING_TAGS_KEYWORD_CENTER_END = """
@@ -44,7 +43,7 @@ public interface QuoteRepository extends JpaRepository<Quote, Long> {
             """;
 
     String INTERESTING_TAGS_QUERY_END = """
-            GROUP BY q.id, q.content, q.change_date, q.likes_count, q.book_id, q.profile_id, q.status_id
+            GROUP BY q.id, q.content, q.change_date, q.book_id, q.profile_id, q.status_id
             ORDER BY MAX(tl.likes) DESC, q.change_date DESC""";
 
     String INTERESTING_TAGS_PENDING_QUERY_CENTER = """
