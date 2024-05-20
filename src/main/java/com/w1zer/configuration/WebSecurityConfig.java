@@ -37,7 +37,7 @@ public class WebSecurityConfig {
             "/v3/api-docs/**", "/swagger-resources", "/swagger-resources/**", "/configuration/ui",
             "/configuration/security", "/swagger-ui/**", "/webjars/**", "/swagger-ui.html"};
     private static final String AUTH_ALL = "/api/auth/**";
-    private static final String QUOTES = "/api/quotes";
+    private static final String QUOTES_PUBLIC = "/api/quotes/public";
     private final CustomUserDetailsService customUserDetailsService;
     private final JwtRequestFilter jwtRequestFilter;
 
@@ -94,7 +94,7 @@ public class WebSecurityConfig {
                         .requestMatchers(WHITE_LIST_URL).permitAll()
                         .requestMatchers(AUTH_ALL).permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, ALL).permitAll()
-                        .requestMatchers(HttpMethod.GET, QUOTES).permitAll()
+                        .requestMatchers(HttpMethod.GET, QUOTES_PUBLIC).permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
