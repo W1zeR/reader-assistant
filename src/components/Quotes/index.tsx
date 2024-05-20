@@ -9,14 +9,14 @@ const Quotes = () => {
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
-    axios.get(API_URL + "/quotes")
+    axios.get(API_URL + "/quotes/public")
       .then(response => {
-        setQuotes(response.data);
+        setQuotes(response.data.content);
       })
       .catch(error => {
         console.error(error);
       });
-  }, [API_URL]);
+  });
 
   return (
     <section className="dark:bg-bg-color-dark bg-gray-light relative z-10 py-16 md:py-20 lg:py-28">

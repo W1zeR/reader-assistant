@@ -1,14 +1,37 @@
 import Link from "next/link";
 import { ArrowRightStartOnRectangleIcon, ChevronDownIcon, Cog6ToothIcon, UserIcon } from "@heroicons/react/24/outline";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const Authenticated = () => {
+  const { data: session } = useSession();
+  const [login, setLogin] = useState("");
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+  useEffect(() => {
+    axios.get(API_URL + "/profiles/me",
+      {
+        headers: {
+          Authorization: `Bearer ${session.accessToken}`
+        }
+      }
+    )
+      .then(response => {
+        setLogin(response.data.login);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  });
+
   return (
     <>
       <ul className="block lg:flex lg:space-x-12">
         <li key={1} className="group relative">
           <div className="ease-in-up hiddenpx-8 py-3 text-base font-medium text-dark transition duration-300
           hover:bg-opacity-90 md:block md:px-9 lg:px-6 xl:px-9 dark:text-white">
-            <UserIcon className="h-6 w-6 inline-block dark:text-white" /> sergeylavrov <ChevronDownIcon
+            <UserIcon className="h-6 w-6 inline-block dark:text-white" /> {login} <ChevronDownIcon
             className="h-4 w-4 inline-block dark:text-white" />
           </div>
           <>

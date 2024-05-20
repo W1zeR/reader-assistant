@@ -1,6 +1,6 @@
 import { Quote } from "@/types/quote";
 import {
-  BookOpenIcon,
+  BookOpenIcon, ClockIcon,
   CogIcon,
   GlobeAltIcon,
   HashtagIcon,
@@ -46,6 +46,9 @@ const SinglePrivateQuote = ({ quote }: { quote: Quote }) => {
             </div>
             <div className="mt-5">
               <UserIcon className="h-6 w-6 inline-block" /> {quote.profile.login}
+            </div>
+            <div className="mt-5">
+              <ClockIcon className="h-6 w-6 inline-block" /> {quote.changeDate}
             </div>
             {quote.status.name == "PUBLIC" ?
               <div className="mt-5">

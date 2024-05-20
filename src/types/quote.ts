@@ -20,10 +20,11 @@ export type Quote = {
   id: number
   content: string
   book: QuoteBook
-  profile: Profile
   status: QuoteStatus
-  likes: number
   tags: Tag[]
+  profile: Profile
+  likes: number
+  changeDate: string
 };
 
 export type Tag = {

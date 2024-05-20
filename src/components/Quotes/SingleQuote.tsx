@@ -1,5 +1,5 @@
 import { Quote } from "@/types/quote";
-import { BookOpenIcon, HashtagIcon, HeartIcon, PencilIcon, UserIcon } from "@heroicons/react/24/outline";
+import { BookOpenIcon, HashtagIcon, HeartIcon, PencilIcon, UserIcon, ClockIcon } from "@heroicons/react/24/outline";
 
 const SingleQuote = ({ quote }: { quote: Quote }) => {
   const { content, book, likes } = quote;
@@ -35,6 +35,9 @@ const SingleQuote = ({ quote }: { quote: Quote }) => {
             </div>
             <div className="mt-5">
               <UserIcon className="h-6 w-6 inline-block" /> {quote.profile.login}
+            </div>
+            <div className="mt-5">
+              <ClockIcon className="h-6 w-6 inline-block" /> {quote.changeDate}
             </div>
             <div className="mt-5">
               <button

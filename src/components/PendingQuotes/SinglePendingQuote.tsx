@@ -1,5 +1,13 @@
 import { Quote } from "@/types/quote";
-import { BookOpenIcon, GlobeAltIcon, HashtagIcon, PencilIcon, UserIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  BookOpenIcon,
+  ClockIcon,
+  GlobeAltIcon,
+  HashtagIcon,
+  PencilIcon,
+  UserIcon,
+  XMarkIcon
+} from "@heroicons/react/24/outline";
 
 const SinglePendingQuote = ({ quote }: { quote: Quote }) => {
   const { content, book } = quote;
@@ -35,6 +43,9 @@ const SinglePendingQuote = ({ quote }: { quote: Quote }) => {
             </div>
             <div className="mt-5">
               <UserIcon className="h-6 w-6 inline-block" /> {quote.profile.login}
+            </div>
+            <div className="mt-5">
+              <ClockIcon className="h-6 w-6 inline-block" /> {quote.changeDate}
             </div>
             <div className="mt-5">
               <button
