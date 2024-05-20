@@ -27,6 +27,7 @@ public interface QuoteRepository extends JpaRepository<Quote, Long> {
             """;
 
     String INTERESTING_TAGS_KEYWORD_CENTER_START = """
+            LEFT JOIN tag t ON t.id = qt.id_tag
             LEFT JOIN profile p ON q.profile_id = p.id
             LEFT JOIN book b ON q.book_id = b.id
             LEFT JOIN authors_books ab ON ab.id_book = b.id
@@ -37,6 +38,7 @@ public interface QuoteRepository extends JpaRepository<Quote, Long> {
             AND (UPPER(q.content) LIKE CONCAT('%', UPPER(?2), '%') OR
             UPPER(b.title) LIKE CONCAT('%', UPPER(?2), '%') OR
             UPPER(p.login) LIKE CONCAT('%', UPPER(?2), '%') OR
+            UPPER(t.name) LIKE CONCAT('%', UPPER(?2), '%') OR
             UPPER(a.surname) LIKE CONCAT('%', UPPER(?2), '%') OR
             UPPER(a.name) LIKE CONCAT('%', UPPER(?2), '%') OR
             UPPER(a.patronymic) LIKE CONCAT('%', UPPER(?2), '%'))
