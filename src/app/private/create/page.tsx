@@ -1,13 +1,14 @@
 import { BookOpenIcon, HashtagIcon, PencilIcon } from "@heroicons/react/24/outline";
 import { Metadata } from "next";
 import Link from "next/link";
+import React from "react";
 
 export const metadata: Metadata = {
-  title: "Помощник читателя | Редактировать цитату",
-  description: "Это страница редактирования цитаты"
+  title: "Помощник читателя | Добавить цитату",
+  description: "Это страница добавления цитаты"
 };
 
-const EditQuote = () => {
+const NewQuote = () => {
   return (
     <>
       <section className="relative z-10 overflow-hidden pb-16 pt-36 md:pb-20 lg:pb-28 lg:pt-[180px]">
@@ -16,7 +17,7 @@ const EditQuote = () => {
             <div className="w-full px-4">
               <div className="shadow-three mx-auto max-w-[500px] rounded bg-white px-6 py-10 dark:bg-dark sm:p-[60px]">
                 <h3 className="mb-3 text-center text-2xl font-bold text-black dark:text-white sm:text-3xl">
-                  Изменить цитату
+                  Добавить цитату
                 </h3>
                 <div className="mb-8 flex items-center justify-center" />
                 <form>
@@ -65,13 +66,14 @@ const EditQuote = () => {
                     <input
                       type="text"
                       name="authors"
-                      placeholder="Введите авторов"
+                      placeholder="Введите ФИО авторов через запятые"
                       className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border
                       bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300
                       focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary
                       dark:focus:shadow-none"
                     />
                   </div>
+
                   <div className="mb-8">
                     <label
                       htmlFor="tags"
@@ -94,15 +96,15 @@ const EditQuote = () => {
                     <button
                       className="shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center
                       rounded-sm bg-primary px-9 py-4 text-base font-medium text-white duration-300
-                       hover:bg-primary/90">
-                      Сохранить
+                      hover:bg-primary/90">
+                      Добавить
                     </button>
                   </div>
                   <div className="mb-6">
                     <button
                       className="shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center
                       rounded-sm bg-red-700 px-9 py-4 text-base font-medium text-white duration-300
-                       hover:bg-red-700/90">
+                      hover:bg-red-700/90">
                       <Link
                         href="/private">
                         Отмена
@@ -119,4 +121,4 @@ const EditQuote = () => {
   );
 };
 
-export default EditQuote;
+export default NewQuote;

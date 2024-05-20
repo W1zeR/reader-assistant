@@ -1,5 +1,5 @@
 import { Quote } from "@/types/quote";
-import { BookOpenIcon, HashtagIcon, HeartIcon, PencilIcon, UserIcon, ClockIcon } from "@heroicons/react/24/outline";
+import { BookOpenIcon, ClockIcon, HashtagIcon, HeartIcon, PencilIcon, UserIcon } from "@heroicons/react/24/outline";
 
 const SingleQuote = ({ quote }: { quote: Quote }) => {
   const { content, book, likes } = quote;

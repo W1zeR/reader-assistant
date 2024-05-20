@@ -1,6 +1,7 @@
 import { Quote } from "@/types/quote";
 import {
-  BookOpenIcon, ClockIcon,
+  BookOpenIcon,
+  ClockIcon,
   CogIcon,
   GlobeAltIcon,
   HashtagIcon,
@@ -13,8 +14,6 @@ import {
 import Link from "next/link";
 
 const SinglePrivateQuote = ({ quote }: { quote: Quote }) => {
-  const { content, book, likes } = quote;
-
   return (
     <div className="w-full mt-10">
       <div
@@ -23,16 +22,16 @@ const SinglePrivateQuote = ({ quote }: { quote: Quote }) => {
         <p
           className="mb-4 pb-4 border-b border-body-color border-opacity-10 leading-relaxed text-dark dark:border-white
           dark:border-opacity-10 text-lg dark:text-white lg:text-base xl:text-lg">
-          {content}
+          {quote.content}
         </p>
         <div className="flex items-center">
           <div className="w-full">
             <h3 className="text-dark dark:text-white text-base">
-              <BookOpenIcon className="h-6 w-6 inline-block" /> {book.title}
+              <BookOpenIcon className="h-6 w-6 inline-block" /> {quote.book.title}
             </h3>
             <div className="mt-5">
               <span><PencilIcon className="h-6 w-6 inline-block" /> </span>
-              {book.authors.map((a, index) => (
+              {quote.book.authors.map((a, index) => (
                 <span key={a.id} className="text-dark dark:text-white text-base">
                   {(index ? ", " : "") + a.name} {a.surname}{(a.patronymic ? ` ${a.patronymic}` : "")}</span>
               ))}
@@ -55,7 +54,7 @@ const SinglePrivateQuote = ({ quote }: { quote: Quote }) => {
                 <button
                   className="bg-blue-500 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-900 text-white
                   font-bold py-2 px-4 rounded-full text-base">
-                  <HeartIcon className="h-6 w-6 inline-block" /> {likes}
+                  <HeartIcon className="h-6 w-6 inline-block" /> {quote.likes}
                 </button>
               </div>
               : quote.status.name == "PRIVATE" ?
@@ -77,7 +76,7 @@ const SinglePrivateQuote = ({ quote }: { quote: Quote }) => {
                     className="bg-blue-500 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-900 text-white
                     py-2 px-4 rounded-full text-base">
                     <Link
-                      href="/edit-quote">
+                      href={`/private/${quote.id}/edit`}>
                       <PencilSquareIcon className="h-6 w-6 inline-block" /> Редактировать
                     </Link>
                   </button>

@@ -20,7 +20,7 @@ export default function SigninPage() {
                   Войти в аккаунт
                 </h3>
                 <div className="mb-8 flex items-center justify-center" />
-                <LoginForm/>
+                <LoginForm />
                 <p className="text-center text-base font-medium text-body-color">
                   Нет аккаунта?{" "}
                   <Link href="/signup" className="text-primary hover:underline">

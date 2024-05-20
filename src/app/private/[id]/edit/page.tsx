@@ -1,13 +1,37 @@
-import { BookOpenIcon, HashtagIcon, PencilIcon, PlusIcon } from "@heroicons/react/24/outline";
+import { BookOpenIcon, HashtagIcon, PencilIcon } from "@heroicons/react/24/outline";
 import { Metadata } from "next";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export const metadata: Metadata = {
-  title: "Помощник читателя | Добавить цитату",
-  description: "Это страница добавления цитаты"
+  title: "Помощник читателя | Редактировать цитату",
+  description: "Это страница редактирования цитаты"
 };
 
-const NewQuote = () => {
+const EditQuote = ({ params }: { params: { id: string } }) => {
+  const id = params.id;
+  const { data: session } = useSession();
+  const [quote, setQuote] = useState(null);
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+  useEffect(() => {
+    axios.get(API_URL + `/quotes/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${session.accessToken}`
+        }
+      }
+    )
+      .then(response => {
+        setQuote(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  });
+
   return (
     <>
       <section className="relative z-10 overflow-hidden pb-16 pt-36 md:pb-20 lg:pb-28 lg:pt-[180px]">
@@ -16,7 +40,7 @@ const NewQuote = () => {
             <div className="w-full px-4">
               <div className="shadow-three mx-auto max-w-[500px] rounded bg-white px-6 py-10 dark:bg-dark sm:p-[60px]">
                 <h3 className="mb-3 text-center text-2xl font-bold text-black dark:text-white sm:text-3xl">
-                  Добавить цитату
+                  Изменить цитату
                 </h3>
                 <div className="mb-8 flex items-center justify-center" />
                 <form>
@@ -30,11 +54,12 @@ const NewQuote = () => {
                     <textarea
                       name="content"
                       rows={5}
-                      placeholder="Введите текст цитаты"
                       className="border-stroke w-full resize-none rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base
                       text-body-color outline-none focus:border-primary dark:border-transparent dark:bg-[#2C303B]
                       dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
-                    ></textarea>
+                    >
+                      {quote.content}
+                    </textarea>
                   </div>
                   <div className="mb-8">
                     <label
@@ -47,12 +72,13 @@ const NewQuote = () => {
                     <input
                       type="text"
                       name="book"
-                      placeholder="Введите название книги"
                       className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border
                       bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300
                       focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary
                       dark:focus:shadow-none"
-                    />
+                    >
+                      {quote.book.title}
+                    </input>
                   </div>
                   <div className="mb-8">
                     <label
@@ -62,15 +88,19 @@ const NewQuote = () => {
                       {" "}
                       <PencilIcon className="h-6 w-6 inline-block" /> Авторы{" "}
                     </label>
-                    <input
-                      type="text"
-                      name="authors"
-                      placeholder="Введите авторов"
-                      className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border
+                    {quote.book.authors.map((a, index) => (
+                      <input
+                        key={a.id}
+                        type="text"
+                        name="authors"
+                        className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border
                       bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300
                       focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary
                       dark:focus:shadow-none"
-                    />
+                      >
+                        {(index ? ", " : "") + a.name} {a.surname}{(a.patronymic ? ` ${a.patronymic}` : "")}
+                      </input>
+                    ))}
                   </div>
                   <div className="mb-8">
                     <label
@@ -80,29 +110,33 @@ const NewQuote = () => {
                       {" "}
                       <HashtagIcon className="h-6 w-6 inline-block" /> Теги{" "}
                     </label>
-                    <input
-                      type="text"
-                      name="tags"
-                      placeholder="Введите теги"
-                      className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border
+                    {quote.tags.map((t, index) => (
+                      <input
+                        key={t.id}
+                        type="text"
+                        name="tags"
+                        placeholder="Введите теги"
+                        className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border
                       bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300
                       focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary
                       dark:focus:shadow-none"
-                    />
+                      >
+                        {(index ? ", " : "") + t.name}</input>
+                    ))}
                   </div>
                   <div className="mb-6">
                     <button
                       className="shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center
                       rounded-sm bg-primary px-9 py-4 text-base font-medium text-white duration-300
-                      hover:bg-primary/90">
-                      Добавить
+                       hover:bg-primary/90">
+                      Сохранить
                     </button>
                   </div>
                   <div className="mb-6">
                     <button
                       className="shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center
                       rounded-sm bg-red-700 px-9 py-4 text-base font-medium text-white duration-300
-                      hover:bg-red-700/90">
+                       hover:bg-red-700/90">
                       <Link
                         href="/private">
                         Отмена
@@ -119,4 +153,4 @@ const NewQuote = () => {
   );
 };
 
-export default NewQuote;
+export default EditQuote;

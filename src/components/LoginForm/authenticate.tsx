@@ -1,6 +1,6 @@
 import { signIn } from "next-auth/react";
-import AuthError from 'next-auth';
-import { browserName, isMobile } from 'react-device-detect';
+import AuthError from "next-auth";
+import { browserName, isMobile } from "react-device-detect";
 import { authOptions } from "@/utils/authOptions";
 
 export default async function authenticate(prevState: string | undefined, formData: FormData) {
