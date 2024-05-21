@@ -1,7 +1,6 @@
 "use client";
 
 import { BookOpenIcon, HashtagIcon, PencilIcon } from "@heroicons/react/24/outline";
-import { Metadata } from "next";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import axios from "axios";
@@ -114,19 +113,15 @@ const EditQuote = ({ params }: { params: { id: string } }) => {
                       {" "}
                       <PencilIcon className="h-6 w-6 inline-block" /> Авторы{" "}
                     </label>
-                    {/*{quote.book.authors.map((a, index) => (*/}
-                    {/*  <input*/}
-                    {/*    key={a.id}*/}
-                    {/*    type="text"*/}
-                    {/*    name="authors"*/}
-                    {/*    className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border*/}
-                    {/*  bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300*/}
-                    {/*  focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary*/}
-                    {/*  dark:focus:shadow-none"*/}
-                    {/*  >*/}
-                    {/*    {(index ? ", " : "") + a.name} {a.surname}{(a.patronymic ? ` ${a.patronymic}` : "")}*/}
-                    {/*  </input>*/}
-                    {/*))}*/}
+                    <input
+                      type="text"
+                      name="authors"
+                      className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border
+                      bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300
+                      focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary
+                      dark:focus:shadow-none"
+                      value={quote.book.authors}
+                    />
                   </div>
                   <div className="mb-8">
                     <label
@@ -136,19 +131,15 @@ const EditQuote = ({ params }: { params: { id: string } }) => {
                       {" "}
                       <HashtagIcon className="h-6 w-6 inline-block" /> Теги{" "}
                     </label>
-                    {/*{quote.tags.map((t, index) => (*/}
-                    {/*  <input*/}
-                    {/*    key={t.id}*/}
-                    {/*    type="text"*/}
-                    {/*    name="tags"*/}
-                    {/*    placeholder="Введите теги"*/}
-                    {/*    className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border*/}
-                    {/*  bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300*/}
-                    {/*  focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary*/}
-                    {/*  dark:focus:shadow-none"*/}
-                    {/*  >*/}
-                    {/*    {(index ? ", " : "") + t.name}</input>*/}
-                    {/*))}*/}
+                    <input
+                      type="text"
+                      name="tags"
+                      className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border
+                      bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300
+                      focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary
+                      dark:focus:shadow-none"
+                      value={quote.tags.join(", ")}
+                    />
                   </div>
                   <div className="mb-6">
                     <button
