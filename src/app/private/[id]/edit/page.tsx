@@ -1,19 +1,47 @@
+"use client";
+
 import { BookOpenIcon, HashtagIcon, PencilIcon } from "@heroicons/react/24/outline";
 import { Metadata } from "next";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
-export const metadata: Metadata = {
-  title: "Помощник читателя | Редактировать цитату",
-  description: "Это страница редактирования цитаты"
-};
+// export const metadata: Metadata = {
+//   title: "Помощник читателя | Редактировать цитату",
+//   description: "Это страница редактирования цитаты"
+// };
 
 const EditQuote = ({ params }: { params: { id: string } }) => {
   const id = params.id;
   const { data: session } = useSession();
-  const [quote, setQuote] = useState(null);
+  const [quote, setQuote] = useState(
+    {
+      id: -1,
+      content: "",
+      book: {
+        id: -1,
+        title: "",
+        authors: []
+      },
+      status: {
+        id: -1,
+        name: ""
+      },
+      tags: [
+        {
+          id: -1,
+          name: ""
+        }
+      ],
+      profile: {
+        id: -1,
+        login: ""
+      },
+      likes: 0,
+      changeDate: ""
+    }
+  );
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
@@ -57,9 +85,8 @@ const EditQuote = ({ params }: { params: { id: string } }) => {
                       className="border-stroke w-full resize-none rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base
                       text-body-color outline-none focus:border-primary dark:border-transparent dark:bg-[#2C303B]
                       dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
-                    >
-                      {quote.content}
-                    </textarea>
+                      value={quote.content}
+                    />
                   </div>
                   <div className="mb-8">
                     <label
@@ -76,9 +103,8 @@ const EditQuote = ({ params }: { params: { id: string } }) => {
                       bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300
                       focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary
                       dark:focus:shadow-none"
-                    >
-                      {quote.book.title}
-                    </input>
+                      value={quote.book.title}
+                    />
                   </div>
                   <div className="mb-8">
                     <label
@@ -88,19 +114,19 @@ const EditQuote = ({ params }: { params: { id: string } }) => {
                       {" "}
                       <PencilIcon className="h-6 w-6 inline-block" /> Авторы{" "}
                     </label>
-                    {quote.book.authors.map((a, index) => (
-                      <input
-                        key={a.id}
-                        type="text"
-                        name="authors"
-                        className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border
-                      bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300
-                      focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary
-                      dark:focus:shadow-none"
-                      >
-                        {(index ? ", " : "") + a.name} {a.surname}{(a.patronymic ? ` ${a.patronymic}` : "")}
-                      </input>
-                    ))}
+                    {/*{quote.book.authors.map((a, index) => (*/}
+                    {/*  <input*/}
+                    {/*    key={a.id}*/}
+                    {/*    type="text"*/}
+                    {/*    name="authors"*/}
+                    {/*    className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border*/}
+                    {/*  bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300*/}
+                    {/*  focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary*/}
+                    {/*  dark:focus:shadow-none"*/}
+                    {/*  >*/}
+                    {/*    {(index ? ", " : "") + a.name} {a.surname}{(a.patronymic ? ` ${a.patronymic}` : "")}*/}
+                    {/*  </input>*/}
+                    {/*))}*/}
                   </div>
                   <div className="mb-8">
                     <label
@@ -110,19 +136,19 @@ const EditQuote = ({ params }: { params: { id: string } }) => {
                       {" "}
                       <HashtagIcon className="h-6 w-6 inline-block" /> Теги{" "}
                     </label>
-                    {quote.tags.map((t, index) => (
-                      <input
-                        key={t.id}
-                        type="text"
-                        name="tags"
-                        placeholder="Введите теги"
-                        className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border
-                      bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300
-                      focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary
-                      dark:focus:shadow-none"
-                      >
-                        {(index ? ", " : "") + t.name}</input>
-                    ))}
+                    {/*{quote.tags.map((t, index) => (*/}
+                    {/*  <input*/}
+                    {/*    key={t.id}*/}
+                    {/*    type="text"*/}
+                    {/*    name="tags"*/}
+                    {/*    placeholder="Введите теги"*/}
+                    {/*    className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border*/}
+                    {/*  bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300*/}
+                    {/*  focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary*/}
+                    {/*  dark:focus:shadow-none"*/}
+                    {/*  >*/}
+                    {/*    {(index ? ", " : "") + t.name}</input>*/}
+                    {/*))}*/}
                   </div>
                   <div className="mb-6">
                     <button
