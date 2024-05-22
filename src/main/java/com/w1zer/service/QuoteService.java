@@ -187,8 +187,14 @@ public class QuoteService {
     private Book mapToBook(QuoteBookRequest quoteBookRequest) {
         Book book = new Book();
         book.setTitle(quoteBookRequest.title());
-        book.setAuthors(mapToAuthors(quoteBookRequest.authors()));
+        addAuthors(book, mapToAuthors(quoteBookRequest.authors()));
         return book;
+    }
+
+    private void addAuthors(Book book, Set<Author> authors) {
+        for (Author author : authors) {
+            book.addAuthor(author);
+        }
     }
 
     private Set<Author> mapToAuthors(Set<BookAuthorRequest> bookAuthorRequests) {

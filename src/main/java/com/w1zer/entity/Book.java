@@ -21,7 +21,7 @@ public class Book {
     @Column(nullable = false)
     private String title;
 
-    @ManyToMany(mappedBy = "books")
+    @ManyToMany(mappedBy = "books", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @ToString.Exclude
     private Set<Author> authors = new HashSet<>();
 
