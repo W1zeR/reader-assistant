@@ -90,8 +90,7 @@ export const authOptions: NextAuthOptions = {
   },
 
   pages: {
-    signIn: "/signin",
-    signOut: "/signout"
+    signIn: "/signin"
   },
 
   secret: "UevGuOKrzTkpH8fPfHth1Z6pTlXr18JrDaw3H/nqtA0="

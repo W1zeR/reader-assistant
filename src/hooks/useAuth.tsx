@@ -17,7 +17,7 @@ export default function useAuth(shouldRedirect: boolean) {
     } else if (session !== undefined) {
       setIsAuthenticated(true);
     }
-  }, [router, session, shouldRedirect]);
+  }, [session, shouldRedirect]);
 
   return isAuthenticated;
 }

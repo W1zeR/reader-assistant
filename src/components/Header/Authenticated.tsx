@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { ArrowRightStartOnRectangleIcon, ChevronDownIcon, Cog6ToothIcon, UserIcon } from "@heroicons/react/24/outline";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { browserName, isMobile } from "react-device-detect";
+import { redirect } from "next/navigation";
 
 const Authenticated = () => {
   const { data: session } = useSession();
@@ -47,14 +49,25 @@ const Authenticated = () => {
               >
                 <Cog6ToothIcon className="h-6 w-6 inline-block" /> Настройки
               </Link>
-              <Link
-                href=""
-                key={2}
-                className="block rounded py-2.5 text-sm text-dark hover:text-primary dark:text-white/70
-                          dark:hover:text-white lg:px-3"
+              <form
+                action={async () => {
+                  await signOut();
+                  const deviceInfo = {
+                    browserName: browserName,
+                    deviceType: isMobile ? "mobile" : "desktop"
+                  };
+                  await axios.post(API_URL + "/profiles/logout", {
+                    deviceInfo: deviceInfo,
+                    token: session.accessToken
+                  });
+                }}
               >
-                <ArrowRightStartOnRectangleIcon className="h-6 w-6 inline-block" /> Выйти
-              </Link>
+                <button
+                  className="block rounded py-2.5 text-sm text-dark hover:text-primary dark:text-white/70
+                  dark:hover:text-white lg:px-3">
+                  <ArrowRightStartOnRectangleIcon className="h-6 w-6 inline-block" /> Выйти
+                </button>
+              </form>
             </div>
           </>
         </li>
