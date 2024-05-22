@@ -16,29 +16,18 @@ const EditQuote = ({ params }: { params: { id: string } }) => {
   const { data: session } = useSession();
   const [quote, setQuote] = useState(
     {
-      id: -1,
       content: "",
       book: {
         id: -1,
         title: "",
         authors: []
       },
-      status: {
-        id: -1,
-        name: ""
-      },
       tags: [
         {
           id: -1,
           name: ""
         }
-      ],
-      profile: {
-        id: -1,
-        login: ""
-      },
-      likes: 0,
-      changeDate: ""
+      ]
     }
   );
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -84,7 +73,7 @@ const EditQuote = ({ params }: { params: { id: string } }) => {
                       className="border-stroke w-full resize-none rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base
                       text-body-color outline-none focus:border-primary dark:border-transparent dark:bg-[#2C303B]
                       dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
-                      value={quote.content}
+                      defaultValue={quote.content}
                     />
                   </div>
                   <div className="mb-8">
@@ -102,7 +91,7 @@ const EditQuote = ({ params }: { params: { id: string } }) => {
                       bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300
                       focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary
                       dark:focus:shadow-none"
-                      value={quote.book.title}
+                      defaultValue={quote.book.title}
                     />
                   </div>
                   <div className="mb-8">
@@ -120,7 +109,7 @@ const EditQuote = ({ params }: { params: { id: string } }) => {
                       bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300
                       focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary
                       dark:focus:shadow-none"
-                      value={quote.book.authors}
+                      defaultValue={quote.book.authors.map(a => `${a.name} ${a.surname} ${a.patronymic}`).join(", ")}
                     />
                   </div>
                   <div className="mb-8">
@@ -138,7 +127,7 @@ const EditQuote = ({ params }: { params: { id: string } }) => {
                       bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300
                       focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary
                       dark:focus:shadow-none"
-                      value={quote.tags.join(", ")}
+                      defaultValue={quote.tags.map(t => t.name).join(", ")}
                     />
                   </div>
                   <div className="mb-6">

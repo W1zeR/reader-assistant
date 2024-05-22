@@ -1,11 +1,41 @@
-import { Metadata } from "next";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Помощник читателя | Настройки",
-  description: "Это страница с настройками аккаунта"
-};
+import { Metadata } from "next";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+// export const metadata: Metadata = {
+//   title: "Помощник читателя | Настройки",
+//   description: "Это страница с настройками аккаунта"
+// };
 
 const Settings = () => {
+  const { data: session } = useSession();
+  const [profile, setProfile] = useState(
+    {
+      email: "",
+      login: ""
+    }
+  );
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+  useEffect(() => {
+    axios.get(API_URL + `/profiles/me`,
+      {
+        headers: {
+          Authorization: `Bearer ${session.accessToken}`
+        }
+      }
+    )
+      .then(response => {
+        setProfile(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  });
+
   return (
     <>
       <section className="relative z-10 overflow-hidden pb-16 pt-36 md:pb-20 lg:pb-28 lg:pt-[180px]">
@@ -34,6 +64,7 @@ const Settings = () => {
                       bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300
                       focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary
                       dark:focus:shadow-none"
+                      defaultValue={profile.email}
                     />
                   </div>
                   <div className="mb-8">
@@ -52,6 +83,7 @@ const Settings = () => {
                       bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300
                       focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary
                       dark:focus:shadow-none"
+                      defaultValue={profile.login}
                     />
                   </div>
                 </form>
