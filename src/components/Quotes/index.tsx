@@ -1,11 +1,17 @@
-"use client";
-
 import SingleQuote from "./SingleQuote";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Search from "@/components/Search";
 
-const Quotes = () => {
+export default async function Quotes({ searchParams }: {
+  searchParams?: {
+    query?: string;
+    page?: string;
+  };
+}) {
+  const query = searchParams?.query || '';
+  const currentPage = Number(searchParams?.page) || 1;
+
   const [quotes, setQuotes] = useState([]);
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -34,5 +40,3 @@ const Quotes = () => {
     </section>
   );
 };
-
-export default Quotes;
