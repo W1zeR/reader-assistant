@@ -1,24 +1,32 @@
+"use client";
+
 import SingleQuote from "./SingleQuote";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import axios from "axios";
 import Search from "@/components/Search";
+import Pagination from "@/components/Pagination";
+import PageElements from "@/components/Dropdown/PageElements";
+import SortOrder from "@/components/Dropdown/SortOrder";
 
-export default async function Quotes({ searchParams }: {
+export default function Quotes({ searchParams }: {
   searchParams?: {
     query?: string;
     page?: string;
   };
 }) {
-  const query = searchParams?.query || '';
+  const query = searchParams?.query || "";
   const currentPage = Number(searchParams?.page) || 1;
 
-  const [quotes, setQuotes] = useState([]);
+  const [quotes, setQuotes] = useState({
+    totalPages: 0,
+    content: []
+  });
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
-    axios.get(API_URL + "/quotes/public")
+    axios.get(API_URL + `/quotes/public?keyword=${query}&page=${currentPage - 1}&size=3&sort=changeDate`)
       .then(response => {
-        setQuotes(response.data.content);
+        setQuotes(response.data);
       })
       .catch(error => {
         console.error(error);
@@ -31,10 +39,19 @@ export default async function Quotes({ searchParams }: {
         <div className="mt-10">
           <Search placeholder="Поиск публичных цитат по ключевому слову" />
         </div>
-        <div className="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
-          {quotes.map((q) => (
-            <SingleQuote key={q.id} quote={q} />
-          ))}
+        <Suspense key={query + currentPage}>
+          <div className="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
+            {quotes.content.map((q) => (
+              <SingleQuote key={q.id} quote={q} />
+            ))}
+          </div>
+        </Suspense>
+        <div className="mt-10 flex w-full justify-center">
+          <Pagination totalPages={quotes.totalPages} />
+        </div>
+        <div className="flex w-full justify-between">
+          <span>Цитат на странице: <PageElements /></span>
+          <SortOrder />
         </div>
       </div>
     </section>

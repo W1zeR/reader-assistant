@@ -98,9 +98,9 @@ function PaginationArrow({
   isDisabled?: boolean;
 }) {
   const className = clsx(
-    'flex h-10 w-10 items-center justify-center rounded-md border',
+    'flex h-10 w-10 items-center justify-center rounded-md border border-gray-700 dark:border-gray-300',
     {
-      'pointer-events-none text-gray-300': isDisabled,
+      'pointer-events-none dark:text-gray-300 text-gray-700': isDisabled,
       'hover:bg-gray-100': !isDisabled,
       'mr-2 md:mr-4': direction === 'left',
       'ml-2 md:ml-4': direction === 'right',
