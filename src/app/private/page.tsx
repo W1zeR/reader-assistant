@@ -6,12 +6,17 @@ export const metadata: Metadata = {
   description: "Это страница с приватными цитатами"
 };
 
-const Private = () => {
+export default async function Private({ searchParams }: {
+  searchParams?: {
+    query?: string;
+    page?: string;
+    size?: string;
+    sort?: string;
+  };
+}) {
   return (
     <>
-      <PrivateQuotes />
+      <PrivateQuotes searchParams={searchParams}/>
     </>
   );
 };
-
-export default Private;

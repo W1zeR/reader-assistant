@@ -12,6 +12,7 @@ import {
   XMarkIcon
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import LikeButton from "@/components/LikeButton";
 
 const SinglePrivateQuote = ({ quote }: { quote: Quote }) => {
   return (
@@ -51,11 +52,7 @@ const SinglePrivateQuote = ({ quote }: { quote: Quote }) => {
             </div>
             {quote.status.name == "PUBLIC" ?
               <div className="mt-5">
-                <button
-                  className="bg-blue-500 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-900 text-white
-                  font-bold py-2 px-4 rounded-full text-base">
-                  <HeartIcon className="h-6 w-6 inline-block" /> {quote.likes}
-                </button>
+                <LikeButton likes={quote.likes} quoteId={quote.id} />
               </div>
               : quote.status.name == "PRIVATE" ?
                 <div className="mt-5">

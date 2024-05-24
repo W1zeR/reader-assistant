@@ -7,15 +7,20 @@ import Search from "@/components/Search";
 import Pagination from "@/components/Pagination";
 import PageElements from "@/components/Dropdown/PageElements";
 import SortOrder from "@/components/Dropdown/SortOrder";
+import useAuth from "@/hooks/useAuth";
 
 export default function Quotes({ searchParams }: {
   searchParams?: {
     query?: string;
     page?: string;
+    size?: string;
+    sort?: string;
   };
 }) {
   const query = searchParams?.query || "";
   const currentPage = Number(searchParams?.page) || 1;
+  const size = searchParams?.size || 3;
+  const sort = searchParams?.sort || "changeDate";
 
   const [quotes, setQuotes] = useState({
     totalPages: 0,
@@ -24,7 +29,7 @@ export default function Quotes({ searchParams }: {
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
-    axios.get(API_URL + `/quotes/public?keyword=${query}&page=${currentPage - 1}&size=3&sort=changeDate`)
+    axios.get(API_URL + `/quotes/public?keyword=${query}&page=${currentPage - 1}&size=${size}&sort=${sort},desc`)
       .then(response => {
         setQuotes(response.data);
       })

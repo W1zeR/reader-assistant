@@ -1,8 +1,12 @@
 import { Quote } from "@/types/quote";
 import { BookOpenIcon, ClockIcon, HashtagIcon, HeartIcon, PencilIcon, UserIcon } from "@heroicons/react/24/outline";
+import LikeButton from "@/components/LikeButton";
+import useAuth from "@/hooks/useAuth";
 
 const SingleQuote = ({ quote }: { quote: Quote }) => {
   const { content, book, likes } = quote;
+
+  const isAuthenticated = useAuth(false);
 
   return (
     <div className="w-full mt-10">
@@ -40,11 +44,13 @@ const SingleQuote = ({ quote }: { quote: Quote }) => {
               <ClockIcon className="h-6 w-6 inline-block" /> {quote.changeDate}
             </div>
             <div className="mt-5">
-              <button
-                className="bg-blue-500 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-900 text-white
-                font-bold py-2 px-4 rounded-full text-base">
-                <HeartIcon className="h-6 w-6 inline-block" /> {likes}
-              </button>
+              {isAuthenticated ?
+                <LikeButton likes={likes} quoteId={quote.id} /> :
+                <button
+                  className="bg-blue-500 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-900 text-white
+                  font-bold py-2 px-4 rounded-full text-base">
+                  <HeartIcon className="h-6 w-6 inline-block" /> {likes}
+                </button>}
             </div>
           </div>
         </div>

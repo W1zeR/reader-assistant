@@ -3,18 +3,37 @@
 import SinglePrivateQuote from "./SinglePrivateQuote";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 import Search from "@/components/Search";
+import Pagination from "@/components/Pagination";
+import PageElements from "@/components/Dropdown/PageElements";
+import SortOrder from "@/components/Dropdown/SortOrder";
 
-const PrivateQuotes = () => {
+export default function PrivateQuotes({ searchParams }: {
+  searchParams?: {
+    query?: string;
+    page?: string;
+    size?: string;
+    sort?: string;
+  };
+}) {
+  const query = searchParams?.query || "";
+  const currentPage = Number(searchParams?.page) || 1;
+  const size = searchParams?.size || 3;
+  const sort = searchParams?.sort || "changeDate";
+
   const { data: session } = useSession();
-  const [quotes, setQuotes] = useState([]);
+  const [quotes, setQuotes] = useState({
+    totalPages: 0,
+    content: []
+  });
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
-    axios.get(API_URL + "/quotes/private",
+    console.log(searchParams);
+    axios.get(API_URL + `/quotes/private?keyword=${query}&page=${currentPage - 1}&size=${size}&sort=${sort},desc`,
       {
         headers: {
           Authorization: `Bearer ${session.accessToken}`
@@ -22,7 +41,7 @@ const PrivateQuotes = () => {
       }
     )
       .then(response => {
-        setQuotes(response.data.content);
+        setQuotes(response.data);
       })
       .catch(error => {
         console.error(error);
@@ -43,14 +62,21 @@ const PrivateQuotes = () => {
           </button>
         </div>
         <Search placeholder="Поиск личных цитат по ключевому слову" />
-        <div className="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
-          {quotes.map((q) => (
-            <SinglePrivateQuote key={q.id} quote={q} />
-          ))}
+        <Suspense key={query + currentPage}>
+          <div className="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
+            {quotes.content.map((q) => (
+              <SinglePrivateQuote key={q.id} quote={q} />
+            ))}
+          </div>
+        </Suspense>
+        <div className="mt-10 flex w-full justify-center">
+          <Pagination totalPages={quotes.totalPages} />
+        </div>
+        <div className="flex w-full justify-between">
+          <span>Цитат на странице: <PageElements /></span>
+          <SortOrder />
         </div>
       </div>
     </section>
   );
 };
-
-export default PrivateQuotes;

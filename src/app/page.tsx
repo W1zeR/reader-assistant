@@ -8,11 +8,18 @@ export const metadata: Metadata = {
   description: "Это главная страница с публичными цитатами"
 };
 
-export default function Home() {
+export default async function Home({ searchParams }: {
+  searchParams?: {
+    query?: string;
+    page?: string;
+    size?: string;
+    sort?: string;
+  };
+}) {
   return (
     <>
       <ScrollUp />
-      <Quotes />
+      <Quotes searchParams={searchParams} />
     </>
   );
 }

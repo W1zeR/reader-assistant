@@ -6,12 +6,17 @@ export const metadata: Metadata = {
   description: "Это страница с цитатами в ожидании опубликования"
 };
 
-const Pending = () => {
+export default async function Pending({ searchParams }: {
+  searchParams?: {
+    query?: string;
+    page?: string;
+    size?: string;
+    sort?: string;
+  };
+}) {
   return (
     <>
-      <PendingQuotes />
+      <PendingQuotes searchParams={searchParams}/>
     </>
   );
 };
-
-export default Pending;
