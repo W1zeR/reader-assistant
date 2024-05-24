@@ -1,6 +1,5 @@
 package com.w1zer.controller;
 
-import com.w1zer.entity.Profile;
 import com.w1zer.entity.Tag;
 import com.w1zer.payload.QuoteRequest;
 import com.w1zer.payload.QuoteResponse;
@@ -102,9 +101,10 @@ public class QuoteController {
         quoteService.create(quoteRequest, userPrincipal);
     }
 
-    @GetMapping("/{id}/whoLiked")
-    public Set<Profile> getWhoLiked(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
-        return quoteService.getWhoLiked(id);
+    @GetMapping("/{quoteId}/likeStatus")
+    public Boolean getLikeStatus(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long quoteId,
+                                 @CurrentUser UserPrincipal userPrincipal) {
+        return quoteService.getLikeStatus(quoteId, userPrincipal);
     }
 
     @PutMapping("/{quoteId}/whoLiked/{profileId}")

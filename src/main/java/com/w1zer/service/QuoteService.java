@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -243,14 +244,16 @@ public class QuoteService {
         return tag;
     }
 
-    public Set<Profile> getWhoLiked(Long id) {
-        return findById(id).getWhoLiked();
-    }
-
     private Tag findByTagId(Long id) {
         return tagRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(TAG_WITH_ID_NOT_FOUND.formatted(id))
         );
+    }
+
+    public Boolean getLikeStatus(Long quoteId, UserPrincipal userPrincipal) {
+        return findById(quoteId).getWhoLiked()
+                .stream()
+                .anyMatch(p -> Objects.equals(p.getId(), userPrincipal.getId()));
     }
 
     public void addLikedProfile(Long quoteId, Long profileId) {
