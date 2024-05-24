@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class QuoteService {
+    public static final String INTERESTING = "interesting";
     private static final String QUOTE_WITH_ID_NOT_FOUND = "Quote with id '%d' not found";
     private static final String PROFILE_WITH_ID_NOT_FOUND = "Profile with id %s not found";
     private static final String TAG_WITH_ID_NOT_FOUND = "Tag with id %s not found";
@@ -105,7 +106,11 @@ public class QuoteService {
     }
 
     // Public quotes
-    public Page<QuoteResponse> findAllPublic(String keyword, Pageable p) {
+    public Page<QuoteResponse> findAllPublic(String keyword, Pageable p, UserPrincipal userPrincipal) {
+        if (p.getSort().toString().startsWith(INTERESTING)) {
+            Pageable newP = Pageable.ofSize(p.getPageSize()).withPage(p.getPageNumber());
+            return findPublicInteresting(keyword, newP, userPrincipal);
+        }
         QuoteStatusName pub = QuoteStatusName.PUBLIC;
         if (keyword == null) {
             return QuoteMapping.mapToQuoteResponsesPage(quoteRepository.findAllByStatusNameIs(pub, p));
@@ -116,7 +121,11 @@ public class QuoteService {
     }
 
     // Pending quotes
-    public Page<QuoteResponse> findAllPending(String keyword, Pageable p) {
+    public Page<QuoteResponse> findAllPending(String keyword, Pageable p, UserPrincipal userPrincipal) {
+        if (p.getSort().toString().startsWith(INTERESTING)) {
+            Pageable newP = Pageable.ofSize(p.getPageSize()).withPage(p.getPageNumber());
+            return findPendingInteresting(keyword, newP, userPrincipal);
+        }
         QuoteStatusName pending = QuoteStatusName.PENDING;
         if (keyword == null) {
             return QuoteMapping.mapToQuoteResponsesPage(quoteRepository.findAllByStatusNameIs(pending, p));
@@ -127,7 +136,11 @@ public class QuoteService {
     }
 
     // Private quotes
-    public Page<QuoteResponse> findAllPrivate(String keyword, Pageable p) {
+    public Page<QuoteResponse> findAllPrivate(String keyword, Pageable p, UserPrincipal userPrincipal) {
+        if (p.getSort().toString().startsWith(INTERESTING)) {
+            Pageable newP = Pageable.ofSize(p.getPageSize()).withPage(p.getPageNumber());
+            return findPrivateInteresting(keyword, newP, userPrincipal);
+        }
         QuoteStatusName pri = QuoteStatusName.PRIVATE;
         if (keyword == null) {
             return QuoteMapping.mapToQuoteResponsesPage(quoteRepository.findAllByStatusName(pri, p));
@@ -138,7 +151,7 @@ public class QuoteService {
     }
 
     // Sort by interesting tags for public quotes
-    public Page<QuoteResponse> findPublicInteresting(String keyword, Pageable p, UserPrincipal userPrincipal) {
+    private Page<QuoteResponse> findPublicInteresting(String keyword, Pageable p, UserPrincipal userPrincipal) {
         if (keyword == null) {
             return QuoteMapping.mapToQuoteResponsesPage(
                     quoteRepository.findPublicQuotesSortByInterestingTags(userPrincipal.getId(), p)
@@ -150,7 +163,7 @@ public class QuoteService {
     }
 
     // Sort by interesting tags for pending quotes
-    public Page<QuoteResponse> findPendingInteresting(String keyword, Pageable p, UserPrincipal userPrincipal) {
+    private Page<QuoteResponse> findPendingInteresting(String keyword, Pageable p, UserPrincipal userPrincipal) {
         if (keyword == null) {
             return QuoteMapping.mapToQuoteResponsesPage(
                     quoteRepository.findPendingQuotesSortByInterestingTags(userPrincipal.getId(), p)
@@ -162,7 +175,7 @@ public class QuoteService {
     }
 
     // Sort by interesting tags for private quotes
-    public Page<QuoteResponse> findPrivateInteresting(String keyword, Pageable p, UserPrincipal userPrincipal) {
+    private Page<QuoteResponse> findPrivateInteresting(String keyword, Pageable p, UserPrincipal userPrincipal) {
         if (keyword == null) {
             return QuoteMapping.mapToQuoteResponsesPage(
                     quoteRepository.findPrivateQuotesSortByInterestingTags(userPrincipal.getId(), p)

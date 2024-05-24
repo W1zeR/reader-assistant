@@ -14,7 +14,8 @@ import java.util.Optional;
 @Repository
 public interface QuoteRepository extends JpaRepository<Quote, Long> {
     String INTERESTING_TAGS_QUERY_START = """
-            SELECT q.id, q.content, q.change_date, COUNT(lq.id_profile) likesCount, q.book_id, q.profile_id, q.status_id
+            SELECT q.id, q.content, q.change_date, COUNT(DISTINCT lq.id_quote) likesCount, q.book_id, q.profile_id,
+            q.status_id
             FROM quote q
             LEFT JOIN liked_quotes lq ON lq.id_quote = q.id
             LEFT JOIN quotes_tags qt ON qt.id_quote = q.id
