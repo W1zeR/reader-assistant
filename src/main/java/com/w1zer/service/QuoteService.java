@@ -112,7 +112,7 @@ public class QuoteService {
             return findPublicInteresting(keyword, newP, userPrincipal);
         }
         QuoteStatusName pub = QuoteStatusName.PUBLIC;
-        if (keyword == null) {
+        if (keyword == null || keyword.isBlank()) {
             return QuoteMapping.mapToQuoteResponsesPage(quoteRepository.findAllByStatusNameIs(pub, p));
         }
         return QuoteMapping.mapToQuoteResponsesPage(quoteRepository.findPublicOrPendingByStatusNameAndKeyword(
@@ -127,7 +127,7 @@ public class QuoteService {
             return findPendingInteresting(keyword, newP, userPrincipal);
         }
         QuoteStatusName pending = QuoteStatusName.PENDING;
-        if (keyword == null) {
+        if (keyword == null || keyword.isBlank()) {
             return QuoteMapping.mapToQuoteResponsesPage(quoteRepository.findAllByStatusNameIs(pending, p));
         }
         return QuoteMapping.mapToQuoteResponsesPage(quoteRepository.findPublicOrPendingByStatusNameAndKeyword(
@@ -142,7 +142,7 @@ public class QuoteService {
             return findPrivateInteresting(keyword, newP, userPrincipal);
         }
         QuoteStatusName pri = QuoteStatusName.PRIVATE;
-        if (keyword == null) {
+        if (keyword == null || keyword.isBlank()) {
             return QuoteMapping.mapToQuoteResponsesPage(quoteRepository.findAllByStatusName(pri, p));
         }
         return QuoteMapping.mapToQuoteResponsesPage(quoteRepository.findPrivateByStatusNameAndKeyword(
@@ -152,7 +152,7 @@ public class QuoteService {
 
     // Sort by interesting tags for public quotes
     private Page<QuoteResponse> findPublicInteresting(String keyword, Pageable p, UserPrincipal userPrincipal) {
-        if (keyword == null) {
+        if (keyword == null || keyword.isBlank()) {
             return QuoteMapping.mapToQuoteResponsesPage(
                     quoteRepository.findPublicQuotesSortByInterestingTags(userPrincipal.getId(), p)
             );
@@ -164,7 +164,7 @@ public class QuoteService {
 
     // Sort by interesting tags for pending quotes
     private Page<QuoteResponse> findPendingInteresting(String keyword, Pageable p, UserPrincipal userPrincipal) {
-        if (keyword == null) {
+        if (keyword == null || keyword.isBlank()) {
             return QuoteMapping.mapToQuoteResponsesPage(
                     quoteRepository.findPendingQuotesSortByInterestingTags(userPrincipal.getId(), p)
             );
@@ -176,7 +176,7 @@ public class QuoteService {
 
     // Sort by interesting tags for private quotes
     private Page<QuoteResponse> findPrivateInteresting(String keyword, Pageable p, UserPrincipal userPrincipal) {
-        if (keyword == null) {
+        if (keyword == null || keyword.isBlank()) {
             return QuoteMapping.mapToQuoteResponsesPage(
                     quoteRepository.findPrivateQuotesSortByInterestingTags(userPrincipal.getId(), p)
             );
