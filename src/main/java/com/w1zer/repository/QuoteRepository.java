@@ -57,8 +57,9 @@ public interface QuoteRepository extends JpaRepository<Quote, Long> {
             WHERE q.status_id = 3
             """;
 
+    // "AND q.status_id = 1" for only quotes with private status
     String INTERESTING_TAGS_PRIVATE_QUERY_CENTER = """
-            WHERE q.status_id = 1 AND q.profile_id = ?1
+            WHERE q.profile_id = ?1
             """;
 
     String FIND_BY_STATUS_NAME_AND_KEYWORD = """
