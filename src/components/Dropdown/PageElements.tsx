@@ -1,9 +1,10 @@
 import React from "react";
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button} from "@nextui-org/react";
+import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export default function PageElements() {
-  const [selectedKeys, setSelectedKeys] = React.useState(new Set(["3"]));
+  const [selectedKeys, setSelectedKeys] =
+    React.useState(new Set(["3"]));
 
   const selectedValue = React.useMemo(
     () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
@@ -16,7 +17,7 @@ export default function PageElements() {
 
   const createPageURL = (key: number | string) => {
     const params = new URLSearchParams(searchParams);
-    params.set('size', key.toString());
+    params.set("size", key.toString());
     replace(`${pathname}?${params.toString()}`);
   };
 

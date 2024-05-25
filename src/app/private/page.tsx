@@ -16,7 +16,7 @@ export default async function Private({ searchParams }: {
 }) {
   return (
     <>
-      <PrivateQuotes searchParams={searchParams}/>
+      <PrivateQuotes searchParams={searchParams} />
     </>
   );
 };

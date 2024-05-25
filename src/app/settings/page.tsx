@@ -1,6 +1,5 @@
 "use client";
 
-import { Metadata } from "next";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import axios from "axios";

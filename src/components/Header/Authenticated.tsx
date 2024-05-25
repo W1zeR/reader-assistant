@@ -4,7 +4,6 @@ import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { browserName, isMobile } from "react-device-detect";
-import { redirect } from "next/navigation";
 
 const Authenticated = () => {
   const { data: session } = useSession();

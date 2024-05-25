@@ -5,7 +5,6 @@ import {
   CogIcon,
   GlobeAltIcon,
   HashtagIcon,
-  HeartIcon,
   PencilIcon,
   PencilSquareIcon,
   UserIcon,

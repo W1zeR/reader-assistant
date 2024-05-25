@@ -1,10 +1,11 @@
 import React from "react";
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button} from "@nextui-org/react";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import useAuth from "@/hooks/useAuth";
 
 export default function SortOrder() {
-  const [selectedKeys, setSelectedKeys] = React.useState(new Set(["Сначала новые"]));
+  const [selectedKeys, setSelectedKeys] =
+    React.useState(new Set(["Сначала новые"]));
 
   const selectedValue = React.useMemo(
     () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
@@ -18,19 +19,21 @@ export default function SortOrder() {
   const createPageURL = (key: number | string) => {
     const params = new URLSearchParams(searchParams);
 
-    params.set('sort', getSortOrder(key.toString()));
+    params.set("sort", getSortOrder(key.toString()));
     replace(`${pathname}?${params.toString()}`);
   };
 
+  const isAuthenticated = useAuth(false);
+
   const getSortOrder = (keyStr: string) => {
-    if (keyStr === "Сначала популярные"){
-      return "likesCount"
+    if (keyStr === "Сначала популярные") {
+      return "likesCount";
     }
-    if (keyStr === "Сначала интересные"){
-      return "interesting"
+    if (isAuthenticated && keyStr === "Сначала интересные") {
+      return "interesting";
     }
-    return "changeDate"
-  }
+    return "changeDate";
+  };
 
   return (
     <Dropdown>
@@ -52,7 +55,9 @@ export default function SortOrder() {
       >
         <DropdownItem key="Сначала новые">Сначала новые</DropdownItem>
         <DropdownItem key="Сначала популярные">Сначала популярные</DropdownItem>
-        <DropdownItem key="Сначала интересные">Сначала интересные</DropdownItem>
+        {isAuthenticated ?
+          <DropdownItem key="Сначала интересные">Сначала интересные</DropdownItem> : null
+        }
       </DropdownMenu>
     </Dropdown>
   );

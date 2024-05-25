@@ -16,7 +16,7 @@ export default async function Pending({ searchParams }: {
 }) {
   return (
     <>
-      <PendingQuotes searchParams={searchParams}/>
+      <PendingQuotes searchParams={searchParams} />
     </>
   );
 };

@@ -7,7 +7,6 @@ import Search from "@/components/Search";
 import Pagination from "@/components/Pagination";
 import PageElements from "@/components/Dropdown/PageElements";
 import SortOrder from "@/components/Dropdown/SortOrder";
-import useAuth from "@/hooks/useAuth";
 
 export default function Quotes({ searchParams }: {
   searchParams?: {
