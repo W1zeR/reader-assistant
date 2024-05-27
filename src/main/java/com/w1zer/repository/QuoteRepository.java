@@ -66,10 +66,12 @@ public interface QuoteRepository extends JpaRepository<Quote, Long> {
             select q from Quote q
             left join q.book b
             left join b.authors a
+            left join q.tags t
             where q.status.name = ?1 and
             (upper(q.content) like concat('%', upper(?2), '%') or
             upper(b.title) like concat('%', upper(?2), '%') or
             upper(q.profile.login) like concat('%', upper(?2), '%') or
+            upper(t.name) like concat('%', upper(?2), '%') or
             upper(a.surname) like concat('%', upper(?2), '%') or
             upper(a.name) like concat('%', upper(?2), '%') or
             upper(a.patronymic) like concat('%', upper(?2), '%'))""";
