@@ -5,7 +5,7 @@ import Header from "@/components/Header";
 import ScrollToTop from "@/components/ScrollToTop";
 import { Inter } from "next/font/google";
 import "../styles/index.css";
-import { Providers } from "./providers";
+import { ThemeProvider } from "next-themes";
 import React, { useState } from "react";
 import RefreshTokenHandler from "@/components/RefreshTokenHandler/refreshTokenHandler";
 import { SessionProvider } from "next-auth/react";
@@ -25,12 +25,12 @@ export default function RootLayout({ children }: {
     <body className={`bg-gray-light dark:bg-black flex flex-col min-h-screen ${inter.className}`}>
     <SessionProvider refetchInterval={interval}>
       <RefreshTokenHandler setInterval={setInterval} />
-      <Providers>
+      <ThemeProvider attribute="class" enableSystem={false} defaultTheme="dark">
         <Header />
         {children}
         <Footer />
         <ScrollToTop />
-      </Providers>
+      </ThemeProvider>
     </SessionProvider>
     </body>
     </html>

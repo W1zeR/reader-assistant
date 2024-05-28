@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import ThemeToggler from "./ThemeToggler";
 import menuData from "./menuData";
-import useAuth from "@/hooks/useAuth";
+import useAuth from "@/utils/useAuth";
 import Authenticated from "@/components/Header/Authenticated";
 import NotAuthenticated from "@/components/Header/NotAuthenticated";
 

@@ -1,4 +1,4 @@
-import ScrollUp from "@/components/Common/ScrollUp";
+import ScrollUp from "@/components/ScrollToTop/ScrollUp";
 
 import Quotes from "@/components/Quotes";
 import { Metadata } from "next";

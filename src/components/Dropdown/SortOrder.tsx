@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import useAuth from "@/hooks/useAuth";
+import useAuth from "@/utils/useAuth";
 
 export default function SortOrder() {
   const [selectedKeys, setSelectedKeys] =

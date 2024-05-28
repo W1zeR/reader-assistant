@@ -1,7 +1,7 @@
 import { Quote } from "@/types/quote";
 import { BookOpenIcon, ClockIcon, HashtagIcon, HeartIcon, PencilIcon, UserIcon } from "@heroicons/react/24/outline";
 import LikeButton from "@/components/LikeButton";
-import useAuth from "@/hooks/useAuth";
+import useAuth from "@/utils/useAuth";
 
 const SingleQuote = ({ quote }: { quote: Quote }) => {
   const { content, book, likes } = quote;
