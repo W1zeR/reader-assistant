@@ -57,29 +57,29 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        // This will only be executed at login. Each next invocation will skip this part.
+        // Executed only at login
         token.userId = user.userId;
         token.accessToken = user.accessToken;
         token.accessTokenExpiry = user.accessTokenExpiry;
         token.refreshToken = user.refreshToken;
       }
 
-      // If accessTokenExpiry is in 24 hours, we have to refresh token before 24 hours pass.
+      // accessTokenExpiry is 24 hours, token has to be refreshed before 24 hours
       const shouldRefreshTime = Math.round(token.accessTokenExpiry - refreshTokenBeforeExpiryTime
         - Date.now());
 
-      // If the token is still valid, just return it.
+      // Return token if it's valid
       if (shouldRefreshTime > 0) {
         return Promise.resolve(token);
       }
 
-      // If the call arrives after 23 hours have passed, we allow to refresh the token.
+      // Refresh token after 23 hours
       token = await refreshAccessToken(token);
       return Promise.resolve(token);
     },
 
     async session({ session, token }) {
-      // Here we pass accessToken to the client to be used in authentication with your API
+      // Pass accessToken to client
       session.userId = token.userId;
       session.accessToken = token.accessToken;
       session.accessTokenExpiry = token.accessTokenExpiry;
