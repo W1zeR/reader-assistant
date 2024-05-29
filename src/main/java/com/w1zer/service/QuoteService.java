@@ -1,9 +1,13 @@
 package com.w1zer.service;
 
-import com.w1zer.entity.*;
+import com.w1zer.entity.Profile;
+import com.w1zer.entity.Quote;
+import com.w1zer.entity.QuoteStatusName;
+import com.w1zer.entity.Tag;
 import com.w1zer.exception.NotFoundException;
 import com.w1zer.mapping.QuoteMapping;
-import com.w1zer.payload.*;
+import com.w1zer.payload.QuoteRequest;
+import com.w1zer.payload.QuoteResponse;
 import com.w1zer.repository.ProfileRepository;
 import com.w1zer.repository.QuoteRepository;
 import com.w1zer.repository.TagRepository;
@@ -16,7 +20,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class QuoteService {
@@ -29,15 +32,17 @@ public class QuoteService {
     private final ProfileRepository profileRepository;
     private final TagRepository tagRepository;
     private final QuoteValidator quoteValidator;
+    private final QuoteMapping quoteMapping;
 
     public QuoteService(QuoteRepository quoteRepository, QuoteStatusService quoteStatusService,
                         ProfileRepository profileRepository, TagRepository tagRepository,
-                        QuoteValidator quoteValidator) {
+                        QuoteValidator quoteValidator, QuoteMapping quoteMapping) {
         this.quoteRepository = quoteRepository;
         this.quoteStatusService = quoteStatusService;
         this.profileRepository = profileRepository;
         this.tagRepository = tagRepository;
         this.quoteValidator = quoteValidator;
+        this.quoteMapping = quoteMapping;
     }
 
     public void markPrivateAsPending(Long id, UserPrincipal userPrincipal) {
@@ -67,7 +72,7 @@ public class QuoteService {
 
     public QuoteResponse findQuoteById(Long id, UserPrincipal userPrincipal) {
         quoteValidator.validateQuoteIsPublicOrQuoteOwning(id, userPrincipal.getId());
-        return QuoteMapping.mapToQuoteResponse(quoteRepository.findById(id).orElseThrow(
+        return quoteMapping.mapToQuoteResponse(quoteRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(QUOTE_WITH_ID_NOT_FOUND.formatted(id))
         ));
     }
@@ -87,11 +92,11 @@ public class QuoteService {
     public QuoteResponse replace(QuoteRequest quoteRequest, Long id, UserPrincipal userPrincipal) {
         quoteValidator.validateQuoteOwning(id, userPrincipal);
         quoteValidator.validateQuoteChange(id);
-        return QuoteMapping.mapToQuoteResponse(quoteRepository.findById(id)
+        return quoteMapping.mapToQuoteResponse(quoteRepository.findById(id)
                 .map(quote -> {
                     quote.setContent(quoteRequest.content());
-                    quote.setBook(mapToBook(quoteRequest.book()));
-                    quote.setTags(mapToTags(quoteRequest.tags()));
+                    quote.setBook(quoteMapping.mapToBook(quoteRequest.book()));
+                    quote.setTags(quoteMapping.mapToTags(quoteRequest.tags()));
                     quote.setChangeDate(LocalDateTime.now());
                     return quoteRepository.save(quote);
                 })
@@ -99,8 +104,8 @@ public class QuoteService {
                     Quote quote = new Quote();
                     quote.setId(id);
                     quote.setContent(quoteRequest.content());
-                    quote.setBook(mapToBook(quoteRequest.book()));
-                    quote.setTags(mapToTags(quoteRequest.tags()));
+                    quote.setBook(quoteMapping.mapToBook(quoteRequest.book()));
+                    quote.setTags(quoteMapping.mapToTags(quoteRequest.tags()));
                     quote.setChangeDate(LocalDateTime.now());
                     return quoteRepository.save(quote);
                 }));
@@ -114,9 +119,9 @@ public class QuoteService {
         }
         QuoteStatusName pub = QuoteStatusName.PUBLIC;
         if (keyword == null || keyword.isBlank()) {
-            return QuoteMapping.mapToQuoteResponsesPage(quoteRepository.findAllByStatusNameIs(pub, p));
+            return quoteMapping.mapToQuoteResponsesPage(quoteRepository.findAllByStatusNameIs(pub, p));
         }
-        return QuoteMapping.mapToQuoteResponsesPage(quoteRepository.findPublicOrPendingByStatusNameAndKeyword(
+        return quoteMapping.mapToQuoteResponsesPage(quoteRepository.findPublicOrPendingByStatusNameAndKeyword(
                 pub, keyword, p)
         );
     }
@@ -129,9 +134,9 @@ public class QuoteService {
         }
         QuoteStatusName pending = QuoteStatusName.PENDING;
         if (keyword == null || keyword.isBlank()) {
-            return QuoteMapping.mapToQuoteResponsesPage(quoteRepository.findAllByStatusNameIs(pending, p));
+            return quoteMapping.mapToQuoteResponsesPage(quoteRepository.findAllByStatusNameIs(pending, p));
         }
-        return QuoteMapping.mapToQuoteResponsesPage(quoteRepository.findPublicOrPendingByStatusNameAndKeyword(
+        return quoteMapping.mapToQuoteResponsesPage(quoteRepository.findPublicOrPendingByStatusNameAndKeyword(
                 pending, keyword, p)
         );
     }
@@ -144,9 +149,9 @@ public class QuoteService {
         }
         QuoteStatusName pri = QuoteStatusName.PRIVATE;
         if (keyword == null || keyword.isBlank()) {
-            return QuoteMapping.mapToQuoteResponsesPage(quoteRepository.findAllByStatusName(pri, p));
+            return quoteMapping.mapToQuoteResponsesPage(quoteRepository.findAllByStatusName(pri, p));
         }
-        return QuoteMapping.mapToQuoteResponsesPage(quoteRepository.findPrivateByStatusNameAndKeyword(
+        return quoteMapping.mapToQuoteResponsesPage(quoteRepository.findPrivateByStatusNameAndKeyword(
                 pri, keyword, p)
         );
     }
@@ -154,11 +159,11 @@ public class QuoteService {
     // Sort by interesting tags for public quotes
     private Page<QuoteResponse> findPublicInteresting(String keyword, Pageable p, UserPrincipal userPrincipal) {
         if (keyword == null || keyword.isBlank()) {
-            return QuoteMapping.mapToQuoteResponsesPage(
+            return quoteMapping.mapToQuoteResponsesPage(
                     quoteRepository.findPublicQuotesSortByInterestingTags(userPrincipal.getId(), p)
             );
         }
-        return QuoteMapping.mapToQuoteResponsesPage(
+        return quoteMapping.mapToQuoteResponsesPage(
                 quoteRepository.findPublicQuotesByKeywordSortByInterestingTags(userPrincipal.getId(), keyword, p)
         );
     }
@@ -166,11 +171,11 @@ public class QuoteService {
     // Sort by interesting tags for pending quotes
     private Page<QuoteResponse> findPendingInteresting(String keyword, Pageable p, UserPrincipal userPrincipal) {
         if (keyword == null || keyword.isBlank()) {
-            return QuoteMapping.mapToQuoteResponsesPage(
+            return quoteMapping.mapToQuoteResponsesPage(
                     quoteRepository.findPendingQuotesSortByInterestingTags(userPrincipal.getId(), p)
             );
         }
-        return QuoteMapping.mapToQuoteResponsesPage(
+        return quoteMapping.mapToQuoteResponsesPage(
                 quoteRepository.findPendingQuotesByKeywordSortByInterestingTags(userPrincipal.getId(), keyword, p)
         );
     }
@@ -178,11 +183,11 @@ public class QuoteService {
     // Sort by interesting tags for private quotes
     private Page<QuoteResponse> findPrivateInteresting(String keyword, Pageable p, UserPrincipal userPrincipal) {
         if (keyword == null || keyword.isBlank()) {
-            return QuoteMapping.mapToQuoteResponsesPage(
+            return quoteMapping.mapToQuoteResponsesPage(
                     quoteRepository.findPrivateQuotesSortByInterestingTags(userPrincipal.getId(), p)
             );
         }
-        return QuoteMapping.mapToQuoteResponsesPage(
+        return quoteMapping.mapToQuoteResponsesPage(
                 quoteRepository.findPrivateQuotesByKeywordSortByInterestingTags(userPrincipal.getId(), keyword, p)
         );
     }
@@ -190,58 +195,12 @@ public class QuoteService {
     public void create(QuoteRequest quoteRequest, UserPrincipal userPrincipal) {
         Quote quote = new Quote();
         quote.setContent(quoteRequest.content());
-        quote.setBook(mapToBook(quoteRequest.book()));
-        quote.setTags(mapToTags(quoteRequest.tags()));
+        quote.setBook(quoteMapping.mapToBook(quoteRequest.book()));
+        quote.setTags(quoteMapping.mapToTags(quoteRequest.tags()));
         quote.setStatus(quoteStatusService.findByName(QuoteStatusName.PRIVATE));
         quote.setProfile(findByProfileId(userPrincipal.getId()));
         quote.setChangeDate(LocalDateTime.now());
         quoteRepository.save(quote);
-    }
-
-    private Book mapToBook(QuoteBookRequest quoteBookRequest) {
-        Book book = new Book();
-        book.setTitle(quoteBookRequest.title());
-        addAuthors(book, mapToAuthors(quoteBookRequest.authors()));
-        return book;
-    }
-
-    private void addAuthors(Book book, Set<Author> authors) {
-        for (Author author : authors) {
-            book.addAuthor(author);
-        }
-    }
-
-    private Set<Author> mapToAuthors(Set<BookAuthorRequest> bookAuthorRequests) {
-        return bookAuthorRequests
-                .stream()
-                .map(this::mapToAuthor)
-                .collect(Collectors.toSet());
-    }
-
-    private Author mapToAuthor(BookAuthorRequest bookAuthorRequest) {
-        Author author = new Author();
-        author.setSurname(bookAuthorRequest.surname());
-        author.setName(bookAuthorRequest.name());
-        author.setPatronymic(bookAuthorRequest.patronymic());
-        return author;
-    }
-
-    private Set<Tag> mapToTags(Set<TagRequest> tagRequests) {
-        return tagRequests
-                .stream()
-                .map(this::mapToTag)
-                .collect(Collectors.toSet());
-    }
-
-    private Tag mapToTag(TagRequest tagRequest) {
-        return tagRepository.findByName(tagRequest.name())
-                .orElse(createTag(tagRequest.name()));
-    }
-
-    private Tag createTag(String name) {
-        Tag tag = new Tag();
-        tag.setName(name);
-        return tag;
     }
 
     private Tag findByTagId(Long id) {

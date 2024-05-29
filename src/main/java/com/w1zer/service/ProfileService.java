@@ -37,11 +37,12 @@ public class ProfileService {
     private final ApplicationEventPublisher applicationEventPublisher;
     private final RefreshTokenService refreshTokenService;
     private final ProfileValidator profileValidator;
+    private final QuoteMapping quoteMapping;
 
     public ProfileService(ProfileRepository profileRepository, QuoteRepository quoteRepository,
                           RoleService roleService, UserDeviceService userDeviceService,
                           ApplicationEventPublisher applicationEventPublisher, RefreshTokenService refreshTokenService,
-                          ProfileValidator profileValidator) {
+                          ProfileValidator profileValidator, QuoteMapping quoteMapping) {
         this.profileRepository = profileRepository;
         this.quoteRepository = quoteRepository;
         this.roleService = roleService;
@@ -49,6 +50,7 @@ public class ProfileService {
         this.applicationEventPublisher = applicationEventPublisher;
         this.refreshTokenService = refreshTokenService;
         this.profileValidator = profileValidator;
+        this.quoteMapping = quoteMapping;
     }
 
     public void promote(Long id) {
@@ -159,6 +161,6 @@ public class ProfileService {
     }
 
     public Set<QuoteResponse> getLikedQuotes(Long id) {
-        return QuoteMapping.mapToQuoteResponses(findById(id).getLikedQuotes());
+        return quoteMapping.mapToQuoteResponses(findById(id).getLikedQuotes());
     }
 }

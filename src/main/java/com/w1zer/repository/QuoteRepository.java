@@ -80,42 +80,43 @@ public interface QuoteRepository extends JpaRepository<Quote, Long> {
 
     String PRIVATE_QUOTES_QUERY = "select q from Quote q where q.profile.id = ?#{ principal?.id }";
 
-    // Public or pending quotes
+    // Find all public or pending quotes
     Page<Quote> findAllByStatusNameIs(QuoteStatusName statusName, Pageable p);
 
-    // Public or pending quotes by keyword
+    // Find public or pending quotes by keyword
     @Query(FIND_BY_STATUS_NAME_AND_KEYWORD)
     Page<Quote> findPublicOrPendingByStatusNameAndKeyword(QuoteStatusName statusName, String keyword, Pageable p);
 
-    // Private quotes
+    // Find all private quotes
     @Query(PRIVATE_QUOTES_QUERY)
     Page<Quote> findAllByStatusName(QuoteStatusName statusName, Pageable p);
 
-    // Private quotes by keyword
+    // Find private quotes by keyword
     @Query(FIND_BY_STATUS_NAME_AND_KEYWORD + PRIVATE_QUOTES_BY_KEYWORD_CONDITION)
     Page<Quote> findPrivateByStatusNameAndKeyword(QuoteStatusName statusName, String keyword, Pageable p);
 
-    // Sort by interesting tags for public quotes
+    // Find all public quotes and sort by interesting tags
     @Query(value = INTERESTING_TAGS_QUERY_START +
             INTERESTING_TAGS_PUBLIC_QUERY_CENTER +
             INTERESTING_TAGS_QUERY_END,
             nativeQuery = true)
     Page<Quote> findPublicQuotesSortByInterestingTags(Long principalId, Pageable p);
 
-    // Sort by interesting tags for pending quotes
+    // Find all pending quotes and sort by interesting tags
     @Query(value = INTERESTING_TAGS_QUERY_START +
             INTERESTING_TAGS_PENDING_QUERY_CENTER +
             INTERESTING_TAGS_QUERY_END,
             nativeQuery = true)
     Page<Quote> findPendingQuotesSortByInterestingTags(Long principalId, Pageable p);
 
-    // Sort by interesting tags for private quotes
+    // Find all private quotes and sort by interesting tags
     @Query(value = INTERESTING_TAGS_QUERY_START +
             INTERESTING_TAGS_PRIVATE_QUERY_CENTER +
             INTERESTING_TAGS_QUERY_END,
             nativeQuery = true)
     Page<Quote> findPrivateQuotesSortByInterestingTags(Long principalId, Pageable p);
 
+    // Find public quotes by keyword and sort by interesting tags
     @Query(value = INTERESTING_TAGS_QUERY_START +
             INTERESTING_TAGS_KEYWORD_CENTER_START +
             INTERESTING_TAGS_PUBLIC_QUERY_CENTER +
@@ -124,6 +125,7 @@ public interface QuoteRepository extends JpaRepository<Quote, Long> {
             nativeQuery = true)
     Page<Quote> findPublicQuotesByKeywordSortByInterestingTags(Long principalId, String keyword, Pageable p);
 
+    // Find pending quotes by keyword and sort by interesting tags
     @Query(value = INTERESTING_TAGS_QUERY_START +
             INTERESTING_TAGS_KEYWORD_CENTER_START +
             INTERESTING_TAGS_PENDING_QUERY_CENTER +
@@ -132,6 +134,7 @@ public interface QuoteRepository extends JpaRepository<Quote, Long> {
             nativeQuery = true)
     Page<Quote> findPendingQuotesByKeywordSortByInterestingTags(Long principalId, String keyword, Pageable p);
 
+    // Find private quotes by keyword and sort by interesting tags
     @Query(value = INTERESTING_TAGS_QUERY_START +
             INTERESTING_TAGS_KEYWORD_CENTER_START +
             INTERESTING_TAGS_PRIVATE_QUERY_CENTER +
@@ -140,6 +143,7 @@ public interface QuoteRepository extends JpaRepository<Quote, Long> {
             nativeQuery = true)
     Page<Quote> findPrivateQuotesByKeywordSortByInterestingTags(Long principalId, String keyword, Pageable p);
 
+    // Find quote by id
     @NonNull
     Optional<Quote> findById(@NonNull Long id);
 }

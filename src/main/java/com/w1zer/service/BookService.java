@@ -23,11 +23,14 @@ public class BookService {
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
     private final QuoteRepository quoteRepository;
+    private final QuoteMapping quoteMapping;
 
-    public BookService(BookRepository bookRepository, AuthorRepository authorRepository, QuoteRepository quoteRepository) {
+    public BookService(BookRepository bookRepository, AuthorRepository authorRepository,
+                       QuoteRepository quoteRepository, QuoteMapping quoteMapping) {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
         this.quoteRepository = quoteRepository;
+        this.quoteMapping = quoteMapping;
     }
 
     public Book findById(Long id) {
@@ -105,6 +108,6 @@ public class BookService {
     }
 
     public List<QuoteResponse> getQuotes(Long id) {
-        return QuoteMapping.mapToQuoteResponses(findById(id).getQuotes());
+        return quoteMapping.mapToQuoteResponses(findById(id).getQuotes());
     }
 }

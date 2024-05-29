@@ -22,10 +22,12 @@ public class TagService {
 
     private final TagRepository tagRepository;
     private final QuoteRepository quoteRepository;
+    private final QuoteMapping quoteMapping;
 
-    public TagService(TagRepository tagRepository, QuoteRepository quoteRepository) {
+    public TagService(TagRepository tagRepository, QuoteRepository quoteRepository, QuoteMapping quoteMapping) {
         this.tagRepository = tagRepository;
         this.quoteRepository = quoteRepository;
+        this.quoteMapping = quoteMapping;
     }
 
     public Tag findById(Long id) {
@@ -91,6 +93,6 @@ public class TagService {
     }
 
     public Set<QuoteResponse> getQuotes(Long id) {
-        return QuoteMapping.mapToQuoteResponses(findById(id).getQuotes());
+        return quoteMapping.mapToQuoteResponses(findById(id).getQuotes());
     }
 }
