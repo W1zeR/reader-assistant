@@ -2,11 +2,11 @@ package com.w1zer.exception;
 
 import java.io.Serial;
 
-public class ProfileAlreadyExistsException extends RuntimeException {
+public class AlreadyExistsException extends RuntimeException {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public ProfileAlreadyExistsException(final String msg) {
+    public AlreadyExistsException(final String msg) {
         super(msg);
     }
 }
