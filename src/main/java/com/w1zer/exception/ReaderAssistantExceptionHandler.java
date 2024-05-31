@@ -27,6 +27,11 @@ public class ReaderAssistantExceptionHandler {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(InvalidFormatException.class)
+    public ResponseEntity<String> handleInvalidFormatException() {
+        return new ResponseEntity<>(INVALID_FORMAT, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         List<String> errors = e.getFieldErrors()
@@ -43,11 +48,6 @@ public class ReaderAssistantExceptionHandler {
                 .map(ConstraintViolation::getMessage)
                 .collect(Collectors.toList());
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(InvalidFormatException.class)
-    public ResponseEntity<String> handleInvalidFormatException() {
-        return new ResponseEntity<>(INVALID_FORMAT, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(AuthException.class)
@@ -72,12 +72,12 @@ public class ReaderAssistantExceptionHandler {
 
     @ExceptionHandler(TokenRefreshException.class)
     public ResponseEntity<String> handleTokenRefreshException(TokenRefreshException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(UserLogoutException.class)
     public ResponseEntity<String> handleUserLogoutException(UserLogoutException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(QuoteChangeException.class)
