@@ -13,7 +13,7 @@ const LikeButton = ({ likes, quoteId }) => {
     axios.get(API_URL + `/quotes/${quoteId}/likeStatus`,
       {
         headers: {
-          Authorization: `Bearer ${session.accessToken}`
+          Authorization: `Bearer ${session?.accessToken}`
         }
       }
     )
@@ -30,14 +30,14 @@ const LikeButton = ({ likes, quoteId }) => {
       await axios.put(API_URL + `/quotes/${quoteId}/whoLiked/${session.userId}`, null,
         {
           headers: {
-            Authorization: `Bearer ${session.accessToken}`
+            Authorization: `Bearer ${session?.accessToken}`
           }
         });
     } else {
       await axios.delete(API_URL + `/quotes/${quoteId}/whoLiked/${session.userId}`,
         {
           headers: {
-            Authorization: `Bearer ${session.accessToken}`
+            Authorization: `Bearer ${session?.accessToken}`
           }
         });
     }

@@ -9,6 +9,7 @@ import { ThemeProvider } from "next-themes";
 import React, { useState } from "react";
 import RefreshTokenHandler from "@/components/RefreshTokenHandler/refreshTokenHandler";
 import { SessionProvider } from "next-auth/react";
+import { NextUIProvider } from "@nextui-org/react";
 
 const inter = Inter({ subsets: ["cyrillic"] });
 
@@ -27,7 +28,9 @@ export default function RootLayout({ children }: {
       <RefreshTokenHandler setInterval={setInterval} />
       <ThemeProvider attribute="class" enableSystem={false} defaultTheme="dark">
         <Header />
-        {children}
+        <NextUIProvider>
+          {children}
+        </NextUIProvider>
         <Footer />
         <ScrollToTop />
       </ThemeProvider>

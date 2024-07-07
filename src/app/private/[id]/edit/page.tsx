@@ -36,7 +36,7 @@ const EditQuote = ({ params }: { params: { id: string } }) => {
     axios.get(API_URL + `/quotes/${id}`,
       {
         headers: {
-          Authorization: `Bearer ${session.accessToken}`
+          Authorization: `Bearer ${session?.accessToken}`
         }
       }
     )
@@ -109,7 +109,7 @@ const EditQuote = ({ params }: { params: { id: string } }) => {
                       bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300
                       focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary
                       dark:focus:shadow-none"
-                      defaultValue={quote.book.authors.map(a => `${a.name} ${a.surname} ${a.patronymic}`).join(", ")}
+                      defaultValue={quote.book.authors.map(a => `${a.name} ${a.surname}${a.patronymic == null ? "" : " " + a.patronymic}`).join(", ")}
                     />
                   </div>
                   <div className="mb-8">

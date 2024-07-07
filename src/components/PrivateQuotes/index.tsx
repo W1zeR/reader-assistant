@@ -36,7 +36,7 @@ export default function PrivateQuotes({ searchParams }: {
     axios.get(API_URL + `/quotes/private?keyword=${query}&page=${currentPage - 1}&size=${size}&sort=${sort},desc`,
       {
         headers: {
-          Authorization: `Bearer ${session.accessToken}`
+          Authorization: `Bearer ${session?.accessToken}`
         }
       }
     )

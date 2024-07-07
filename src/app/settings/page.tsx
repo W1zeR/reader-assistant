@@ -23,7 +23,7 @@ const Settings = () => {
     axios.get(API_URL + `/profiles/me`,
       {
         headers: {
-          Authorization: `Bearer ${session.accessToken}`
+          Authorization: `Bearer ${session?.accessToken}`
         }
       }
     )
