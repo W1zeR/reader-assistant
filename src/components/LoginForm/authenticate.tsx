@@ -10,8 +10,10 @@ export default async function authenticate(prevState: string | undefined, formDa
         email: formData.get("email"),
         password: formData.get("password"),
         browserName: browserName,
-        deviceType: isMobile ? "mobile" : "desktop"
-      });
+        deviceType: isMobile ? "mobile" : "desktop",
+        callbackUrl: "/"
+      }
+    );
   } catch (error) {
     if (error instanceof AuthError(authOptions)) {
       switch (error.type) {

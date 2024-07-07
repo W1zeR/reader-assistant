@@ -50,7 +50,9 @@ const Authenticated = () => {
               </Link>
               <form
                 action={async () => {
-                  await signOut();
+                  await signOut({
+                    callbackUrl: "/"
+                  });
                   const deviceInfo = {
                     browserName: browserName,
                     deviceType: isMobile ? "mobile" : "desktop"
