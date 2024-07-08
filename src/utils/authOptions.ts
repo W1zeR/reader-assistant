@@ -7,6 +7,7 @@ import { refreshAccessToken } from "@/utils/refreshAccessToken";
 // There are 1000 millis in 1 second, 60 seconds in 1 min, 60 minutes in 1 hour
 const refreshTokenBeforeExpiryTime = 60 * 60 * 1000;
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const AUTH_SECRET = process.env.NEXTAUTH_SECRET;
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -93,5 +94,5 @@ export const authOptions: NextAuthOptions = {
     signIn: "/signin"
   },
 
-  secret: "UevGuOKrzTkpH8fPfHth1Z6pTlXr18JrDaw3H/nqtA0="
+  secret: AUTH_SECRET
 };
