@@ -6,21 +6,24 @@ const menuData: Menu[] = [
     title: "Публичные цитаты",
     path: "/",
     newTab: false,
-    isPrivate: false
+    isAuthNeeded: false,
+    isStaffNeeded: false
   },
   {
     id: 2,
     title: "Личные цитаты",
     path: "/private",
     newTab: false,
-    isPrivate: true
+    isAuthNeeded: true,
+    isStaffNeeded: false
   },
   {
     id: 33,
     title: "Цитаты в ожидании опубликования",
     path: "/pending",
     newTab: false,
-    isPrivate: true
+    isAuthNeeded: true,
+    isStaffNeeded: true
   }
 ];
 export default menuData;

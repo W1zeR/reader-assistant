@@ -8,6 +8,7 @@ import menuData from "./menuData";
 import useAuth from "@/utils/useAuth";
 import Authenticated from "@/components/Header/Authenticated";
 import NotAuthenticated from "@/components/Header/NotAuthenticated";
+import useStaff from "@/utils/useStaff";
 
 const Header = () => {
   // Navbar toggle
@@ -40,8 +41,8 @@ const Header = () => {
   };
 
   const usePathName = usePathname();
-
   const isAuthenticated = useAuth(false);
+  const isStaff = useStaff();
 
   return (
     <>
@@ -120,7 +121,8 @@ const Header = () => {
                   <ul className="block lg:flex lg:space-x-12">
                     {menuData.map((menuItem, index) => (
                         <li key={index} className={`group relative ${
-                          menuItem.isPrivate && !isAuthenticated ? "invisible" : ""
+                          menuItem.isAuthNeeded && !isAuthenticated || menuItem.isStaffNeeded && !isStaff ? 
+                            "invisible" : ""
                         }`}>
                           {menuItem.path ? (
                             <Link

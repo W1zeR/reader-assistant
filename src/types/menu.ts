@@ -4,5 +4,6 @@ export type Menu = {
   path?: string;
   newTab: boolean;
   submenu?: Menu[];
-  isPrivate: boolean;
+  isAuthNeeded: boolean;
+  isStaffNeeded: boolean;
 };
