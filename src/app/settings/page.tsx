@@ -1,7 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import axios from "axios";
 
 // export const metadata: Metadata = {
@@ -13,6 +13,7 @@ const Settings = () => {
   const { data: session } = useSession();
   const [profile, setProfile] = useState(
     {
+      id: 0,
       email: "",
       login: ""
     }
@@ -35,6 +36,27 @@ const Settings = () => {
       });
   });
 
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+
+    const formData = new FormData(event.currentTarget);
+    await axios.put(API_URL + "/profiles/" + profile.id, {
+      email: formData.get("email"),
+      login: formData.get("login"),
+    });
+
+    const oldPassword = formData.get("currentPassword");
+    console.log("oldPassword", oldPassword);
+    const newPassword = formData.get("newPassword");
+    if (oldPassword != "" && oldPassword === newPassword) {
+      console.log("ААААААААААААААААААА");
+      await axios.put(API_URL + "/changePassword", {
+        oldPassword: oldPassword,
+        newPassword: newPassword,
+      });
+    }
+  }
+
   return (
     <>
       <section className="relative z-10 overflow-hidden pb-16 pt-36 md:pb-20 lg:pb-28 lg:pt-[180px]">
@@ -46,7 +68,7 @@ const Settings = () => {
                   Настройки аккаунта
                 </h3>
                 <div className="mb-8 flex items-center justify-center" />
-                <form>
+                <form onSubmit={onSubmit}>
                   <div className="mb-8">
                     <label
                       htmlFor="email"
@@ -143,7 +165,7 @@ const Settings = () => {
                   </div>
                 </form>
                 <div className="mb-6">
-                  <button
+                  <button type="submit"
                     className="shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center
                     rounded-sm bg-primary px-9 py-4 text-base font-medium text-white duration-300 hover:bg-primary/90">
                     Сохранить

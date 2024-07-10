@@ -1,13 +1,35 @@
+"use client";
+
 import Link from "next/link";
 
 import { Metadata } from "next";
+import { FormEvent } from "react";
+import axios from "axios";
 
-export const metadata: Metadata = {
-  title: "Помощник читателя | Регистрация",
-  description: "Это страница регистрации аккаунта"
-};
+// export const metadata: Metadata = {
+//   title: "Помощник читателя | Регистрация",
+//   description: "Это страница регистрации аккаунта"
+// };
 
 const SignupPage = () => {
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+
+    const formData = new FormData(event.currentTarget);
+    const password = formData.get("password");
+    const confirmPassword = formData.get("confirmPassword");
+    if (password === confirmPassword) {
+      await axios.post(API_URL + "/auth/register", {
+        email: formData.get("email"),
+        login: formData.get("login"),
+        password: password,
+        roleId: 1
+      });
+    }
+  }
+
   return (
     <>
       <section className="relative z-10 overflow-hidden pb-16 pt-36 md:pb-20 lg:pb-28 lg:pt-[180px]">
@@ -19,7 +41,7 @@ const SignupPage = () => {
                   Создать аккаунт
                 </h3>
                 <div className="mb-8 flex items-center justify-center" />
-                <form>
+                <form onSubmit={onSubmit}>
                   <div className="mb-8">
                     <label
                       htmlFor="email"
@@ -93,7 +115,7 @@ const SignupPage = () => {
                     />
                   </div>
                   <div className="mb-6">
-                    <button
+                    <button type="submit"
                       className="shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center
                       rounded-sm bg-primary px-9 py-4 text-base font-medium text-white duration-300
                       hover:bg-primary/90">
