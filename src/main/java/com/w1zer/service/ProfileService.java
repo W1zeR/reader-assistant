@@ -1,7 +1,6 @@
 package com.w1zer.service;
 
 import com.w1zer.entity.*;
-import com.w1zer.exception.ChangePasswordException;
 import com.w1zer.exception.NotFoundException;
 import com.w1zer.exception.ProfileRolesException;
 import com.w1zer.exception.UserLogoutException;
@@ -26,7 +25,6 @@ public class ProfileService {
     private static final String DEVICE_INFO = "Browser name: %s, device type: %s";
     private static final String NO_MATCHING_DEVICE = "No matching device found for the given user";
     private static final String USER_HAS_SUCCESSFULLY_LOGGED_OUT = "User has successfully logged out";
-    private static final String OLD_PASSWORD_IS_INCORRECT = "Old password is incorrect";
     private static final String PASSWORD_CHANGED_SUCCESSFULLY = "Password changed successfully";
     private static final String QUOTE_WITH_ID_NOT_FOUND = "Quote with id '%d' not found";
 
@@ -107,27 +105,35 @@ public class ProfileService {
 
     public ApiResponse changePassword(UserPrincipal currentUser, ChangePasswordRequest changePasswordRequest) {
         Profile profile = findById(currentUser.getId());
-        if (!changePasswordRequest.oldPassword().equals(profile.getPassword())) {
-            throw new ChangePasswordException(OLD_PASSWORD_IS_INCORRECT);
-        }
+        profileValidator.validatePassword(profile.getPassword(), changePasswordRequest.oldPassword());
         profile.setPassword(changePasswordRequest.newPassword());
         return new ApiResponse(PASSWORD_CHANGED_SUCCESSFULLY);
     }
 
     public Profile replace(ProfileRequest profileRequest, Long id) {
-        profileValidator.validateLogin(profileRequest.login());
-        profileValidator.validateEmail(profileRequest.email());
         return profileRepository.findById(id)
                 .map(profile -> {
-                    profile.setEmail(profileRequest.email().toLowerCase());
-                    profile.setLogin(profileRequest.login().toLowerCase());
+                    String email = profileRequest.email().toLowerCase();
+                    if (!email.equals(profile.getEmail())) {
+                        profileValidator.validateEmail(email);
+                    }
+                    String login = profileRequest.login().toLowerCase();
+                    if (!login.equals(profile.getLogin())) {
+                        profileValidator.validateLogin(login);
+                    }
+                    profile.setEmail(email);
+                    profile.setLogin(login);
                     return profileRepository.save(profile);
                 })
                 .orElseGet(() -> {
                     Profile profile = new Profile();
                     profile.setId(id);
-                    profile.setEmail(profileRequest.email().toLowerCase());
-                    profile.setLogin(profileRequest.login().toLowerCase());
+                    String email = profileRequest.email().toLowerCase();
+                    profileValidator.validateEmail(email);
+                    String login = profileRequest.login().toLowerCase();
+                    profileValidator.validateLogin(login);
+                    profile.setEmail(email);
+                    profile.setLogin(login);
                     return profileRepository.save(profile);
                 });
     }
