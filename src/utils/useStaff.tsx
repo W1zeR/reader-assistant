@@ -27,9 +27,7 @@ export default function useAuth() {
       .catch(error => {
         console.error(error);
       });
-  });
 
-  useEffect(() => {
     if (session === null) {
       setIsStaff(false);
     } else if (session !== undefined) {
@@ -37,7 +35,7 @@ export default function useAuth() {
         r.name === "ROLE_ADMIN");
       setIsStaff(isStaff);
     }
-  }, [roles, session]);
+  }, [API_URL, roles, session]);
 
   return isStaff;
 }

@@ -1,13 +1,13 @@
 "use client";
 
-import { useFormState } from "react-dom";
+import { useFormState, useFormStatus } from "react-dom";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 import React from "react";
-import LoginButton from "@/components/LoginForm/LoginButton";
-import authenticate from "@/components/LoginForm/authenticate";
+import authenticate from "@/utils/authenticate";
 
 export default function LoginForm() {
   const [errorMessage, dispatch] = useFormState(authenticate, undefined);
+  const { pending } = useFormStatus();
 
   return (
     <form action={dispatch}>
@@ -47,7 +47,11 @@ export default function LoginForm() {
       </div>
 
       <div className="mb-6">
-        <LoginButton />
+        <button className="shadow-submit dark:shadow-submit-dark flex w-full
+                    items-center justify-center rounded-sm bg-primary px-9 py-4 text-base font-medium text-white
+                    duration-300 hover:bg-primary/90" aria-disabled={pending}>
+          Войти
+        </button>
         <div
           className="flex h-8 items-end space-x-1"
           aria-live="polite"

@@ -3,11 +3,12 @@
 import { useSession } from "next-auth/react";
 import { FormEvent, useEffect, useState } from "react";
 import axios from "axios";
+import { Metadata } from "next";
 
-// export const metadata: Metadata = {
-//   title: "Помощник читателя | Настройки",
-//   description: "Это страница с настройками аккаунта"
-// };
+export const metadata: Metadata = {
+  title: "Помощник читателя | Настройки",
+  description: "Это страница с настройками аккаунта"
+};
 
 const Settings = () => {
   const { data: session } = useSession();
