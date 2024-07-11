@@ -1,4 +1,4 @@
-import { Quote } from "@/types/quote";
+import { Quote } from "@/types/reader-assistant";
 import {
   BookOpenIcon,
   ClockIcon,
@@ -8,9 +8,32 @@ import {
   UserIcon,
   XMarkIcon
 } from "@heroicons/react/24/outline";
+import { useSession } from "next-auth/react";
+import axios from "axios";
 
 const SinglePendingQuote = ({ quote }: { quote: Quote }) => {
   const { content, book } = quote;
+
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  const { data: session } = useSession();
+
+  const handlePublish = async () => {
+    await axios.put(API_URL + `/quotes/${quote.id}/markPendingAsPublic`,
+      {
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`
+        }
+      });
+  };
+
+  const handleReject = async () => {
+    await axios.put(API_URL + `/quotes/${quote.id}/markPendingAsPrivate`,
+      {
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`
+        }
+      });
+  };
 
   return (
     <div className="w-full mt-10">
@@ -48,14 +71,14 @@ const SinglePendingQuote = ({ quote }: { quote: Quote }) => {
               <ClockIcon className="h-6 w-6 inline-block" /> {quote.changeDate}
             </div>
             <div className="mt-5">
-              <button
+              <button onClick={handlePublish}
                 className="bg-blue-500 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-900 text-white py-2 px-4
                 rounded-full text-base">
                 <GlobeAltIcon className="h-6 w-6 inline-block" /> Опубликовать
               </button>
             </div>
             <div className="mt-5">
-              <button
+              <button onClick={handleReject}
                 className="bg-red-500 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-900 text-white py-2 px-4
                 rounded-full text-base">
                 <XMarkIcon className="h-6 w-6 inline-block" /> Отклонить
