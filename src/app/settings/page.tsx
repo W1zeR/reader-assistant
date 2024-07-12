@@ -18,7 +18,7 @@ const Settings = () => {
                   Настройки аккаунта
                 </h3>
                 <div className="mb-8 flex items-center justify-center" />
-                <SettingsForm/>
+                <SettingsForm />
               </div>
             </div>
           </div>

@@ -7,9 +7,11 @@ import { FormEvent, useEffect, useState } from "react";
 import axios from "axios";
 import getQuoteBookFromFormData from "@/utils/getQuoteBookFromFormData";
 import getTagsFromFormData from "@/utils/getTagsFromFormData";
+import { useRouter } from "next/navigation";
 
-export default function EditQuoteForm( { id }: { id: string }) {
+export default function EditQuoteForm({ id }: { id: string }) {
   const { data: session } = useSession();
+  const router = useRouter();
   const [quote, setQuote] = useState(
     {
       content: "",
@@ -58,6 +60,8 @@ export default function EditQuoteForm( { id }: { id: string }) {
         Authorization: `Bearer ${session?.accessToken}`
       }
     });
+
+    router.push("/private");
   }
 
   return (
@@ -136,7 +140,7 @@ export default function EditQuoteForm( { id }: { id: string }) {
         </div>
         <div className="mb-6">
           <button type="submit"
-            className="shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center
+                  className="shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center
                       rounded-sm bg-primary px-9 py-4 text-base font-medium text-white duration-300
                        hover:bg-primary/90">
             Сохранить
@@ -155,5 +159,5 @@ export default function EditQuoteForm( { id }: { id: string }) {
         </div>
       </form>
     </>
-  )
+  );
 }

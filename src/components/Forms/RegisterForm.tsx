@@ -7,7 +7,7 @@ export default function RegisterForm() {
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
+    event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
     const password = formData.get("password");

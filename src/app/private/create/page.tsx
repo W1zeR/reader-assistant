@@ -19,7 +19,7 @@ const NewQuote = () => {
                   Добавить цитату
                 </h3>
                 <div className="mb-8 flex items-center justify-center" />
-                <CreateQuoteForm/>
+                <CreateQuoteForm />
               </div>
             </div>
           </div>

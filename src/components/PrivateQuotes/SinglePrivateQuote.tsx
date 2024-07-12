@@ -20,7 +20,7 @@ const SinglePrivateQuote = ({ quote }: { quote: Quote }) => {
   const { data: session } = useSession();
 
   const handlePublish = async () => {
-    await axios.put(API_URL + `/quotes/${quote.id}/markPrivateAsPending`,
+    await axios.put(API_URL + `/quotes/${quote.id}/markPrivateAsPending`, {},
       {
         headers: {
           Authorization: `Bearer ${session?.accessToken}`
@@ -79,7 +79,7 @@ const SinglePrivateQuote = ({ quote }: { quote: Quote }) => {
               : quote.status.name == "PRIVATE" ?
                 <div className="mt-5">
                   <button onClick={handlePublish}
-                    className="bg-blue-500 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-900 text-white
+                          className="bg-blue-500 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-900 text-white
                     py-2 px-4 rounded-full text-base">
                     <GlobeAltIcon className="h-6 w-6 inline-block" /> Опубликовать
                   </button>
@@ -106,7 +106,7 @@ const SinglePrivateQuote = ({ quote }: { quote: Quote }) => {
               quote.status.name == "PRIVATE" ?
                 <div className="mt-5">
                   <button onClick={handleDelete}
-                    className="bg-red-500 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-900 text-white
+                          className="bg-red-500 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-900 text-white
                     py-2 px-4 rounded-full text-base">
                     <XMarkIcon className="h-6 w-6 inline-block" /> Удалить
                   </button>

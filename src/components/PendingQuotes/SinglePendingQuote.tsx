@@ -18,7 +18,7 @@ const SinglePendingQuote = ({ quote }: { quote: Quote }) => {
   const { data: session } = useSession();
 
   const handlePublish = async () => {
-    await axios.put(API_URL + `/quotes/${quote.id}/markPendingAsPublic`,
+    await axios.put(API_URL + `/quotes/${quote.id}/markPendingAsPublic`, {},
       {
         headers: {
           Authorization: `Bearer ${session?.accessToken}`
@@ -27,7 +27,7 @@ const SinglePendingQuote = ({ quote }: { quote: Quote }) => {
   };
 
   const handleReject = async () => {
-    await axios.put(API_URL + `/quotes/${quote.id}/markPendingAsPrivate`,
+    await axios.put(API_URL + `/quotes/${quote.id}/markPendingAsPrivate`, {},
       {
         headers: {
           Authorization: `Bearer ${session?.accessToken}`
@@ -72,14 +72,14 @@ const SinglePendingQuote = ({ quote }: { quote: Quote }) => {
             </div>
             <div className="mt-5">
               <button onClick={handlePublish}
-                className="bg-blue-500 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-900 text-white py-2 px-4
+                      className="bg-blue-500 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-900 text-white py-2 px-4
                 rounded-full text-base">
                 <GlobeAltIcon className="h-6 w-6 inline-block" /> Опубликовать
               </button>
             </div>
             <div className="mt-5">
               <button onClick={handleReject}
-                className="bg-red-500 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-900 text-white py-2 px-4
+                      className="bg-red-500 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-900 text-white py-2 px-4
                 rounded-full text-base">
                 <XMarkIcon className="h-6 w-6 inline-block" /> Отклонить
               </button>

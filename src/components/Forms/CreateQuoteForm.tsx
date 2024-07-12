@@ -7,10 +7,12 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import getQuoteBookFromFormData from "@/utils/getQuoteBookFromFormData";
 import getTagsFromFormData from "@/utils/getTagsFromFormData";
+import { useRouter } from "next/navigation";
 
 export default function CreateQuoteForm() {
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const { data: session } = useSession();
+  const router = useRouter();
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -26,6 +28,8 @@ export default function CreateQuoteForm() {
         Authorization: `Bearer ${session?.accessToken}`
       }
     });
+
+    router.push("/private");
   }
 
   return (
@@ -104,7 +108,7 @@ export default function CreateQuoteForm() {
         </div>
         <div className="mb-6">
           <button type="submit"
-            className="shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center
+                  className="shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center
                       rounded-sm bg-primary px-9 py-4 text-base font-medium text-white duration-300
                       hover:bg-primary/90">
             Добавить
@@ -123,5 +127,5 @@ export default function CreateQuoteForm() {
         </div>
       </form>
     </>
-  )
+  );
 }

@@ -121,7 +121,7 @@ const Header = () => {
                   <ul className="block lg:flex lg:space-x-12">
                     {menuData.map((menuItem, index) => (
                         <li key={index} className={`group relative ${
-                          menuItem.isAuthNeeded && !isAuthenticated || menuItem.isStaffNeeded && !isStaff ? 
+                          menuItem.isAuthNeeded && !isAuthenticated || menuItem.isStaffNeeded && !isStaff ?
                             "invisible" : ""
                         }`}>
                           {menuItem.path ? (
