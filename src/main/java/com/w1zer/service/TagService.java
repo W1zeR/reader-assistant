@@ -2,8 +2,8 @@ package com.w1zer.service;
 
 import com.w1zer.entity.Quote;
 import com.w1zer.entity.Tag;
-import com.w1zer.exception.NotFoundException;
 import com.w1zer.exception.AlreadyExistsException;
+import com.w1zer.exception.NotFoundException;
 import com.w1zer.mapping.QuoteMapping;
 import com.w1zer.payload.QuoteResponse;
 import com.w1zer.payload.TagRequest;
