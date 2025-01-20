@@ -1,5 +1,7 @@
 # reader-assistant-backend
 
+Allows users to save and share quotes from literary works
+
 ## Running
 
 1. Create role with name `me` and password `123` in PostgreSQL (or change it in `src/main/resources/application.yml`)
