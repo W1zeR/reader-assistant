@@ -1,5 +1,7 @@
 # reader-assistant-frontend
 
+Allows users to save and share quotes from literary works
+
 ## Running
 
 1. Run `npm run dev`
