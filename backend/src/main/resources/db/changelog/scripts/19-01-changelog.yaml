@@ -1,0 +1,555 @@
+#file: noinspection SpellCheckingInspection
+databaseChangeLog:
+  - changeSet:
+      id: 1716147862008-1
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_author
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: surname
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: patronymic
+                  type: VARCHAR(255)
+            tableName: author
+  - changeSet:
+      id: 1716147862008-2
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_authors_books
+                  name: id_author
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_authors_books
+                  name: id_book
+                  type: BIGINT
+            tableName: authors_books
+  - changeSet:
+      id: 1716147862008-3
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_book
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: title
+                  type: VARCHAR(255)
+            tableName: book
+  - changeSet:
+      id: 1716147862008-4
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_liked_quotes
+                  name: id_profile
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_liked_quotes
+                  name: id_quote
+                  type: BIGINT
+            tableName: liked_quotes
+  - changeSet:
+      id: 1716147862008-5
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_profile
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: email
+                  type: VARCHAR(320)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: login
+                  type: VARCHAR(50)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: password
+                  type: TEXT
+            tableName: profile
+  - changeSet:
+      id: 1716147862008-6
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_profiles_roles
+                  name: id_profile
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_profiles_roles
+                  name: id_role
+                  type: BIGINT
+            tableName: profiles_roles
+  - changeSet:
+      id: 1716147862008-7
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_quote
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: content
+                  type: VARCHAR(1000)
+              - column:
+                  name: change_date
+                  type: DATETIME
+              - column:
+                  name: likes_count
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: book_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: profile_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: status_id
+                  type: BIGINT
+            tableName: quote
+  - changeSet:
+      id: 1716147862008-8
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_quotestatus
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: name
+                  type: VARCHAR(7)
+            tableName: quote_status
+  - changeSet:
+      id: 1716147862008-9
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_quotes_tags
+                  name: id_quote
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_quotes_tags
+                  name: id_tag
+                  type: BIGINT
+            tableName: quotes_tags
+  - changeSet:
+      id: 1716147862008-10
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_refreshtoken
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: token
+                  type: TEXT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: id_user_device
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: refresh_count
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: expiry_date
+                  type: DATETIME
+            tableName: refresh_token
+  - changeSet:
+      id: 1716147862008-11
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_role
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: name
+                  type: VARCHAR(20)
+            tableName: role
+  - changeSet:
+      id: 1716147862008-12
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_tag
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: name
+                  type: VARCHAR(30)
+            tableName: tag
+  - changeSet:
+      id: 1716147862008-13
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_userdevice
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: id_profile
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: device_type
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: browser_name
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: is_refresh_active
+                  type: BOOLEAN
+            tableName: user_device
+  - changeSet:
+      id: 1716147862008-14
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: email
+            constraintName: uc_profile_email
+            tableName: profile
+  - changeSet:
+      id: 1716147862008-15
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: login
+            constraintName: uc_profile_login
+            tableName: profile
+  - changeSet:
+      id: 1716147862008-16
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: id_user_device
+            constraintName: uc_refreshtoken_id_user_device
+            tableName: refresh_token
+  - changeSet:
+      id: 1716147862008-17
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: token
+            constraintName: uc_refreshtoken_token
+            tableName: refresh_token
+  - changeSet:
+      id: 1716147862008-18
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: name
+            constraintName: uc_role_name
+            tableName: role
+  - changeSet:
+      id: 1716147862008-19
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: name
+            constraintName: uc_tag_name
+            tableName: tag
+  - changeSet:
+      id: 1716147862008-20
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: id_profile
+            constraintName: uc_userdevice_id_profile
+            tableName: user_device
+  - changeSet:
+      id: 1716147862008-21
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: book_id
+            baseTableName: quote
+            constraintName: FK_QUOTE_ON_BOOK
+            referencedColumnNames: id
+            referencedTableName: book
+  - changeSet:
+      id: 1716147862008-22
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: profile_id
+            baseTableName: quote
+            constraintName: FK_QUOTE_ON_PROFILE
+            referencedColumnNames: id
+            referencedTableName: profile
+  - changeSet:
+      id: 1716147862008-23
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: status_id
+            baseTableName: quote
+            constraintName: FK_QUOTE_ON_STATUS
+            referencedColumnNames: id
+            referencedTableName: quote_status
+  - changeSet:
+      id: 1716147862008-24
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: id_user_device
+            baseTableName: refresh_token
+            constraintName: FK_REFRESHTOKEN_ON_ID_USER_DEVICE
+            referencedColumnNames: id
+            referencedTableName: user_device
+  - changeSet:
+      id: 1716147862008-25
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: id_profile
+            baseTableName: user_device
+            constraintName: FK_USERDEVICE_ON_ID_PROFILE
+            referencedColumnNames: id
+            referencedTableName: profile
+  - changeSet:
+      id: 1716147862008-26
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: id_author
+            baseTableName: authors_books
+            constraintName: fk_autboo_on_author
+            referencedColumnNames: id
+            referencedTableName: author
+  - changeSet:
+      id: 1716147862008-27
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: id_book
+            baseTableName: authors_books
+            constraintName: fk_autboo_on_book
+            referencedColumnNames: id
+            referencedTableName: book
+  - changeSet:
+      id: 1716147862008-28
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: id_profile
+            baseTableName: liked_quotes
+            constraintName: fk_likquo_on_profile
+            referencedColumnNames: id
+            referencedTableName: profile
+  - changeSet:
+      id: 1716147862008-29
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: id_quote
+            baseTableName: liked_quotes
+            constraintName: fk_likquo_on_quote
+            referencedColumnNames: id
+            referencedTableName: quote
+  - changeSet:
+      id: 1716147862008-30
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: id_profile
+            baseTableName: profiles_roles
+            constraintName: fk_prorol_on_profile
+            referencedColumnNames: id
+            referencedTableName: profile
+  - changeSet:
+      id: 1716147862008-31
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: id_role
+            baseTableName: profiles_roles
+            constraintName: fk_prorol_on_role
+            referencedColumnNames: id
+            referencedTableName: role
+  - changeSet:
+      id: 1716147862008-32
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: id_quote
+            baseTableName: quotes_tags
+            constraintName: fk_quotag_on_quote
+            referencedColumnNames: id
+            referencedTableName: quote
+  - changeSet:
+      id: 1716147862008-33
+      author: Sergey (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: id_tag
+            baseTableName: quotes_tags
+            constraintName: fk_quotag_on_tag
+            referencedColumnNames: id
+            referencedTableName: tag
+

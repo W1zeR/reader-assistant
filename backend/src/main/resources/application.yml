@@ -1,0 +1,20 @@
+#file: noinspection SpellCheckingInspection
+server:
+  port: 8081
+  error:
+    include-message: always
+    include-binding-errors: always
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/reader-assistant
+    username: me
+    password: 123
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+w1zer:
+  jwt:
+    secret-key: dzF6ZXJTZWNyZXRLZXk=dzF6ZXJTZWNyZXRLZXk=dzF6ZXJTZWNyZXRLZXk=
+    access-expiration-hours: 24 # 1 day
+    refresh-expiration-hours: 720 # 30 days
