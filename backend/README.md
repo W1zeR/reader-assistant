@@ -24,7 +24,3 @@ Allows users to save and share quotes from literary works
 - Endpoint security
 - JWT invalidation on logout
 - Sorting, filtering, pagination
-
-## Frontend
-
-https://github.com/W1zeR/reader-assistant-frontend

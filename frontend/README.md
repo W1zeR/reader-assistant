@@ -21,7 +21,3 @@ Allows users to save and share quotes from literary works
 - Dark theme
 - JWT refresh
 - Search with debounce
-
-## Backend
-
-https://github.com/W1zeR/reader-assistant-backend
